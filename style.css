@@ -19,6 +19,22 @@ body{
     background-position: center;
 }
 
+.header-text {
+    display: flex;
+    align-items: center;
+}
+
+.profile-image {
+    width: 600px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-left: 200px; /* Adjust the margin as needed */
+    margin-top: -290px; /* Adjust the negative margin to move it upwards */
+    float: right;
+    border-radius: 50px; /* Adjust the radius as needed */
+}
+
+
+
 .container{
     padding: 10px 10%;
 
