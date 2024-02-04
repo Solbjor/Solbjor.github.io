@@ -14,11 +14,11 @@
             <nav>
                 <img src="Images/logo.png" class="logo">
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Portfolio</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
             <div class="header-text">
@@ -194,5 +194,37 @@
         }
 
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const navLinks = document.querySelectorAll('nav ul li a');
+    
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+    
+                    if (targetElement) {
+                        const headerHeight = document.getElementById('header').offsetHeight;
+                        const targetRect = targetElement.getBoundingClientRect();
+    
+                        console.log("Target Element Top: ", targetRect.top);
+                        console.log("Window Scroll Y: ", window.scrollY);
+                        console.log("Header Height: ", headerHeight);
+    
+                        window.scrollTo({
+                            top: targetRect.top + window.scrollY - headerHeight + 1,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    
+    
+    
 </body>
 </html>
