@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Portfolio - Andrew Solbjor</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/646058bbeb.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="header">
+        <div class="container">
+            <nav>
+                <img src="Images/logo.png" class="logo">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-text">
+                <p>Frontend Developer</p>
+                <h1>Hello, I'm <span>Andrew</span> Solbjor</h1>
+            </div>
+        </div>
+    </div>
+
+    <!----------about---------->
+
+    <div id="about">
+        <div class="container">
+            <div class="row">
+                <div class="about-col1">
+                    <img src="Images/Andrew.jpg">
+                </div>
+                <div class="about-col2">
+                    <!--This part of the program contains the about section information presented using tabs. The tabs all have on-press animations/transitions that allow them to display the different information contained within using the on-click function linked to javascript at the bottom of the page"-->
+                    <h1 class="sub-title">About Me</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sed feugiat quam. Maecenas hendrerit sem mi, id gravida arcu vestibulum at. 
+                    Vestibulum ultricies elit ac massa tincidunt dapibus. 
+                    Fusce vehicula pharetra elit, sit amet commodo nunc laoreet quis. Sed vitae leo nunc. 
+                    Aliquam pulvinar lobortis elit, eu aliquet elit mollis id. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla id dui ac interdum. 
+                    Donec suscipit lacus quis orci porta fringilla. Pellentesque volutpat est nec velit tempor, id porttitor arcu ornare. Sed lacinia quam non maximus porttitor. 
+                    Donec vitae justo consectetur arcu efficitur elementum.</p>
+                    <!--These tabs are linked to the javascript below the code that allows them to have the functionality on each click-->
+                    <div class="tab-titles">
+                        <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
+                        <p class="tab-links" onclick="opentab('experience')">Experience</p>
+                        <p class="tab-links" onclick="opentab('education')">Education</p>
+                    </div>
+                    <div class="tab-contents active-tab" id="skills">
+                        <ul>
+                            <li><span>Frontend Development</span><br>Designing Websites and Web Applications</li>
+                            <li><span>Websites</span><br>Bulding intuitive and friendly websites</li>
+                            <li><span>Application Creation</span><br>Creating innovative applications for Android/iOS apps</li>
+                        </ul>
+                    </div>
+                    <div class="tab-contents" id="experience">
+                        <ul>
+                            <li><span>September, 2018 - September, 2018</span><br>IT Department intern and switchbox installation</li>
+                            <li><span>September, 2019 - December, 2019</span><br>Align Technology intern</li>
+                            <li><span>April, 2023</span><br>Verizon Innovative Learning Experience volunteer</li>
+                        </ul>
+                    </div>
+                    <div class="tab-contents" id="education">
+                        <ul>
+                            <li><span>2016</span><br>CCNA IT Essentials from Colegio Tecnico Profesional de Ulloa</li>
+                            <li><span>2017</span><br>CCNA 1: Routing and Switching Essentials from Colegio Tecnico Profesional de Ulloa</li>
+                            <li><span>2018</span><br>CCNA 2 from Colegio Tecnico Profesional de Ulloa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!---------------------services------------------------>
+    <!--This part of the site showcases the various development services that I offer such as web design, frontend development, and application creation. The tabs and icons have effects on hover that change their color as well as a link to "learn more"-->
+
+    <div id="services">
+        <div class="container">
+            <h1 class="sub-title">My Services</h1>
+            <div class="services-list">
+                <!--This div contains the various "images" that contain the services that are going to be offered. They have on-hover animation and changes to color linked to their id and classname in the css file-->
+                <div>
+                    <i class="fa-solid fa-code"></i>
+                    <h2>Frontend Development</h2>
+                    <p>Suspendisse convallis magna nulla. Donec congue eu libero et gravida. Quisque congue lorem a lacinia commodo. 
+                    Curabitur a turpis ut nibh imperdiet vulputate vitae et purus.</p>
+                    <a href="#">Learn more</a>
+                </div>
+                <div>
+                    <i class="fa-brands fa-safari"></i>
+                    <h2>Websites</h2>
+                    <p>Suspendisse convallis magna nulla. Donec congue eu libero et gravida. 
+                    Quisque congue lorem a lacinia commodo.</p>
+                    <a href="#">Learn more</a>
+                </div>
+                <div>
+                    <i class="fa-brands fa-app-store"></i>
+                    <h2>Application Creation</h2>
+                    <p>Suspendisse convallis magna nulla. Donec congue eu libero et gravida. Quisque congue lorem a lacinia commodo. 
+                    Curabitur a turpis ut nibh imperdiet vulputate vitae et purus. </p>
+                    <a href="#">Learn more</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!---------------------Portfolio------------------------>
+    <!--This part of the code that shows my portfolio including past work and resume. It has images with upward-swipe transitions on the photos that provide a description and a link to the work (work in progress)-->
+    <div id="portfolio">
+        <div class="container">
+            <h1 class="sub-title">My Work</h1>
+            <p>All photos are templates and must be changed</p>
+            <div class="work-list">
+                <div class="work">
+                    <!--Each div of class work contains a div of class layer which is where each photo and section is positioned in-->
+                    <img src="images/work-1.png">
+                    <div class="layer">
+                        <h3>Website Example 1</h3>
+                        <p>This website is an example of my first website that I created.</p>
+                        <a href="#"><i class="fa-solid fa-up-right-from-square"></i></a>
+                    </div>
+                </div>
+                <div class="work">
+                    <img src="images/work-2.png">
+                    <div class="layer">
+                        <h3>Website Example 2</h3>
+                        <p>This website is an example of my first website that I created.</p>
+                        <a href="#"><i class="fa-solid fa-up-right-from-square"></i></a>
+                    </div>
+                </div>
+                <div class="work">
+                    <img src="images/work-3.png">
+                    <div class="layer">
+                        <h3>App Example 1</h3>
+                        <p>This website is an example of my first app that I created.</p>
+                        <a href="#"><i class="fa-solid fa-up-right-from-square"></i></a>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="btn">See more</a>
+        </div>
+    </div>
+
+    <!---------------------Contact------------------------>
+    <!--This part of the page offers a contact information for getting in touch with me for business inquiries and consultations. It offers a form to submit requests via email as well-->
+    <div id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="contact-left">
+                    <h1 class="sub-title">Contact Me</h1>
+                    <p><i class="fa-solid fa-paper-plane-top"></i>s0lbjorandr3w@gmail.com</p>
+                    <p><i class="fa-thin fa-phone-volume"></i>(209) 641-6122</p>
+                    <div class="social-icons">
+                        <a href="https://www.linkedin.com/in/andrew-solbjor-157092264/"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://github.com/Solbjor"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://instagram.com/solbj022?igshid=MzNlNGNkZWQ4Mg=="><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                    <a href="images/Resume Andrew Solbjor (new).pdf" download class="btn btn2" class="btn btn2">Download CV</a>
+                </div>
+                <div class="contact-right">
+                    <!--This is a form alongside a submit button for submitting contact requests. Will be linked to my email in future-->
+                    <form>
+                        <input type="text" name="Name" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                        <textarea name="Message" rows="6" placeholder="Your Message"></textarea>
+                        <button type="submit" class="btn btn2">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>Copyright @ Andrew.</p>
+        </div>
+    </div>
+
+    <script>
+
+        /*This function is used to switch between various tabs such as skills, experience, etc...*/
+        var tablinks = document.getElementsByClassName("tab-links");
+        var tabcontents = document.getElementsByClassName("tab-contents");
+
+        /*tabname takes in */
+        function opentab(tabname){
+            for(tablink of tablinks){
+                tablink.classList.remove("active-link");
+            }
+            for(tabcontent of tabcontents){
+                tabcontent.classList.remove("active-tab");
+            }
+            event.currentTarget.classList.add("active-link");
+            document.getElementById(tabname).classList.add("active-tab");
+        }
+
+    </script>
+</body>
+</html>
