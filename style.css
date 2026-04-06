@@ -21,16 +21,27 @@ body{
 
 .header-text {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+}
+
+.header-text-left {
+    flex: 1;
+}
+
+.header-text-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
 .profile-image {
-    width: 600px; /* Adjust the width as needed */
+    width: 500px; /* Adjust the width as needed */
     height: auto; /* Maintain aspect ratio */
-    margin-left: 200px; /* Adjust the margin as needed */
-    margin-top: -290px; /* Adjust the negative margin to move it upwards */
-    float: right;
     border-radius: 50px; /* Adjust the radius as needed */
+    object-fit: cover;
 }
 
 
@@ -86,13 +97,19 @@ nav ul li a:hover::after{
 }
 
 .header-text{
-    margin-top: 20%;
+    margin-top: 10%;
     font-size: 30px;
 }
 
+.header-text p{
+    margin-bottom: 200px;
+    font-size: 50px;
+}
+
 .header-text h1{
-    margin-top: 20px;
-    font-size: 60px;
+    margin-top: 0px;
+    margin-left: 75px;
+    font-size: 80px;
 }
 
 .header-text h1 span{
