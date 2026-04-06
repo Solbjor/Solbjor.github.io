@@ -128,7 +128,7 @@ nav ul li a:hover::after{
     flex-wrap: wrap;
 }
 
-.about-col-1{
+.about-col1{
     flex-basis: 35%; /*width of column 35%*/
 }
 
