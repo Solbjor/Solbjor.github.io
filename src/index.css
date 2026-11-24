@@ -1,0 +1,48 @@
+/* Design tokens — the full design system is built in the redesign phase. */
+:root {
+  --bg: #0f0f12;
+  --surface: #1a1a20;
+  --text: #ececf1;
+  --muted: #a0a0ab;
+  --accent: #ff3d6e;
+  --radius: 10px;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --text: #16161a;
+    --muted: #5a5a66;
+    --accent: #d61f52;
+    color-scheme: light;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.6;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: grid;
+  gap: 2rem;
+}
+
+a {
+  color: var(--accent);
+}
