@@ -1,6 +1,6 @@
 // Single source of truth for all site content.
 // Components read from here — to update the site, edit this file only.
-// NOTE: currently ported as-is from the legacy site (legacy/index.html);
+// NOTE: currently ported as-is from the legacy site (see docs/legacy-design.md);
 // it will be refreshed from the LinkedIn export in the content phase.
 
 export interface Role {

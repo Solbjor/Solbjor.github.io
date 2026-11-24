@@ -1,3 +1,42 @@
+# Legacy design notes
+
+This records the look of the original hand-written site (2023–2025), so we can reuse parts of it without digging through git history.
+
+## Palette
+| Role | Value |
+|---|---|
+| Background | `#181515` |
+| Card / input surface | `#262626` |
+| Text | `#ffffff` |
+| Muted text | `#ababab` |
+| Accent (signature hot pink-red) | `#ff004f` |
+| Secondary accent (date labels) | `#b54769` |
+
+Note: white text on `#ff004f` is only about 3.9:1 contrast, which fails WCAG AA for body text. In the redesign, use dark text (`#181515`) on accent fills.
+
+## Typography
+- Default `sans-serif` throughout.
+- Very large hero: eyebrow 50px, h1 80px, with the first name wrapped in an accent `<span>`.
+- Section titles are 60px, weight 600.
+
+## Signature interactions
+- **Nav links:** an accent underline (`::after`, 3px) grows from 0 to 100% width on hover, over 0.25s.
+- **Tabbed About:** Skills, Experience and Education tabs. The active tab gets a 50%-width accent underline.
+- **Service cards:** a `#262626` card turns accent-colored and lifts `translateY(-10px)` on hover (0.5s).
+- **Project tiles:** on hover the image scales to 1.1, and an overlay with a `linear-gradient(rgba(0,0,0,.6), #ff004f)` background slides up from 0 to 100% height. The overlay holds the title, description and a round white 60px link button.
+- **Buttons:** a 1px accent outline that fills with the accent on hover. `.btn2` is the filled variant.
+- **Social icons:** muted grey; on hover they turn accent-colored and lift 5px.
+
+## Layout
+- The container has `10px 10%` padding.
+- Two-column rows use flex `35% / 60%` with `space-between`.
+- Card grids use `repeat(auto-fit, minmax(250px, 1fr))` with a 40px gap.
+- Corner radii are 10px on cards and 6px on inputs and buttons. The hero photo had a 50px radius.
+
+<details>
+<summary>Appendix: full legacy <code>style.css</code></summary>
+
+```css
 *{
     margin: 0;
     padding: 0;
@@ -398,3 +437,7 @@ form btn2{
     margin-top: 20px;
     cursor: pointer;
 }
+
+```
+
+</details>

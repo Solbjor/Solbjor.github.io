@@ -2,7 +2,7 @@
 
 Personal site of Andrew Solbjor — https://solbjor.github.io/
 
-Built with React + TypeScript + Vite, deployed to GitHub Pages via GitHub Actions on every push to `main`.
+Built with React + TypeScript + Vite, deployed to GitHub Pages via GitHub Actions on every push to `master`.
 
 ## Develop
 
@@ -21,5 +21,5 @@ All text (experience, projects, education, links) lives in [`src/data/content.ts
 
 - `src/components/` — UI components
 - `src/data/content.ts` — site content
-- `public/` — static files served as-is (images, resume PDF, favicon)
-- `legacy/` — previous hand-written HTML/CSS site, kept for reference until the redesign ships
+- `public/` — static files served as-is (images, favicon)
+- `docs/legacy-design.md` — notes on the original site's design, kept for reuse
