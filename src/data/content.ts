@@ -17,6 +17,8 @@ export interface Role {
   bullets?: string[]
   /** Shown as one of the large featured cards. */
   featured?: boolean
+  /** The mission Andrew is "landed" on right now. Exactly one role should set this. */
+  current?: boolean
 }
 
 export interface Project {
@@ -74,6 +76,7 @@ export const experience: Role[] = [
       'Forward deployed engineer placed with Foundation for Puerto Rico, scoping, designing, and building ' +
       'AI tools and systems for mission-driven work.',
     featured: true,
+    current: true,
   },
   {
     title: 'Co-Founder · Frontend Developer',
@@ -172,6 +175,12 @@ export const projects: Project[] = [
     link: 'https://github.com/Exception-Handlers/MediPal',
     image: 'projects/medipal.png',
     tags: ['Health', 'Mobile'],
+  },
+  {
+    name: 'SparSafe app',
+    description:
+      'Companion mobile app for SparSafe’s smart boxing headgear, delivering head-impact data from a sparring session in real time.',
+    tags: ['Mobile', 'Real-time data', 'Hardware'],
   },
   {
     name: 'LiNKFiiT',

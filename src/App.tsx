@@ -1,47 +1,45 @@
-import { education, experience, profile, projects } from './data/content'
+import { Comms } from './components/Comms'
+import { RoomView } from './components/RoomView'
+import { Header } from './components/Header'
+import { MissionLog } from './components/MissionLog'
+import { Payloads } from './components/Payloads'
+import { Systems, Training } from './components/Systems'
+import { profile } from './data/content'
+import { useWatch } from './lib/useWatch'
 
-// Scaffold only: plain rendering of content.ts to prove the pipeline works.
-// Real components (Hero, ExperienceTimeline, ProjectCard, Contact, ...) go in src/components/.
+const YEAR = new Date().getFullYear()
+
 export default function App() {
+  const { watch, setWatch } = useWatch()
+
   return (
-    <main>
-      <header>
-        <h1>{profile.name}</h1>
-        <p>{profile.headline}</p>
-      </header>
-
-      <section id="experience">
-        <h2>Experience</h2>
-        <ul>
-          {experience.map((r) => (
-            <li key={`${r.org}-${r.title}`}>
-              <strong>{r.title}</strong> — {r.org} ({r.start} – {r.end})
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section id="projects">
-        <h2>Projects</h2>
-        <ul>
-          {projects.map((p) => (
-            <li key={p.name}>
-              {p.link ? <a href={p.link}>{p.name}</a> : p.name}: {p.description}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section id="education">
-        <h2>Education</h2>
-        <ul>
-          {education.map((e) => (
-            <li key={e.school}>
-              {e.school}, {e.credential} ({e.years})
-            </li>
-          ))}
-        </ul>
-      </section>
-    </main>
+    <>
+      <a className="skip" href="#main">
+        Skip to content
+      </a>
+      <div className="room">
+        <Header watch={watch} onWatch={setWatch} />
+        <main id="main" tabIndex={-1}>
+          <RoomView />
+          <MissionLog />
+          <Payloads />
+          <div className="bank">
+            <Systems />
+            <Training />
+          </div>
+          <Comms />
+        </main>
+        <footer className="room-foot">
+          <p>
+            © {YEAR} {profile.name} · {profile.location}
+          </p>
+          <p>
+            <a href="https://github.com/Solbjor/Solbjor.github.io" target="_blank" rel="noopener noreferrer">
+              Source<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </p>
+        </footer>
+      </div>
+    </>
   )
 }

@@ -5,11 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Andrew Solbjor</title>
-    <meta name="description" content="Andrew Solbjor — Software Engineer and Forward Deployed Engineer." />
+    <meta name="description" content="Andrew Solbjor — Software Engineer, Forward Deployed Engineer and Claude Corps Fellow." />
     <meta property="og:title" content="Andrew Solbjor" />
-    <meta property="og:description" content="Software Engineer and Forward Deployed Engineer." />
+    <meta property="og:description" content="Software Engineer, Forward Deployed Engineer and Claude Corps Fellow." />
     <meta property="og:url" content="https://solbjor.github.io/" />
     <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#121410" />
+    <script>
+      // Apply the saved room lighting before first paint (no flash). Default: mars.
+      try {
+        var w = localStorage.getItem('solbjor-watch')
+        document.documentElement.dataset.watch = w === 'neptune' || w === 'day' ? w : 'mars'
+      } catch (e) {
+        document.documentElement.dataset.watch = 'mars'
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

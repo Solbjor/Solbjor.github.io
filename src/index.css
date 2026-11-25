@@ -1,48 +1,167 @@
-/* Design tokens — the full design system is built in the redesign phase. */
-:root {
-  --bg: #0f0f12;
-  --surface: #1a1a20;
-  --text: #ececf1;
-  --muted: #a0a0ab;
-  --accent: #ff3d6e;
-  --radius: 10px;
-  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource-variable/martian-mono/wdth.css';
+
+/* ------------------------------------------------------------------
+   Mission control room. Three room-lighting watches:
+   mars (red-dark, default) · neptune (blue-dark) · day (light).
+   ------------------------------------------------------------------ */
+:root,
+:root[data-watch='mars'] {
+  --room: #121410;
+  --enamel: #282b24;
+  --enamel-hi: #33372e;
+  --enamel-edge: #4a5043;
+  --plate: #d8cfbb;
+  --plate-ink: #1a1512;
+  --glass: #0b0807;
+  --phos: #ffb24a;
+  --phos-dim: #c98d45;
+  --signal: #ff4d3a;
+  --signal-ink: #1a0a07;
+  --text: #ede5d6;
+  --muted: #b3a894;
+  --orbit: rgba(255, 178, 74, 0.16);
+  --scan: rgba(0, 0, 0, 0.28);
   color-scheme: dark;
 }
 
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme='dark']) {
-    --bg: #fafafa;
-    --surface: #ffffff;
-    --text: #16161a;
-    --muted: #5a5a66;
-    --accent: #d61f52;
-    color-scheme: light;
-  }
+:root[data-watch='neptune'] {
+  --room: #0a0f15;
+  --enamel: #1c242d;
+  --enamel-hi: #26303b;
+  --enamel-edge: #374452;
+  --plate: #cdd6de;
+  --plate-ink: #0b1118;
+  --glass: #04080c;
+  --phos: #7fe0ff;
+  --phos-dim: #5aaecb;
+  --signal: #ff6b5e;
+  --signal-ink: #1a0807;
+  --text: #e4ebf1;
+  --muted: #a1afbc;
+  --orbit: rgba(127, 224, 255, 0.16);
+  --scan: rgba(0, 0, 0, 0.3);
+  color-scheme: dark;
+}
+
+:root[data-watch='day'] {
+  --room: #e4e4d6;
+  --enamel: #cfd1bd;
+  --enamel-hi: #d9dbc9;
+  --enamel-edge: #a5a891;
+  --plate: #2a2621;
+  --plate-ink: #f3ecdc;
+  --glass: #f7f2e6;
+  --phos: #1f1b16;
+  --phos-dim: #5b5346;
+  --signal: #b8261a;
+  --signal-ink: #fff6ef;
+  --text: #1f1b16;
+  --muted: #554d40;
+  --orbit: rgba(31, 27, 22, 0.16);
+  --scan: transparent;
+  color-scheme: light;
+}
+
+:root {
+  --f-sans: 'Archivo Variable', 'Helvetica Neue', Arial, sans-serif;
+  --f-data: 'Martian Mono Variable', ui-monospace, monospace;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --bezel: 3px;
+  --radius: 6px;
+  --gutter: clamp(16px, 3vw, 40px);
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
+}
+
+html {
+  scroll-padding-top: var(--space-5);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
-  background: var(--bg);
+  margin: 0;
+  background: var(--room);
   color: var(--text);
-  font-family: var(--font);
-  line-height: 1.6;
+  font: 400 1rem/1.6 var(--f-sans);
+  font-stretch: 100%;
+  -webkit-font-smoothing: antialiased;
+  caret-color: var(--signal);
+  scrollbar-color: var(--enamel-edge) var(--room);
 }
 
-main {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  display: grid;
-  gap: 2rem;
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd,
+figure,
+fieldset {
+  margin: 0;
 }
-
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
 a {
-  color: var(--accent);
+  color: inherit;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+::selection {
+  background: var(--signal);
+  color: var(--signal-ink);
+}
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skip {
+  position: absolute;
+  left: var(--space-4);
+  top: -80px;
+  z-index: 10;
+  padding: var(--space-3) var(--space-4);
+  background: var(--signal);
+  color: var(--signal-ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+.skip:focus {
+  top: var(--space-4);
+}
+main:focus {
+  outline: none;
 }

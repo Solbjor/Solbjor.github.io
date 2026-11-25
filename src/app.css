@@ -1,0 +1,1130 @@
+/* ---------- Room ---------- */
+.room {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+main {
+  display: grid;
+  gap: var(--space-7);
+  padding-block: var(--space-5) var(--space-8);
+}
+
+/* ---------- Placards, keys, lamps ---------- */
+.plate,
+.placard {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--plate);
+  color: var(--plate-ink);
+  font: 700 0.8rem/1 var(--f-sans);
+  font-stretch: 125%;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 7px 22px;
+  border-radius: 3px;
+}
+/* two screw heads on every plate */
+.plate::before,
+.plate::after,
+.placard::before,
+.placard::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--plate-ink) 45%, var(--plate));
+}
+.plate::before,
+.placard::before {
+  left: 7px;
+}
+.plate::after,
+.placard::after {
+  right: 7px;
+}
+.placard {
+  margin-bottom: var(--space-4);
+}
+.plate {
+  font-size: 0.95rem;
+  padding: 10px 26px;
+}
+.plate-sun {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--signal);
+}
+
+.key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 10px 16px;
+  background: var(--enamel-hi);
+  color: var(--text);
+  border: 1px solid var(--enamel-edge);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.45);
+  font: 650 0.78rem/1.1 var(--f-sans);
+  font-stretch: 112%;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 80ms ease-out;
+}
+.key:hover {
+  background: color-mix(in srgb, var(--enamel-hi) 80%, var(--text));
+}
+.key:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.45);
+}
+.key[aria-pressed='true'] {
+  background: var(--phos);
+  color: var(--glass);
+  border-color: var(--phos);
+}
+.key-lit {
+  background: var(--signal);
+  color: var(--signal-ink);
+  border-color: var(--signal);
+}
+.key-lit:hover {
+  background: color-mix(in srgb, var(--signal) 85%, var(--text));
+}
+.key:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.key-small {
+  font-size: 0.72rem;
+  padding: 8px 12px;
+}
+.key-large {
+  font-size: 0.9rem;
+  padding: 14px 24px;
+}
+
+.lamp {
+  flex: none;
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--phos-dim);
+}
+.lamp-landed,
+.lamp-alert {
+  background: var(--signal);
+}
+.lamp-active {
+  background: var(--phos);
+}
+.lamp-idle {
+  background: var(--phos-dim);
+}
+.lamp-complete {
+  background: transparent;
+  border: 1.5px solid currentColor;
+}
+.key[aria-pressed='true'] .lamp-complete {
+  border-color: var(--glass);
+}
+
+/* ---------- Header ---------- */
+.room-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-5);
+  padding-block: var(--space-4);
+  border-bottom: var(--bezel) solid var(--enamel-edge);
+}
+.head-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+.watch-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 4px;
+  border: 1px solid var(--enamel-edge);
+  border-radius: 6px;
+  background: var(--enamel);
+}
+.watch-switch legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.watch-pos {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font: 650 0.7rem/1 var(--f-sans);
+  font-stretch: 112%;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+}
+.watch-pos input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.watch-pos .lamp {
+  background: transparent;
+  border: 1.5px solid currentColor;
+}
+.watch-pos:has(input:checked) {
+  background: var(--enamel-hi);
+  color: var(--text);
+}
+.watch-pos:has(input:checked) .lamp {
+  background: var(--signal);
+  border-color: var(--signal);
+}
+.watch-pos:has(input:focus-visible) {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* ---------- Consoles & glass ---------- */
+.console {
+  background: var(--enamel);
+  border: 1px solid var(--enamel-edge);
+  border-radius: var(--radius);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  box-shadow: 0 22px 44px -30px rgba(0, 0, 0, 0.7);
+  min-width: 0;
+}
+.glass {
+  position: relative;
+  overflow: hidden;
+  background: var(--glass);
+  color: var(--phos);
+  border: 2px solid color-mix(in srgb, var(--enamel-edge) 60%, #000);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    inset 0 0 40px rgba(0, 0, 0, 0.55);
+}
+:root[data-watch='day'] .glass {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05), inset 0 0 24px rgba(60, 45, 20, 0.12);
+}
+.glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, transparent 0 2px, var(--scan) 2px 3px);
+}
+.glass-paper,
+.glass-readout,
+.glass-form {
+  padding: var(--space-5);
+  color: var(--text);
+}
+
+/* ---------- Flight (first viewport): the room from the back row ---------- */
+.flight {
+  display: grid;
+  gap: var(--space-4);
+}
+.scene {
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, calc((100svh - 84px) * 1.6));
+  aspect-ratio: 1440 / 900;
+  margin-inline: auto;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.scene-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.r-ceil {
+  fill: color-mix(in srgb, var(--room) 70%, #000);
+}
+.r-wall {
+  fill: color-mix(in srgb, var(--enamel) 45%, var(--room));
+}
+.r-front {
+  fill: color-mix(in srgb, var(--enamel) 75%, var(--room));
+}
+.r-floor {
+  fill: color-mix(in srgb, var(--room) 80%, var(--enamel));
+}
+.r-lights rect {
+  fill: color-mix(in srgb, var(--plate) 55%, var(--room));
+}
+.r-desk {
+  fill: var(--enamel-hi);
+  stroke: var(--enamel-edge);
+  stroke-width: 2;
+}
+.r-glass {
+  fill: var(--glass);
+  stroke: color-mix(in srgb, var(--enamel-edge) 60%, #000);
+  stroke-width: 4;
+}
+.r-glass-sm {
+  fill: var(--glass);
+}
+.r-console {
+  fill: var(--plate);
+}
+
+.orbits circle {
+  fill: none;
+  stroke: var(--orbit);
+  stroke-width: 1;
+}
+.sol {
+  fill: var(--phos);
+}
+.trajectory {
+  fill: none;
+  stroke: var(--phos);
+  stroke-width: 1.8;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.plot-label {
+  font: 500 16px var(--f-data);
+  letter-spacing: 0.04em;
+  fill: var(--phos-dim);
+}
+.sol-label {
+  fill: var(--glass);
+  font-weight: 700;
+}
+.plot-label-now {
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--signal);
+}
+.plot-hit {
+  cursor: pointer;
+}
+.plot-hit:hover .planet > circle {
+  filter: brightness(1.25);
+}
+.ink-line {
+  fill: none;
+  stroke: var(--phos);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.ink-fill {
+  fill: var(--phos);
+}
+.flag,
+.beacon {
+  fill: var(--signal);
+}
+.reticle {
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 2.5;
+}
+
+/* stations set into the consoles */
+.station {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  min-height: 2.6cqw;
+  background: var(--plate);
+  color: var(--plate-ink);
+  border-radius: 0.25cqw;
+  font: 700 max(1.05cqw, 11px)/1 var(--f-sans);
+  font-stretch: 125%;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 0.2cqw 0.5cqw -0.1cqw rgba(0, 0, 0, 0.5);
+  transition:
+    background-color 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.station:hover {
+  background: var(--phos);
+  color: var(--glass);
+}
+.station-lit {
+  background: var(--signal);
+  color: var(--signal-ink);
+}
+
+/* side screens */
+.side-screen {
+  position: absolute;
+  padding: 1cqw 1.05cqw;
+  color: var(--text);
+  overflow: hidden;
+  font-size: max(0.86cqw, 12px);
+  line-height: 1.35;
+}
+.side-screen .status {
+  font-size: max(0.72cqw, 11px);
+}
+.side-screen .readout-role {
+  margin-top: 0.7cqw;
+  font: 750 max(1.2cqw, 15px)/1.15 var(--f-sans);
+  font-stretch: 108%;
+  color: var(--phos);
+}
+.readout-org {
+  margin-top: 0.25cqw;
+  font-weight: 600;
+}
+.readout-window,
+.readout-site {
+  margin-top: 0.5cqw;
+  font-family: var(--f-data);
+  font-size: 0.92em;
+  color: var(--phos-dim);
+  font-variant-numeric: tabular-nums;
+}
+.readout-site {
+  margin-top: 0.15cqw;
+}
+.readout-link {
+  display: inline-block;
+  margin-top: 0.9cqw;
+  color: var(--phos);
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.9em;
+}
+.mission-list {
+  display: grid;
+  gap: 0.1cqw;
+}
+.mission-list-head {
+  margin-bottom: 0.4cqw;
+  font: 600 0.72cqw/1 var(--f-data);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--phos-dim);
+}
+.side-screen .mission-list-head {
+  font-size: max(0.72cqw, 11px);
+}
+.mission-list button {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  width: 100%;
+  padding: 0.3em 0.45em;
+  background: transparent;
+  color: var(--text);
+  border: 0;
+  border-radius: 3px;
+  font: 500 1em/1.2 var(--f-sans);
+  text-align: left;
+  cursor: pointer;
+}
+.mission-list button:hover {
+  background: color-mix(in srgb, var(--phos) 14%, transparent);
+}
+.mission-list button[aria-pressed='true'] {
+  background: var(--phos);
+  color: var(--glass);
+}
+.mission-list button[aria-pressed='true'] .lamp-complete {
+  border-color: var(--glass);
+}
+.ml-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ml-year {
+  font-family: var(--f-data);
+  font-size: 0.9em;
+}
+
+/* your flight console */
+.ident {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2cqw;
+  padding-inline: 4cqw;
+  height: calc(154 / 900 * 100%);
+  color: var(--plate-ink);
+}
+.ident h1 {
+  font: 800 4.6cqw/0.95 var(--f-sans);
+  font-stretch: 112%;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+.flight-title {
+  margin-top: 0.7cqw;
+  font-size: 1.3cqw;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--plate-ink) 78%, var(--plate));
+}
+.ident .open-comms {
+  flex: none;
+  font-size: 1.2cqw;
+  padding: 1.1cqw 2cqw;
+  min-height: 44px;
+}
+
+.scene-fallback {
+  display: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.scene-fallback .glass {
+  font-size: 0.95rem;
+}
+.scene-fallback .readout-role {
+  margin-top: var(--space-2);
+  font: 750 1.3rem/1.2 var(--f-sans);
+  color: var(--phos);
+}
+.scene-fallback .readout-window {
+  margin-top: var(--space-2);
+}
+.scene-fallback .mission-list-head {
+  font-size: 0.72rem;
+}
+.scene-fallback .mission-list button {
+  min-height: 40px;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: 600 0.72rem/1 var(--f-data);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--phos);
+}
+.status-landed {
+  color: var(--signal);
+}
+.surface {
+  width: 100%;
+}
+.module-num {
+  font: 700 13px var(--f-data);
+  fill: var(--glass);
+}
+.modules {
+  margin-top: var(--space-3);
+  display: grid;
+  gap: var(--space-2);
+  max-width: 72ch;
+  counter-reset: module;
+}
+.modules li {
+  position: relative;
+  padding-left: 32px;
+  counter-increment: module;
+}
+.modules li::before {
+  content: counter(module);
+  position: absolute;
+  left: 0;
+  top: 2px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px 10px 2px 2px;
+  background: var(--phos);
+  color: var(--glass);
+  font: 700 0.7rem/1 var(--f-data);
+}
+
+/* ---------- Mission log ---------- */
+.log-row {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr) 260px;
+  gap: var(--space-5);
+  padding-block: var(--space-5);
+  scroll-margin-top: var(--space-5);
+  border-top: 1px dashed var(--orbit);
+}
+.log-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.log-when {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+}
+.log-dates {
+  font: 600 0.8rem/1.3 var(--f-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--phos);
+}
+.log-body h3 {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 6px;
+  font: 700 1.08rem/1.3 var(--f-sans);
+}
+.log-featured .log-body h3 {
+  font-size: 1.35rem;
+}
+.log-landed .log-body h3 {
+  font-size: 1.6rem;
+}
+.log-org {
+  font-weight: 500;
+  color: var(--muted);
+}
+.log-planet {
+  flex: none;
+  align-self: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.log-site {
+  margin-top: 2px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.log-summary {
+  margin-top: var(--space-3);
+  max-width: 70ch;
+}
+.log-surface {
+  align-self: center;
+}
+.log-row:focus {
+  outline: none;
+}
+.log-row:target {
+  background: color-mix(in srgb, var(--phos) 6%, transparent);
+}
+
+/* ---------- Payloads ---------- */
+.payload-bay {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: center;
+}
+.glass-payload {
+  aspect-ratio: 4 / 3;
+}
+.payload-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.no-downlink {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: var(--space-2);
+  font: 700 0.95rem/1.2 var(--f-data);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.test-bars {
+  position: absolute;
+  inset: 0 0 38% 0;
+  opacity: 0.32;
+  background: linear-gradient(
+    to right,
+    #c9c9c9 0 14.28%,
+    #c8c23a 0 28.57%,
+    #3ab8c0 0 42.85%,
+    #3ab84a 0 57.14%,
+    #b83ab0 0 71.42%,
+    #c03a3a 0 85.71%,
+    #3a3ac0 0
+  );
+}
+.no-downlink p {
+  position: relative;
+}
+.no-downlink-sub {
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: var(--phos-dim);
+}
+.channel {
+  position: absolute;
+  left: var(--space-3);
+  top: var(--space-3);
+  z-index: 1;
+  display: inline-flex;
+  gap: var(--space-2);
+  padding: 5px 8px;
+  background: color-mix(in srgb, var(--glass) 82%, transparent);
+  color: var(--phos);
+  font: 600 0.7rem/1 var(--f-data);
+  letter-spacing: 0.08em;
+  border-radius: 3px;
+}
+.hold-flag {
+  padding: 0 5px;
+  background: var(--signal);
+  color: var(--signal-ink);
+  text-transform: uppercase;
+}
+.payload-copy {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
+.payload-award {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: 600 0.78rem/1.3 var(--f-data);
+  color: var(--text);
+}
+.payload-name {
+  font: 800 clamp(1.8rem, 3vw, 2.6rem) / 1 var(--f-sans);
+  font-stretch: 112%;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.payload-desc {
+  color: var(--muted);
+  max-width: 52ch;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tags li {
+  padding: 4px 10px;
+  border: 1px solid var(--enamel-edge);
+  border-radius: 3px;
+  font-size: 0.82rem;
+}
+.glass .tags li {
+  border-color: color-mix(in srgb, var(--phos) 35%, transparent);
+}
+.payload-keys {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+.channel-keys,
+.transport {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ---------- Systems & training bank ---------- */
+.bank {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.systems {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--space-5);
+}
+.system h3,
+.training h3 {
+  margin-bottom: var(--space-3);
+  font: 600 0.7rem/1 var(--f-data);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--phos);
+}
+.training h3:not(:first-child) {
+  margin-top: var(--space-6);
+}
+.training-list li {
+  display: grid;
+  gap: 2px;
+  padding-block: var(--space-3);
+  border-bottom: 1px dashed var(--orbit);
+}
+.training-name {
+  font-weight: 600;
+}
+.training-meta {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.training-crew {
+  margin-top: var(--space-5);
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* ---------- Comms ---------- */
+.comms-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+.comms-lead {
+  font: 750 clamp(1.5rem, 2.6vw, 2.1rem) / 1.15 var(--f-sans);
+  font-stretch: 108%;
+  text-wrap: balance;
+}
+.comms-email {
+  margin-top: var(--space-4);
+  font: 500 1rem/1.4 var(--f-data);
+  overflow-wrap: anywhere;
+}
+.comms-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+.glass-form {
+  display: grid;
+  gap: var(--space-4);
+}
+.glass-form label span {
+  display: block;
+  margin-bottom: 6px;
+  font: 600 0.7rem/1 var(--f-data);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--phos);
+}
+.glass-form input,
+.glass-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--phos) 45%, transparent);
+  border-radius: 4px;
+  font: inherit;
+}
+.glass-form textarea {
+  resize: vertical;
+  min-height: 132px;
+}
+.glass-form input:focus-visible,
+.glass-form textarea:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+.glass-form .key {
+  justify-self: start;
+  position: relative;
+  z-index: 1;
+}
+.glass-form label {
+  position: relative;
+  z-index: 1;
+}
+.link-status {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: 600 0.78rem/1.3 var(--f-data);
+  color: var(--phos);
+}
+.link-failed {
+  color: var(--signal);
+}
+
+/* ---------- Footer ---------- */
+.room-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-6) var(--space-7);
+  border-top: var(--bezel) solid var(--enamel-edge);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.r-scan {
+  fill: var(--scan);
+}
+.r-scanlines {
+  pointer-events: none;
+}
+.lamp-on {
+  fill: var(--phos);
+}
+.lamp-off {
+  fill: color-mix(in srgb, var(--phos) 22%, var(--glass));
+}
+.lamp-alert {
+  fill: var(--signal);
+}
+.r-trace {
+  fill: var(--phos-dim);
+}
+.plot-screen {
+  overflow: hidden;
+}
+.is-zoomed .plot-label:not(.plot-label-selected) {
+  display: none;
+}
+.is-zoomed .plot-label-selected {
+  font-size: 9px;
+}
+.plot-zoom {
+  transform-origin: 0 0;
+}
+.zoom-out {
+  position: absolute;
+  min-height: 2.2cqw;
+  padding: 0.4cqw 0.8cqw;
+  background: var(--glass);
+  color: var(--phos);
+  border: 1px solid var(--phos-dim);
+  border-radius: 3px;
+  font: 650 max(0.78cqw, 11px)/1 var(--f-sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.zoom-out:hover {
+  background: var(--phos);
+  color: var(--glass);
+}
+.fallback-zoom-out {
+  margin-top: var(--space-3);
+}
+.zoom-out-short {
+  display: none;
+}
+
+/* ---------- Motion: the screens warm up, the trajectory plots in, the beacon blinks, planets zoom ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .trajectory {
+    animation: plot 1.8s cubic-bezier(0.16, 1, 0.3, 1) 560ms both;
+  }
+  @keyframes plot {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+  /* CRT warm-up, once, before the trajectory plots */
+  .r-glass,
+  .side-screen,
+  .plot-screen {
+    animation: warmup 520ms steps(4, jump-none) both;
+  }
+  @keyframes warmup {
+    0% {
+      opacity: 0.55;
+      filter: brightness(1.9);
+    }
+    40% {
+      opacity: 0.9;
+    }
+    60% {
+      opacity: 0.7;
+    }
+  }
+  .plot-zoom {
+    transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .beacon {
+    animation: beacon 1.6s steps(2, jump-none) infinite;
+  }
+  @keyframes beacon {
+    50% {
+      opacity: 0.15;
+    }
+  }
+}
+
+
+/* ---------- Responsive (desktop-first) ---------- */
+@media (max-width: 1100px) {
+  .log-row {
+    grid-template-columns: 180px minmax(0, 1fr);
+  }
+  .log-surface {
+    grid-column: 2;
+    max-width: 320px;
+  }
+}
+@media (max-width: 1180px) {
+  .side-screen,
+  .zoom-out {
+    display: none;
+  }
+  .scene-fallback {
+    display: grid;
+  }
+}
+@media (max-width: 900px) {
+  .bank,
+  .comms-grid,
+  .payload-bay {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .scene {
+    width: 100%;
+  }
+  .ident {
+    position: static;
+    width: auto !important;
+    height: auto;
+    flex-wrap: wrap;
+    padding: var(--space-4);
+    background: var(--plate);
+    border-radius: 0 0 10px 10px;
+  }
+  .scene {
+    aspect-ratio: auto;
+    display: grid;
+  }
+  .scene-art {
+    position: relative;
+    aspect-ratio: 1440 / 900;
+    height: auto;
+  }
+  .ident h1 {
+    font-size: clamp(2.2rem, 8vw, 3.6rem);
+  }
+  .flight-title {
+    font-size: 1rem;
+    margin-top: var(--space-2);
+  }
+  .ident .open-comms {
+    font-size: 0.9rem;
+    padding: 14px 24px;
+  }
+}
+@media (max-width: 720px) {
+  .stations {
+    display: none;
+  }
+  .plot-label:not(.plot-label-now):not(.sol-label) {
+    display: none;
+  }
+  .plot-label-now {
+    font-size: 34px;
+  }
+  /* zoomed on a phone: keep the selected planet named, at a readable size */
+  .plot-screen .is-zoomed .plot-label.plot-label-selected {
+    display: inline;
+    font-size: 10px;
+  }
+  .scene .zoom-out {
+    display: block;
+    left: auto !important;
+    right: 13cqw;
+    top: 33cqw !important;
+    width: auto !important;
+    min-height: 36px;
+    padding-inline: 12px;
+  }
+  .fallback-zoom-out {
+    display: none;
+  }
+  .zoom-out-long {
+    display: none;
+  }
+  .zoom-out-short {
+    display: inline;
+  }
+  .scene-fallback {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .log-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+  .log-surface {
+    grid-column: auto;
+  }
+  .console {
+    padding: var(--space-3) var(--space-3) var(--space-4);
+  }
+  .glass-paper,
+  .glass-readout,
+  .glass-form {
+    padding: var(--space-4);
+  }
+  .head-nav ul {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+  }
+  .head-nav .key {
+    flex: none;
+  }
+  .room-head {
+    gap: var(--space-3);
+    padding-block: var(--space-3);
+  }
+  .ident .open-comms {
+    width: 100%;
+  }
+}
+@media (max-width: 560px) {
+  .room-head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .watch-switch {
+    justify-content: space-between;
+  }
+  .watch-pos {
+    padding: 6px 8px;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+  }
+}
