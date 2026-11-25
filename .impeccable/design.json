@@ -1,0 +1,1132 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-25T00:04:24.988Z",
+  "title": "Design System: Andrew Solbjor",
+  "extensions": {
+    "watches": {
+      "attribute": "data-watch",
+      "on": "html",
+      "default": "mars",
+      "storageKey": "solbjor-watch",
+      "values": {
+        "mars": "Mars watch: red-dark, amber phosphor (default)",
+        "neptune": "Neptune watch: blue-dark, cyan phosphor",
+        "day": "Day shift: light, cream-paper glass with ink"
+      },
+      "note": "Frontmatter colour keys are <watch>-<role>; each role is one CSS custom property (cssVar) redefined per watch in src/index.css."
+    },
+    "colorMeta": {
+      "mars-room": {
+        "role": "neutral",
+        "displayName": "Mars watch Room",
+        "canonical": "#121410",
+        "cssVar": "--room",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.008 129.0)",
+          "oklch(26.4% 0.008 129.0)",
+          "oklch(37.9% 0.006 129.0)",
+          "oklch(49.3% 0.005 129.0)",
+          "oklch(60.7% 0.004 129.0)",
+          "oklch(72.1% 0.002 129.0)",
+          "oklch(83.6% 0.001 129.0)",
+          "oklch(95.0% 0.001 129.0)"
+        ]
+      },
+      "mars-enamel": {
+        "role": "neutral",
+        "displayName": "Mars watch Enamel",
+        "canonical": "#282b24",
+        "cssVar": "--enamel",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.011 126.2)",
+          "oklch(26.4% 0.013 126.2)",
+          "oklch(37.9% 0.011 126.2)",
+          "oklch(49.3% 0.009 126.2)",
+          "oklch(60.7% 0.007 126.2)",
+          "oklch(72.1% 0.005 126.2)",
+          "oklch(83.6% 0.003 126.2)",
+          "oklch(95.0% 0.002 126.2)"
+        ]
+      },
+      "mars-enamel-hi": {
+        "role": "neutral",
+        "displayName": "Mars watch Enamel High",
+        "canonical": "#33372e",
+        "cssVar": "--enamel-hi",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.012 126.9)",
+          "oklch(26.4% 0.015 126.9)",
+          "oklch(37.9% 0.015 126.9)",
+          "oklch(49.3% 0.013 126.9)",
+          "oklch(60.7% 0.010 126.9)",
+          "oklch(72.1% 0.007 126.9)",
+          "oklch(83.6% 0.005 126.9)",
+          "oklch(95.0% 0.002 126.9)"
+        ]
+      },
+      "mars-enamel-edge": {
+        "role": "neutral",
+        "displayName": "Mars watch Enamel Edge",
+        "canonical": "#4a5043",
+        "cssVar": "--enamel-edge",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.014 127.6)",
+          "oklch(26.4% 0.017 127.6)",
+          "oklch(37.9% 0.021 127.6)",
+          "oklch(49.3% 0.020 127.6)",
+          "oklch(60.7% 0.017 127.6)",
+          "oklch(72.1% 0.013 127.6)",
+          "oklch(83.6% 0.009 127.6)",
+          "oklch(95.0% 0.006 127.6)"
+        ]
+      },
+      "mars-plate": {
+        "role": "neutral",
+        "displayName": "Mars watch Plate",
+        "canonical": "#d8cfbb",
+        "cssVar": "--plate",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.004 86.7)",
+          "oklch(26.4% 0.005 86.7)",
+          "oklch(37.9% 0.010 86.7)",
+          "oklch(49.3% 0.014 86.7)",
+          "oklch(60.7% 0.019 86.7)",
+          "oklch(72.1% 0.023 86.7)",
+          "oklch(83.6% 0.028 86.7)",
+          "oklch(95.0% 0.025 86.7)"
+        ]
+      },
+      "mars-plate-ink": {
+        "role": "neutral",
+        "displayName": "Mars watch Plate Ink",
+        "canonical": "#1a1512",
+        "cssVar": "--plate-ink",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.009 52.9)",
+          "oklch(26.4% 0.009 52.9)",
+          "oklch(37.9% 0.008 52.9)",
+          "oklch(49.3% 0.006 52.9)",
+          "oklch(60.7% 0.004 52.9)",
+          "oklch(72.1% 0.003 52.9)",
+          "oklch(83.6% 0.002 52.9)",
+          "oklch(95.0% 0.002 52.9)"
+        ]
+      },
+      "mars-glass": {
+        "role": "neutral",
+        "displayName": "Mars watch Glass",
+        "canonical": "#0b0807",
+        "cssVar": "--glass",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.006 41.9)",
+          "oklch(26.4% 0.005 41.9)",
+          "oklch(37.9% 0.004 41.9)",
+          "oklch(49.3% 0.003 41.9)",
+          "oklch(60.7% 0.002 41.9)",
+          "oklch(72.1% 0.001 41.9)",
+          "oklch(83.6% 0.001 41.9)",
+          "oklch(95.0% 0.001 41.9)"
+        ]
+      },
+      "mars-phos": {
+        "role": "primary",
+        "displayName": "Mars watch Phosphor",
+        "canonical": "#ffb24a",
+        "cssVar": "--phos",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.022 70.9)",
+          "oklch(26.4% 0.033 70.9)",
+          "oklch(37.9% 0.056 70.9)",
+          "oklch(49.3% 0.080 70.9)",
+          "oklch(60.7% 0.103 70.9)",
+          "oklch(72.1% 0.127 70.9)",
+          "oklch(83.6% 0.144 70.9)",
+          "oklch(95.0% 0.120 70.9)"
+        ]
+      },
+      "mars-phos-dim": {
+        "role": "primary",
+        "displayName": "Mars watch Dim Phosphor",
+        "canonical": "#c98d45",
+        "cssVar": "--phos-dim",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.028 68.8)",
+          "oklch(26.4% 0.046 68.8)",
+          "oklch(37.9% 0.065 68.8)",
+          "oklch(49.3% 0.083 68.8)",
+          "oklch(60.7% 0.101 68.8)",
+          "oklch(72.1% 0.109 68.8)",
+          "oklch(83.6% 0.091 68.8)",
+          "oklch(95.0% 0.073 68.8)"
+        ]
+      },
+      "mars-signal": {
+        "role": "secondary",
+        "displayName": "Mars watch Signal",
+        "canonical": "#ff4d3a",
+        "cssVar": "--signal",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.059 29.9)",
+          "oklch(26.4% 0.094 29.9)",
+          "oklch(37.9% 0.128 29.9)",
+          "oklch(49.3% 0.163 29.9)",
+          "oklch(60.7% 0.198 29.9)",
+          "oklch(72.1% 0.202 29.9)",
+          "oklch(83.6% 0.167 29.9)",
+          "oklch(95.0% 0.132 29.9)"
+        ]
+      },
+      "mars-signal-ink": {
+        "role": "secondary",
+        "displayName": "Mars watch Signal Ink",
+        "canonical": "#1a0a07",
+        "cssVar": "--signal-ink",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.028 32.7)",
+          "oklch(26.4% 0.025 32.7)",
+          "oklch(37.9% 0.021 32.7)",
+          "oklch(49.3% 0.016 32.7)",
+          "oklch(60.7% 0.011 32.7)",
+          "oklch(72.1% 0.007 32.7)",
+          "oklch(83.6% 0.004 32.7)",
+          "oklch(95.0% 0.004 32.7)"
+        ]
+      },
+      "mars-text": {
+        "role": "neutral",
+        "displayName": "Mars watch Text",
+        "canonical": "#ede5d6",
+        "cssVar": "--text",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.003 83.3)",
+          "oklch(26.4% 0.003 83.3)",
+          "oklch(37.9% 0.005 83.3)",
+          "oklch(49.3% 0.009 83.3)",
+          "oklch(60.7% 0.012 83.3)",
+          "oklch(72.1% 0.016 83.3)",
+          "oklch(83.6% 0.019 83.3)",
+          "oklch(95.0% 0.021 83.3)"
+        ]
+      },
+      "mars-muted": {
+        "role": "neutral",
+        "displayName": "Mars watch Muted",
+        "canonical": "#b3a894",
+        "cssVar": "--muted",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.006 82.6)",
+          "oklch(26.4% 0.010 82.6)",
+          "oklch(37.9% 0.015 82.6)",
+          "oklch(49.3% 0.020 82.6)",
+          "oklch(60.7% 0.025 82.6)",
+          "oklch(72.1% 0.030 82.6)",
+          "oklch(83.6% 0.026 82.6)",
+          "oklch(95.0% 0.022 82.6)"
+        ]
+      },
+      "mars-orbit": {
+        "role": "neutral",
+        "displayName": "Mars watch Orbit",
+        "canonical": "rgba(255, 178, 74, 0.16)",
+        "cssVar": "--orbit",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.022 70.9)",
+          "oklch(26.4% 0.033 70.9)",
+          "oklch(37.9% 0.056 70.9)",
+          "oklch(49.3% 0.080 70.9)",
+          "oklch(60.7% 0.103 70.9)",
+          "oklch(72.1% 0.127 70.9)",
+          "oklch(83.6% 0.144 70.9)",
+          "oklch(95.0% 0.120 70.9)"
+        ]
+      },
+      "mars-scan": {
+        "role": "neutral",
+        "displayName": "Mars watch Scanline",
+        "canonical": "rgba(0, 0, 0, 0.28)",
+        "cssVar": "--scan",
+        "watch": "mars",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 0.0)",
+          "oklch(26.4% 0.000 0.0)",
+          "oklch(37.9% 0.000 0.0)",
+          "oklch(49.3% 0.000 0.0)",
+          "oklch(60.7% 0.000 0.0)",
+          "oklch(72.1% 0.000 0.0)",
+          "oklch(83.6% 0.000 0.0)",
+          "oklch(95.0% 0.000 0.0)"
+        ]
+      },
+      "neptune-room": {
+        "role": "neutral",
+        "displayName": "Neptune watch Room",
+        "canonical": "#0a0f15",
+        "cssVar": "--room",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.015 253.3)",
+          "oklch(26.4% 0.013 253.3)",
+          "oklch(37.9% 0.011 253.3)",
+          "oklch(49.3% 0.008 253.3)",
+          "oklch(60.7% 0.006 253.3)",
+          "oklch(72.1% 0.003 253.3)",
+          "oklch(83.6% 0.002 253.3)",
+          "oklch(95.0% 0.002 253.3)"
+        ]
+      },
+      "neptune-enamel": {
+        "role": "neutral",
+        "displayName": "Neptune watch Enamel",
+        "canonical": "#1c242d",
+        "cssVar": "--enamel",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.017 251.6)",
+          "oklch(26.4% 0.020 251.6)",
+          "oklch(37.9% 0.017 251.6)",
+          "oklch(49.3% 0.014 251.6)",
+          "oklch(60.7% 0.010 251.6)",
+          "oklch(72.1% 0.007 251.6)",
+          "oklch(83.6% 0.004 251.6)",
+          "oklch(95.0% 0.003 251.6)"
+        ]
+      },
+      "neptune-enamel-hi": {
+        "role": "neutral",
+        "displayName": "Neptune watch Enamel High",
+        "canonical": "#26303b",
+        "cssVar": "--enamel-hi",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.019 251.1)",
+          "oklch(26.4% 0.023 251.1)",
+          "oklch(37.9% 0.022 251.1)",
+          "oklch(49.3% 0.018 251.1)",
+          "oklch(60.7% 0.014 251.1)",
+          "oklch(72.1% 0.010 251.1)",
+          "oklch(83.6% 0.006 251.1)",
+          "oklch(95.0% 0.004 251.1)"
+        ]
+      },
+      "neptune-enamel-edge": {
+        "role": "neutral",
+        "displayName": "Neptune watch Enamel Edge",
+        "canonical": "#374452",
+        "cssVar": "--enamel-edge",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.020 250.5)",
+          "oklch(26.4% 0.025 250.5)",
+          "oklch(37.9% 0.029 250.5)",
+          "oklch(49.3% 0.025 250.5)",
+          "oklch(60.7% 0.020 250.5)",
+          "oklch(72.1% 0.015 250.5)",
+          "oklch(83.6% 0.011 250.5)",
+          "oklch(95.0% 0.006 250.5)"
+        ]
+      },
+      "neptune-plate": {
+        "role": "neutral",
+        "displayName": "Neptune watch Plate",
+        "canonical": "#cdd6de",
+        "cssVar": "--plate",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.002 244.7)",
+          "oklch(26.4% 0.002 244.7)",
+          "oklch(37.9% 0.005 244.7)",
+          "oklch(49.3% 0.007 244.7)",
+          "oklch(60.7% 0.009 244.7)",
+          "oklch(72.1% 0.012 244.7)",
+          "oklch(83.6% 0.014 244.7)",
+          "oklch(95.0% 0.013 244.7)"
+        ]
+      },
+      "neptune-plate-ink": {
+        "role": "neutral",
+        "displayName": "Neptune watch Plate Ink",
+        "canonical": "#0b1118",
+        "cssVar": "--plate-ink",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.017 252.6)",
+          "oklch(26.4% 0.015 252.6)",
+          "oklch(37.9% 0.012 252.6)",
+          "oklch(49.3% 0.010 252.6)",
+          "oklch(60.7% 0.007 252.6)",
+          "oklch(72.1% 0.004 252.6)",
+          "oklch(83.6% 0.003 252.6)",
+          "oklch(95.0% 0.003 252.6)"
+        ]
+      },
+      "neptune-glass": {
+        "role": "neutral",
+        "displayName": "Neptune watch Glass",
+        "canonical": "#04080c",
+        "cssVar": "--glass",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.013 241.4)",
+          "oklch(26.4% 0.011 241.4)",
+          "oklch(37.9% 0.008 241.4)",
+          "oklch(49.3% 0.006 241.4)",
+          "oklch(60.7% 0.004 241.4)",
+          "oklch(72.1% 0.002 241.4)",
+          "oklch(83.6% 0.002 241.4)",
+          "oklch(95.0% 0.002 241.4)"
+        ]
+      },
+      "neptune-phos": {
+        "role": "primary",
+        "displayName": "Neptune watch Phosphor",
+        "canonical": "#7fe0ff",
+        "cssVar": "--phos",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.015 220.8)",
+          "oklch(26.4% 0.017 220.8)",
+          "oklch(37.9% 0.033 220.8)",
+          "oklch(49.3% 0.049 220.8)",
+          "oklch(60.7% 0.066 220.8)",
+          "oklch(72.1% 0.082 220.8)",
+          "oklch(83.6% 0.098 220.8)",
+          "oklch(95.0% 0.088 220.8)"
+        ]
+      },
+      "neptune-phos-dim": {
+        "role": "primary",
+        "displayName": "Neptune watch Dim Phosphor",
+        "canonical": "#5aaecb",
+        "cssVar": "--phos-dim",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.020 223.0)",
+          "oklch(26.4% 0.035 223.0)",
+          "oklch(37.9% 0.049 223.0)",
+          "oklch(49.3% 0.064 223.0)",
+          "oklch(60.7% 0.078 223.0)",
+          "oklch(72.1% 0.090 223.0)",
+          "oklch(83.6% 0.075 223.0)",
+          "oklch(95.0% 0.061 223.0)"
+        ]
+      },
+      "neptune-signal": {
+        "role": "secondary",
+        "displayName": "Neptune watch Signal",
+        "canonical": "#ff6b5e",
+        "cssVar": "--signal",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.040 27.7)",
+          "oklch(26.4% 0.069 27.7)",
+          "oklch(37.9% 0.098 27.7)",
+          "oklch(49.3% 0.128 27.7)",
+          "oklch(60.7% 0.157 27.7)",
+          "oklch(72.1% 0.180 27.7)",
+          "oklch(83.6% 0.151 27.7)",
+          "oklch(95.0% 0.121 27.7)"
+        ]
+      },
+      "neptune-signal-ink": {
+        "role": "secondary",
+        "displayName": "Neptune watch Signal Ink",
+        "canonical": "#1a0807",
+        "cssVar": "--signal-ink",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.032 25.1)",
+          "oklch(26.4% 0.028 25.1)",
+          "oklch(37.9% 0.023 25.1)",
+          "oklch(49.3% 0.018 25.1)",
+          "oklch(60.7% 0.012 25.1)",
+          "oklch(72.1% 0.007 25.1)",
+          "oklch(83.6% 0.005 25.1)",
+          "oklch(95.0% 0.005 25.1)"
+        ]
+      },
+      "neptune-text": {
+        "role": "neutral",
+        "displayName": "Neptune watch Text",
+        "canonical": "#e4ebf1",
+        "cssVar": "--text",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.002 243.7)",
+          "oklch(26.4% 0.002 243.7)",
+          "oklch(37.9% 0.002 243.7)",
+          "oklch(49.3% 0.004 243.7)",
+          "oklch(60.7% 0.006 243.7)",
+          "oklch(72.1% 0.008 243.7)",
+          "oklch(83.6% 0.010 243.7)",
+          "oklch(95.0% 0.011 243.7)"
+        ]
+      },
+      "neptune-muted": {
+        "role": "neutral",
+        "displayName": "Neptune watch Muted",
+        "canonical": "#a1afbc",
+        "cssVar": "--muted",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.004 246.1)",
+          "oklch(26.4% 0.008 246.1)",
+          "oklch(37.9% 0.012 246.1)",
+          "oklch(49.3% 0.016 246.1)",
+          "oklch(60.7% 0.020 246.1)",
+          "oklch(72.1% 0.024 246.1)",
+          "oklch(83.6% 0.021 246.1)",
+          "oklch(95.0% 0.018 246.1)"
+        ]
+      },
+      "neptune-orbit": {
+        "role": "neutral",
+        "displayName": "Neptune watch Orbit",
+        "canonical": "rgba(127, 224, 255, 0.16)",
+        "cssVar": "--orbit",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.015 220.8)",
+          "oklch(26.4% 0.017 220.8)",
+          "oklch(37.9% 0.033 220.8)",
+          "oklch(49.3% 0.049 220.8)",
+          "oklch(60.7% 0.066 220.8)",
+          "oklch(72.1% 0.082 220.8)",
+          "oklch(83.6% 0.098 220.8)",
+          "oklch(95.0% 0.088 220.8)"
+        ]
+      },
+      "neptune-scan": {
+        "role": "neutral",
+        "displayName": "Neptune watch Scanline",
+        "canonical": "rgba(0, 0, 0, 0.3)",
+        "cssVar": "--scan",
+        "watch": "neptune",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 0.0)",
+          "oklch(26.4% 0.000 0.0)",
+          "oklch(37.9% 0.000 0.0)",
+          "oklch(49.3% 0.000 0.0)",
+          "oklch(60.7% 0.000 0.0)",
+          "oklch(72.1% 0.000 0.0)",
+          "oklch(83.6% 0.000 0.0)",
+          "oklch(95.0% 0.000 0.0)"
+        ]
+      },
+      "day-room": {
+        "role": "neutral",
+        "displayName": "Day shift Room",
+        "canonical": "#e4e4d6",
+        "cssVar": "--room",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.003 106.8)",
+          "oklch(26.4% 0.003 106.8)",
+          "oklch(37.9% 0.005 106.8)",
+          "oklch(49.3% 0.008 106.8)",
+          "oklch(60.7% 0.011 106.8)",
+          "oklch(72.1% 0.014 106.8)",
+          "oklch(83.6% 0.017 106.8)",
+          "oklch(95.0% 0.018 106.8)"
+        ]
+      },
+      "day-enamel": {
+        "role": "neutral",
+        "displayName": "Day shift Enamel",
+        "canonical": "#cfd1bd",
+        "cssVar": "--enamel",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.004 111.6)",
+          "oklch(26.4% 0.005 111.6)",
+          "oklch(37.9% 0.009 111.6)",
+          "oklch(49.3% 0.013 111.6)",
+          "oklch(60.7% 0.018 111.6)",
+          "oklch(72.1% 0.022 111.6)",
+          "oklch(83.6% 0.026 111.6)",
+          "oklch(95.0% 0.023 111.6)"
+        ]
+      },
+      "day-enamel-hi": {
+        "role": "neutral",
+        "displayName": "Day shift Enamel High",
+        "canonical": "#d9dbc9",
+        "cssVar": "--enamel-hi",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.004 112.0)",
+          "oklch(26.4% 0.004 112.0)",
+          "oklch(37.9% 0.007 112.0)",
+          "oklch(49.3% 0.011 112.0)",
+          "oklch(60.7% 0.015 112.0)",
+          "oklch(72.1% 0.019 112.0)",
+          "oklch(83.6% 0.023 112.0)",
+          "oklch(95.0% 0.022 112.0)"
+        ]
+      },
+      "day-enamel-edge": {
+        "role": "neutral",
+        "displayName": "Day shift Enamel Edge",
+        "canonical": "#a5a891",
+        "cssVar": "--enamel-edge",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.006 113.2)",
+          "oklch(26.4% 0.012 113.2)",
+          "oklch(37.9% 0.017 113.2)",
+          "oklch(49.3% 0.022 113.2)",
+          "oklch(60.7% 0.027 113.2)",
+          "oklch(72.1% 0.032 113.2)",
+          "oklch(83.6% 0.027 113.2)",
+          "oklch(95.0% 0.022 113.2)"
+        ]
+      },
+      "day-plate": {
+        "role": "neutral",
+        "displayName": "Day shift Plate",
+        "canonical": "#2a2621",
+        "cssVar": "--plate",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.009 73.5)",
+          "oklch(26.4% 0.011 73.5)",
+          "oklch(37.9% 0.009 73.5)",
+          "oklch(49.3% 0.007 73.5)",
+          "oklch(60.7% 0.006 73.5)",
+          "oklch(72.1% 0.004 73.5)",
+          "oklch(83.6% 0.002 73.5)",
+          "oklch(95.0% 0.002 73.5)"
+        ]
+      },
+      "day-plate-ink": {
+        "role": "neutral",
+        "displayName": "Day shift Plate Ink",
+        "canonical": "#f3ecdc",
+        "cssVar": "--plate-ink",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.003 87.2)",
+          "oklch(26.4% 0.003 87.2)",
+          "oklch(37.9% 0.005 87.2)",
+          "oklch(49.3% 0.008 87.2)",
+          "oklch(60.7% 0.012 87.2)",
+          "oklch(72.1% 0.015 87.2)",
+          "oklch(83.6% 0.019 87.2)",
+          "oklch(95.0% 0.022 87.2)"
+        ]
+      },
+      "day-glass": {
+        "role": "neutral",
+        "displayName": "Day shift Glass",
+        "canonical": "#f7f2e6",
+        "cssVar": "--glass",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.003 88.0)",
+          "oklch(26.4% 0.003 88.0)",
+          "oklch(37.9% 0.003 88.0)",
+          "oklch(49.3% 0.006 88.0)",
+          "oklch(60.7% 0.008 88.0)",
+          "oklch(72.1% 0.011 88.0)",
+          "oklch(83.6% 0.014 88.0)",
+          "oklch(95.0% 0.016 88.0)"
+        ]
+      },
+      "day-phos": {
+        "role": "primary",
+        "displayName": "Day shift Phosphor",
+        "canonical": "#1f1b16",
+        "cssVar": "--phos",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.010 73.3)",
+          "oklch(26.4% 0.011 73.3)",
+          "oklch(37.9% 0.009 73.3)",
+          "oklch(49.3% 0.007 73.3)",
+          "oklch(60.7% 0.005 73.3)",
+          "oklch(72.1% 0.003 73.3)",
+          "oklch(83.6% 0.002 73.3)",
+          "oklch(95.0% 0.002 73.3)"
+        ]
+      },
+      "day-phos-dim": {
+        "role": "primary",
+        "displayName": "Day shift Dim Phosphor",
+        "canonical": "#5b5346",
+        "cssVar": "--phos-dim",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.013 80.0)",
+          "oklch(26.4% 0.017 80.0)",
+          "oklch(37.9% 0.021 80.0)",
+          "oklch(49.3% 0.022 80.0)",
+          "oklch(60.7% 0.018 80.0)",
+          "oklch(72.1% 0.014 80.0)",
+          "oklch(83.6% 0.010 80.0)",
+          "oklch(95.0% 0.007 80.0)"
+        ]
+      },
+      "day-signal": {
+        "role": "secondary",
+        "displayName": "Day shift Signal",
+        "canonical": "#b8261a",
+        "cssVar": "--signal",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.091 29.6)",
+          "oklch(26.4% 0.120 29.6)",
+          "oklch(37.9% 0.150 29.6)",
+          "oklch(49.3% 0.179 29.6)",
+          "oklch(60.7% 0.159 29.6)",
+          "oklch(72.1% 0.129 29.6)",
+          "oklch(83.6% 0.100 29.6)",
+          "oklch(95.0% 0.071 29.6)"
+        ]
+      },
+      "day-signal-ink": {
+        "role": "secondary",
+        "displayName": "Day shift Signal Ink",
+        "canonical": "#fff6ef",
+        "cssVar": "--signal-ink",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.002 60.6)",
+          "oklch(26.4% 0.002 60.6)",
+          "oklch(37.9% 0.002 60.6)",
+          "oklch(49.3% 0.004 60.6)",
+          "oklch(60.7% 0.006 60.6)",
+          "oklch(72.1% 0.009 60.6)",
+          "oklch(83.6% 0.011 60.6)",
+          "oklch(95.0% 0.013 60.6)"
+        ]
+      },
+      "day-text": {
+        "role": "neutral",
+        "displayName": "Day shift Text",
+        "canonical": "#1f1b16",
+        "cssVar": "--text",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.010 73.3)",
+          "oklch(26.4% 0.011 73.3)",
+          "oklch(37.9% 0.009 73.3)",
+          "oklch(49.3% 0.007 73.3)",
+          "oklch(60.7% 0.005 73.3)",
+          "oklch(72.1% 0.003 73.3)",
+          "oklch(83.6% 0.002 73.3)",
+          "oklch(95.0% 0.002 73.3)"
+        ]
+      },
+      "day-muted": {
+        "role": "neutral",
+        "displayName": "Day shift Muted",
+        "canonical": "#554d40",
+        "cssVar": "--muted",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.014 79.9)",
+          "oklch(26.4% 0.018 79.9)",
+          "oklch(37.9% 0.022 79.9)",
+          "oklch(49.3% 0.021 79.9)",
+          "oklch(60.7% 0.017 79.9)",
+          "oklch(72.1% 0.014 79.9)",
+          "oklch(83.6% 0.010 79.9)",
+          "oklch(95.0% 0.006 79.9)"
+        ]
+      },
+      "day-orbit": {
+        "role": "neutral",
+        "displayName": "Day shift Orbit",
+        "canonical": "rgba(31, 27, 22, 0.16)",
+        "cssVar": "--orbit",
+        "watch": "day",
+        "tonalRamp": [
+          "oklch(15.0% 0.010 73.3)",
+          "oklch(26.4% 0.011 73.3)",
+          "oklch(37.9% 0.009 73.3)",
+          "oklch(49.3% 0.007 73.3)",
+          "oklch(60.7% 0.005 73.3)",
+          "oklch(72.1% 0.003 73.3)",
+          "oklch(83.6% 0.002 73.3)",
+          "oklch(95.0% 0.002 73.3)"
+        ]
+      },
+      "day-scan": {
+        "role": "neutral",
+        "displayName": "Day shift Scanline",
+        "canonical": "transparent",
+        "cssVar": "--scan",
+        "watch": "day",
+        "tonalRamp": []
+      }
+    },
+    "planetHues": {
+      "values": [
+        28,
+        200,
+        140,
+        260,
+        45,
+        175,
+        320,
+        12
+      ],
+      "body": "hsl(hue 32% 46%)",
+      "terminator": "hsl(hue 38% 28%)",
+      "surface": "hsl(hue 32% 40%)",
+      "note": "Same in every watch; assigned by mission order."
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Flight Console Name",
+        "purpose": "The name on your flight console only, in cqw; rem clamp below 900px."
+      },
+      "headline": {
+        "displayName": "Payload Name",
+        "purpose": "Project names in the payload bay."
+      },
+      "title": {
+        "displayName": "Comms Lead",
+        "purpose": "The comms lead line; the side-screen role readout uses the same weight."
+      },
+      "title-sm": {
+        "displayName": "Log Heading",
+        "purpose": "Mission log rows; 1.35rem featured, 1.6rem landed."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy; 52-72ch measures."
+      },
+      "placard": {
+        "displayName": "Placard",
+        "purpose": "Placards, the home plate and in-room stations (max(1.05cqw, 11px))."
+      },
+      "label": {
+        "displayName": "Key Label",
+        "purpose": "Keys and watch-switch positions."
+      },
+      "data": {
+        "displayName": "Instrument Data",
+        "purpose": "Statuses, list heads, channel tag, field labels, system headings."
+      },
+      "data-body": {
+        "displayName": "Instrument Dates",
+        "purpose": "Mission dates and award lines, tabular numerals."
+      }
+    },
+    "fonts": [
+      {
+        "family": "Archivo Variable",
+        "source": "@fontsource-variable/archivo/wdth.css",
+        "axes": [
+          "wght",
+          "wdth"
+        ]
+      },
+      {
+        "family": "Martian Mono Variable",
+        "source": "@fontsource-variable/martian-mono/wdth.css",
+        "axes": [
+          "wght",
+          "wdth"
+        ]
+      }
+    ],
+    "shadows": [
+      {
+        "name": "console-standoff",
+        "value": "0 22px 44px -30px rgba(0,0,0,0.7)",
+        "purpose": "Every console section."
+      },
+      {
+        "name": "glass-recess",
+        "value": "inset 0 0 0 1px rgba(255,255,255,0.04), inset 0 0 40px rgba(0,0,0,0.55)",
+        "purpose": "CRT vignette on glass (dark watches)."
+      },
+      {
+        "name": "glass-recess-day",
+        "value": "inset 0 0 0 1px rgba(0,0,0,0.05), inset 0 0 24px rgba(60,45,20,0.12)",
+        "purpose": "Paper glass in the Day watch."
+      },
+      {
+        "name": "key-travel",
+        "value": "0 2px 4px -1px rgba(0,0,0,0.45)",
+        "purpose": "Key at rest; 0 1px 2px -1px when pressed."
+      },
+      {
+        "name": "station-setin",
+        "value": "0 0.2cqw 0.5cqw -0.1cqw rgba(0,0,0,0.5)",
+        "purpose": "Stations set into the console tiers."
+      },
+      {
+        "name": "scanlines",
+        "value": "repeating-linear-gradient(to bottom, transparent 0 2px, var(--scan) 2px 3px)",
+        "purpose": "Overlay on every glass; transparent in Day."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-console",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Key and station face changes (160ms), trajectory plot, planet zoom."
+      },
+      {
+        "name": "crt-warmup",
+        "value": "warmup 520ms steps(4, jump-none) both",
+        "purpose": "Once on load: glass flickers up from 55% opacity and 1.9 brightness."
+      },
+      {
+        "name": "trajectory-plot",
+        "value": "plot 1.8s cubic-bezier(0.16, 1, 0.3, 1) 560ms both",
+        "purpose": "The trajectory draws itself via stroke-dashoffset after the warm-up."
+      },
+      {
+        "name": "beacon",
+        "value": "beacon 1.6s steps(2, jump-none) infinite",
+        "purpose": "The landed planet's beacon blinks to 15% opacity."
+      },
+      {
+        "name": "planet-zoom",
+        "value": "transform 700ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Front screen scales 2.4x around the selected planet, clamped to the plot."
+      },
+      {
+        "name": "key-press",
+        "value": "transform 80ms ease-out",
+        "purpose": "1px key travel on :active."
+      },
+      {
+        "name": "payload-dwell",
+        "value": "6000ms",
+        "purpose": "Payload carousel dwell; held by default under reduced motion."
+      },
+      {
+        "name": "reduced-motion-gate",
+        "value": "@media (prefers-reduced-motion: no-preference)",
+        "purpose": "Every animation, the zoom transition and smooth scrolling live only inside this query."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "side-screens-fallback",
+        "value": "1180px",
+        "purpose": "Side screens leave the scene; readout and mission list move below as glass panels."
+      },
+      {
+        "name": "log-two-column",
+        "value": "1100px",
+        "purpose": "Mission log surface moves under the text."
+      },
+      {
+        "name": "single-column",
+        "value": "900px",
+        "purpose": "Bank, comms and payload bay stack; flight console becomes a strip under the SVG."
+      },
+      {
+        "name": "header-nav",
+        "value": "721px",
+        "purpose": "At and above: header keys hidden, stations are the navigation."
+      },
+      {
+        "name": "phone-crop",
+        "value": "720px",
+        "purpose": "SVG viewBox 300 40 840 540; stations and minor plot labels hidden."
+      },
+      {
+        "name": "header-stack",
+        "value": "560px",
+        "purpose": "Header stacks; watch switch compresses."
+      }
+    ],
+    "scene": {
+      "canvas": "1440x900",
+      "plot": {
+        "at": "400,84",
+        "size": "640x330",
+        "viewBox": "0 0 960 495"
+      },
+      "sideScreens": [
+        "166,100 210x270",
+        "1064,100 210x270"
+      ],
+      "sizing": "width: min(100%, (100svh - 84px) * 1.6); aspect-ratio: 1440/900; container-type: inline-size",
+      "overlays": "left = x/1440 %, top = y/900 %; type in max(<n>cqw, <px>)"
+    }
+  },
+  "components": [
+    {
+      "name": "Placard",
+      "kind": "custom",
+      "refersTo": "placard",
+      "description": "Screwed cream plate naming every console; the section heading.",
+      "html": "<h2 class=\"ds-placard\">Mission log</h2>",
+      "css": ".ds-placard{position:relative;display:inline-flex;align-items:center;margin:0;background:var(--plate,#d8cfbb);color:var(--plate-ink,#1a1512);font:700 0.8rem/1 var(--f-sans,\"Archivo Variable\",sans-serif);font-stretch:125%;letter-spacing:0.14em;text-transform:uppercase;padding:7px 22px;border-radius:3px}.ds-placard::before,.ds-placard::after{content:\"\";position:absolute;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:color-mix(in srgb,var(--plate-ink,#1a1512) 45%,var(--plate,#d8cfbb))}.ds-placard::before{left:7px}.ds-placard::after{right:7px}"
+    },
+    {
+      "name": "Key",
+      "kind": "button",
+      "refersTo": "key",
+      "description": "Console key: enamel face, presses 1px; aria-pressed lights it in phosphor.",
+      "html": "<button class=\"ds-key\" type=\"button\">Prev</button> <button class=\"ds-key\" type=\"button\" aria-pressed=\"true\">Hold</button>",
+      "css": ".ds-key{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;background:var(--enamel-hi,#33372e);color:var(--text,#ede5d6);border:1px solid var(--enamel-edge,#4a5043);border-radius:4px;box-shadow:0 2px 4px -1px rgba(0,0,0,0.45);font:650 0.78rem/1.1 var(--f-sans,\"Archivo Variable\",sans-serif);font-stretch:112%;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:background-color 160ms cubic-bezier(0.16, 1, 0.3, 1),color 160ms cubic-bezier(0.16, 1, 0.3, 1),transform 80ms ease-out}.ds-key:hover{background:color-mix(in srgb,var(--enamel-hi,#33372e) 80%,var(--text,#ede5d6))}.ds-key:active{transform:translateY(1px);box-shadow:0 1px 2px -1px rgba(0,0,0,0.45)}.ds-key:focus-visible{outline:2px solid var(--signal,#ff4d3a);outline-offset:3px}.ds-key[aria-pressed=\"true\"]{background:var(--phos,#ffb24a);color:var(--glass,#0b0807);border-color:var(--phos,#ffb24a)}"
+    },
+    {
+      "name": "Lit Key",
+      "kind": "button",
+      "refersTo": "key-lit",
+      "description": "The primary action only: Open comms, Transmit, Open project.",
+      "html": "<a class=\"ds-key-lit\" href=\"#comms\">Open comms</a>",
+      "css": ".ds-key-lit{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:14px 24px;background:var(--signal,#ff4d3a);color:var(--signal-ink,#1a0a07);border:1px solid var(--signal,#ff4d3a);border-radius:4px;box-shadow:0 2px 4px -1px rgba(0,0,0,0.45);font:650 0.9rem/1.1 var(--f-sans,\"Archivo Variable\",sans-serif);font-stretch:112%;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:background-color 160ms cubic-bezier(0.16, 1, 0.3, 1),transform 80ms ease-out}.ds-key-lit:hover{background:color-mix(in srgb,var(--signal,#ff4d3a) 85%,var(--text,#ede5d6))}.ds-key-lit:active{transform:translateY(1px)}.ds-key-lit:focus-visible{outline:2px solid var(--signal,#ff4d3a);outline-offset:3px}"
+    },
+    {
+      "name": "Status Lamp",
+      "kind": "custom",
+      "refersTo": "lamp",
+      "description": "9px lamp beside a mono status label; never alone.",
+      "html": "<p class=\"ds-status ds-landed\"><span class=\"ds-lamp ds-lamp-landed\" aria-hidden=\"true\"></span>Landed</p><p class=\"ds-status\"><span class=\"ds-lamp ds-lamp-active\" aria-hidden=\"true\"></span>Base active</p><p class=\"ds-status\"><span class=\"ds-lamp ds-lamp-complete\" aria-hidden=\"true\"></span>Mission complete</p>",
+      "css": ".ds-status{display:flex;align-items:center;gap:8px;margin:0 0 8px;font:600 0.72rem/1 var(--f-data,\"Martian Mono Variable\",monospace);letter-spacing:0.08em;text-transform:uppercase;color:var(--phos,#ffb24a)}.ds-landed{color:var(--signal,#ff4d3a)}.ds-lamp{flex:none;display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--phos-dim,#c98d45)}.ds-lamp-landed{background:var(--signal,#ff4d3a)}.ds-lamp-active{background:var(--phos,#ffb24a)}.ds-lamp-complete{background:transparent;border:1.5px solid currentColor}"
+    },
+    {
+      "name": "Console with Glass",
+      "kind": "card",
+      "refersTo": "console",
+      "description": "Every section: enamel console, placard first, recessed CRT glass inside.",
+      "html": "<section class=\"ds-console\"><h2 class=\"ds-plate\">Systems</h2><div class=\"ds-glass\"><h3 class=\"ds-data\">Languages</h3><p>TypeScript, Python, Java</p></div></section>",
+      "css": ".ds-console{background:var(--enamel,#282b24);color:var(--text,#ede5d6);border:1px solid var(--enamel-edge,#4a5043);border-radius:6px;padding:16px 24px 24px;box-shadow:0 22px 44px -30px rgba(0,0,0,0.7);font:400 1rem/1.6 var(--f-sans,\"Archivo Variable\",sans-serif)}.ds-plate{display:inline-block;margin:0 0 16px;background:var(--plate,#d8cfbb);color:var(--plate-ink,#1a1512);font:700 0.8rem/1 var(--f-sans,\"Archivo Variable\",sans-serif);font-stretch:125%;letter-spacing:0.14em;text-transform:uppercase;padding:7px 22px;border-radius:3px}.ds-glass{position:relative;overflow:hidden;background:var(--glass,#0b0807);color:var(--text,#ede5d6);padding:24px;border:2px solid color-mix(in srgb,var(--enamel-edge,#4a5043) 60%,#000);border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04),inset 0 0 40px rgba(0,0,0,0.55)}.ds-glass::after{content:\"\";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0 2px,var(--scan,rgba(0,0,0,0.28)) 2px 3px)}.ds-glass p{margin:0}.ds-data{margin:0 0 12px;font:600 0.7rem/1 var(--f-data,\"Martian Mono Variable\",monospace);letter-spacing:0.1em;text-transform:uppercase;color:var(--phos,#ffb24a)}"
+    },
+    {
+      "name": "Station",
+      "kind": "nav",
+      "refersTo": "station",
+      "description": "Placards set into the room console tiers; the real navigation. Comms is lit.",
+      "html": "<nav class=\"ds-stations\" aria-label=\"Stations\"><a class=\"ds-station\" href=\"#missions\">Missions</a><a class=\"ds-station\" href=\"#payloads\">Payloads</a><a class=\"ds-station ds-station-lit\" href=\"#comms\">Comms</a></nav>",
+      "css": ".ds-stations{display:flex;gap:16px;padding:16px;background:var(--enamel-hi,#33372e)}.ds-station{display:grid;place-items:center;min-width:120px;min-height:36px;background:var(--plate,#d8cfbb);color:var(--plate-ink,#1a1512);border-radius:3px;font:700 13px/1 var(--f-sans,\"Archivo Variable\",sans-serif);font-stretch:125%;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;box-shadow:0 3px 7px -1px rgba(0,0,0,0.5);transition:background-color 160ms cubic-bezier(0.16, 1, 0.3, 1),color 160ms cubic-bezier(0.16, 1, 0.3, 1)}.ds-station:hover{background:var(--phos,#ffb24a);color:var(--glass,#0b0807)}.ds-station:focus-visible{outline:2px solid var(--signal,#ff4d3a);outline-offset:3px}.ds-station-lit{background:var(--signal,#ff4d3a);color:var(--signal-ink,#1a0a07)}"
+    },
+    {
+      "name": "Mission List",
+      "kind": "chip",
+      "refersTo": "mission-line-selected",
+      "description": "Selectable mission lines on a side screen; selection drives the front-screen reticle and zoom.",
+      "html": "<div class=\"ds-mlist\" role=\"group\" aria-label=\"Select a mission\"><p class=\"ds-mhead\">Missions flown</p><button type=\"button\" aria-pressed=\"true\"><span class=\"ds-l ds-l-landed\"></span><span class=\"ds-n\">Claude Corps</span><span class=\"ds-y\">'26</span></button><button type=\"button\" aria-pressed=\"false\"><span class=\"ds-l ds-l-complete\"></span><span class=\"ds-n\">Align</span><span class=\"ds-y\">'24</span></button></div>",
+      "css": ".ds-mlist{display:grid;gap:2px;max-width:240px;padding:14px;background:var(--glass,#0b0807);border-radius:6px}.ds-mhead{margin:0 0 6px;font:600 11px/1 var(--f-data,\"Martian Mono Variable\",monospace);letter-spacing:0.08em;text-transform:uppercase;color:var(--phos-dim,#c98d45)}.ds-mlist button{display:flex;align-items:center;gap:0.5em;width:100%;min-height:40px;padding:0.3em 0.45em;background:transparent;color:var(--text,#ede5d6);border:0;border-radius:3px;font:500 13px/1.2 var(--f-sans,\"Archivo Variable\",sans-serif);text-align:left;cursor:pointer}.ds-mlist button:hover{background:color-mix(in srgb,var(--phos,#ffb24a) 14%,transparent)}.ds-mlist button:focus-visible{outline:2px solid var(--signal,#ff4d3a);outline-offset:3px}.ds-mlist button[aria-pressed=\"true\"]{background:var(--phos,#ffb24a);color:var(--glass,#0b0807)}.ds-l{flex:none;width:9px;height:9px;border-radius:50%}.ds-l-landed{background:var(--signal,#ff4d3a)}.ds-l-complete{border:1.5px solid currentColor}.ds-n{flex:1}.ds-y{font-family:var(--f-data,\"Martian Mono Variable\",monospace);font-size:0.9em}"
+    },
+    {
+      "name": "Glass Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Comms form field on glass with a mono phosphor label.",
+      "html": "<label class=\"ds-field\"><span>Email</span><input type=\"email\" placeholder=\"you@example.com\"></label>",
+      "css": ".ds-field{display:block;max-width:320px;padding:16px;background:var(--glass,#0b0807)}.ds-field span{display:block;margin-bottom:6px;font:600 0.7rem/1 var(--f-data,\"Martian Mono Variable\",monospace);letter-spacing:0.1em;text-transform:uppercase;color:var(--phos,#ffb24a)}.ds-field input{width:100%;box-sizing:border-box;padding:12px 14px;background:transparent;color:var(--text,#ede5d6);border:1px solid color-mix(in srgb,var(--phos,#ffb24a) 45%,transparent);border-radius:4px;font:400 1rem/1.4 var(--f-sans,\"Archivo Variable\",sans-serif)}.ds-field input:focus-visible{outline:2px solid var(--signal,#ff4d3a);outline-offset:1px;border-color:transparent}"
+    },
+    {
+      "name": "Watch Switch",
+      "kind": "custom",
+      "refersTo": "key",
+      "description": "Three-position room-lighting switch; the checked position gets a lit signal lamp.",
+      "html": "<fieldset class=\"ds-watch\"><legend>Room lighting</legend><label><input type=\"radio\" name=\"ds-w\" checked><span class=\"ds-wl\"></span>Mars watch</label><label><input type=\"radio\" name=\"ds-w\"><span class=\"ds-wl\"></span>Neptune watch</label><label><input type=\"radio\" name=\"ds-w\"><span class=\"ds-wl\"></span>Day shift</label></fieldset>",
+      "css": ".ds-watch{display:inline-flex;gap:4px;margin:0;padding:4px;border:1px solid var(--enamel-edge,#4a5043);border-radius:6px;background:var(--enamel,#282b24)}.ds-watch legend{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.ds-watch label{position:relative;display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:6px 12px;border-radius:4px;font:650 0.7rem/1 var(--f-sans,\"Archivo Variable\",sans-serif);font-stretch:112%;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted,#b3a894);cursor:pointer}.ds-watch input{position:absolute;opacity:0;pointer-events:none}.ds-wl{width:9px;height:9px;border-radius:50%;border:1.5px solid currentColor}.ds-watch label:has(input:checked){background:var(--enamel-hi,#33372e);color:var(--text,#ede5d6)}.ds-watch label:has(input:checked) .ds-wl{background:var(--signal,#ff4d3a);border-color:var(--signal,#ff4d3a)}.ds-watch label:has(input:focus-visible){outline:2px solid var(--signal,#ff4d3a);outline-offset:2px}"
+    },
+    {
+      "name": "Planet with Flag and Base",
+      "kind": "custom",
+      "refersTo": "lamp",
+      "description": "A past mission: hue disc with terminator, planted signal flag, phosphor base modules, selection reticle.",
+      "html": "<svg class=\"ds-planet\" viewBox=\"0 0 120 90\" role=\"img\" aria-label=\"Planet with flag and three base modules\"><rect width=\"120\" height=\"90\" class=\"g\"/><circle cx=\"60\" cy=\"55\" r=\"22\" fill=\"hsl(200 32% 46%)\"/><path d=\"M60 33 A22 22 0 0 1 60 77 A12.1 22 0 0 0 60 33Z\" fill=\"hsl(200 38% 28%)\" opacity=\".85\"/><g transform=\"translate(60 33)\"><line x1=\"-3\" y1=\"1\" x2=\"-3\" y2=\"-14\" class=\"ink\"/><rect x=\"-3\" y=\"-14\" width=\"8\" height=\"5\" class=\"flag\"/><rect x=\"4\" y=\"-4\" width=\"5\" height=\"4\" class=\"fill\"/><rect x=\"10\" y=\"-4\" width=\"5\" height=\"4\" class=\"fill\"/><rect x=\"16\" y=\"-4\" width=\"5\" height=\"4\" class=\"fill\"/></g><path class=\"ret\" d=\"M26 29.4V21h8.4M85.6 21H94v8.4M94 80.6V89h-8.4M34.4 89H26v-8.4\"/></svg>",
+      "css": ".ds-planet{width:240px;display:block;border-radius:12px}.ds-planet .g{fill:var(--glass,#0b0807)}.ds-planet .ink{stroke:var(--phos,#ffb24a);stroke-width:2;stroke-linecap:round}.ds-planet .fill{fill:var(--phos,#ffb24a)}.ds-planet .flag{fill:var(--signal,#ff4d3a)}.ds-planet .ret{fill:none;stroke:var(--signal,#ff4d3a);stroke-width:2.5}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Back Row of Mission Control",
+    "overview": "The site is a 1970s mission control room, seen from the back console row, watching Andrew's career as a flight in progress. Every section is a console: a warm enamel body, a screwed-on cream placard naming the station, a recessed CRT glass screen, and status lamps. The first viewport is not a hero layout but a single picture: a one-point-perspective SVG room whose front-wall screen plots the trajectory from Sol through every past mission to the planet Andrew is landed on now.\n\nThe system is built from hardware, not from cards. Depth comes from enamel sitting on the room and glass sinking into enamel. Colour is room lighting: three watches (Mars, Neptune, Day) swap the whole palette through one `data-watch` attribute on the root, and no component carries a colour of its own. Type is two voices: a wide grotesk (Archivo) for placards, names and controls, and a monospace instrument face (Martian Mono) for dates, statuses and readouts.\n\nThis world replaced the legacy look recorded in `docs/legacy-design.md`. The old hot pink-red accent, its gradient hover overlays and its lift-on-hover cards are history, not inheritance.",
+    "keyCharacteristics": [
+      "One-point-perspective SVG room on a 1440x900 canvas, with HTML overlays placed in canvas percentages.",
+      "Consoles (enamel) hold glass (CRT); glass holds phosphor text and scanlines.",
+      "Every section is named by a screwed cream placard; the placards in the room are the real navigation.",
+      "Three watches swap every colour token at once: Mars (red-dark, default), Neptune (blue-dark), Day (light, cream-paper flight plan).",
+      "Signal red is reserved for what is live, what is planted, the primary key, and focus.",
+      "Planets, flags and base modules turn the work history into geography.",
+      "Motion is instrumental and rare: a CRT warm-up, the trajectory plotting in, a beacon, a planet zoom. All of it is off under reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The Room Lighting Rule",
+        "body": "A watch is a lighting change, not a theme skin: every colour role exists in all three watches, components use only role variables, and adding a colour means adding it to all three blocks in `src/index.css`.",
+        "section": "colors"
+      },
+      {
+        "name": "The Rare Signal Rule",
+        "body": "Signal red marks only what is live (landed, alert, failure), what is planted (flags, beacon, reticle), the primary action, and focus. Text on a signal fill is always `signal-ink`, never white.",
+        "section": "colors"
+      },
+      {
+        "name": "The Phosphor Belongs to Glass Rule",
+        "body": "Phosphor colours are the glass's own light. On enamel they appear only as a lit key face (pressed, hovered station, selected line), never as body text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Voices Rule",
+        "body": "Archivo names things and asks for action; Martian Mono reports measurements. A date, status, count or coordinate is always mono; a name, role or control is always Archivo.",
+        "section": "typography"
+      },
+      {
+        "name": "The Floored Scale Rule",
+        "body": "Type inside the room scales with the scene in `cqw` and always carries a px floor: `max(<n>cqw, <px>)`, with 11px the minimum for labels and 12px for side-screen copy.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Picture Rule",
+        "body": "The first viewport is a single drawing that scales as a whole. Every overlay in the room is positioned in canvas coordinates; flex and grid are used only inside an overlay, never to place one.",
+        "section": "layout"
+      },
+      {
+        "name": "The Enamel and Glass Rule",
+        "body": "Surfaces are either enamel (raised, soft drop shadow) or glass (recessed, inset vignette, scanlines). Nothing floats, and hover never lifts an element.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Placard Names It Rule",
+        "body": "Every station is named by a placard and only by a placard. Status lines and list heads are mono data, not headings.",
+        "section": "components"
+      },
+      {
+        "name": "The Lamp Never Speaks Alone Rule",
+        "body": "A lamp is decoration for a text state beside it; it is always `aria-hidden` and never the only signal of status.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "**Do** reference colour only through the role variables (`--phos`, `--signal`, `--enamel`...) so all three watches work, and add any new role to all three `data-watch` blocks.",
+      "**Do** place anything inside the room in 1440x900 canvas coordinates converted to percentages, with `cqw` type floored by `max(…, 11px)` or more.",
+      "**Do** put signal-ink text on every signal fill, and reserve signal for live state, planted markers, the primary key and focus.",
+      "**Do** name every new section with a placard on an enamel console and put its content on glass.",
+      "**Do** use Martian Mono for dates, statuses and counts, with tabular numerals for dates.",
+      "**Do** gate every animation and transition of movement inside `@media (prefers-reduced-motion: no-preference)`; the CRT warm-up (520ms, 4 steps, once), the trajectory plot-in (1.8s after 560ms), the beacon (1.6s, 2 steps, infinite) and the planet zoom (700ms, 2.4x, clamped to the plot) are the only authored motion.",
+      "**Do** keep keys at least 44px tall (40px for fallback mission lines and watch positions), and give every focusable element the 2px signal focus ring at 3px offset (1px on fields, 2px on watch positions).",
+      "**Do** meet WCAG 2.2 AA contrast in all three watches, keep the skip link to `#main` first in the tab order, label every new-tab link with a visually hidden \"(opens in a new tab)\", and give the room SVG one `role=\"img\"` description while its real controls live in HTML overlays.",
+      "**Do** keep a keyboard path for every pointer shortcut: planets on the plot are pointer-only because the mission list buttons do the same thing.",
+      "**Do** keep the payload carousel holdable: a visible HOLD key, pause on hover and focus and when the tab is hidden, arrow-key support, polite announcements, and held by default under reduced motion."
+    ],
+    "donts": [
+      "**Don't** hard-code a hex value in a component; planet hues and the No downlink test bars are the only sanctioned literals.",
+      "**Don't** put white or light text on signal, or use signal for decoration, section accents or hover states.",
+      "**Don't** lift elements on hover or add drop shadows beyond the four in the shadow vocabulary; hover changes the face colour, and a press moves down 1px.",
+      "**Don't** bring back the legacy hot pink-red, gradient image overlays or underline-grow nav of `docs/legacy-design.md`.",
+      "**Don't** let `cqw` type go unfloored, or position a room overlay with page flow, flex or grid instead of canvas coordinates.",
+      "**Don't** add scanlines in the Day watch; paper has none (`scan` is transparent).",
+      "**Don't** convey state with a lamp or colour alone; every lamp has a text label next to it."
+    ]
+  }
+}
