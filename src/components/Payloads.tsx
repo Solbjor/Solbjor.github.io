@@ -1,5 +1,8 @@
+import { PayloadCabinet } from './PayloadCabinet'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { projects } from '../data/content'
+
+import { mounts, seatedPosition } from './equipmentLayout'
 
 const DWELL_MS = 6000
 
@@ -68,8 +71,9 @@ export function Payloads({ workstation = false }: { workstation?: boolean }) {
     >
       {!workstation && <h2 id="payloads-h" className="placard">Payloads</h2>}
 
+      {workstation && <PayloadCabinet />}
       <div className="payload-bay">
-        <div className="glass glass-payload" role="group" aria-roledescription="slide" aria-label={powered ? `${index + 1} of ${count}: ${p.name}` : 'Video monitor off'}>
+        <div className="glass glass-payload" style={workstation ? seatedPosition(mounts.video) : undefined} role="group" aria-roledescription="slide" aria-label={powered ? `${index + 1} of ${count}: ${p.name}` : 'Video monitor off'}>
           {!powered ? null : p.image ? (
             <img key={p.name} src={p.image} alt={`${p.name} project image`} className="payload-img" />
           ) : (
@@ -87,7 +91,7 @@ export function Payloads({ workstation = false }: { workstation?: boolean }) {
           )}
         </div>
 
-        <div className={workstation ? 'glass payload-copy payload-monitor' : 'payload-copy'}>
+        <div className={workstation ? 'glass payload-copy payload-monitor' : 'payload-copy'} style={workstation ? seatedPosition(mounts.readout) : undefined} tabIndex={workstation ? 0 : undefined}>
           {powered && <>
             {workstation && <p className="payload-register">Project readout</p>}
             <h3 className="payload-name">{p.name}</h3>
@@ -117,12 +121,12 @@ export function Payloads({ workstation = false }: { workstation?: boolean }) {
 
       <div className="payload-keys">
         {workstation && (
-          <button type="button" className="key payload-power" aria-label="Console power" aria-pressed={powered} onClick={() => setPowered((on) => !on)}>
+          <button type="button" className="key payload-power" style={workstation ? seatedPosition(mounts.power) : undefined} aria-label="Console power" aria-pressed={powered} onClick={() => setPowered((on) => !on)}>
             <span className="power-toggle" aria-hidden="true" />
             Power {powered ? 'on' : 'off'}
           </button>
         )}
-        <div className="channel-keys" role="group" aria-label="Choose a payload">
+        <div className="channel-keys" style={workstation ? seatedPosition(mounts.channels) : undefined} role="group" aria-label="Choose a payload">
           {projects.map((proj, i) => (
             <button
               key={proj.name}
@@ -136,7 +140,7 @@ export function Payloads({ workstation = false }: { workstation?: boolean }) {
             </button>
           ))}
         </div>
-        <div className="transport" role="group" aria-label="Carousel controls">
+        <div className="transport" style={workstation ? seatedPosition(mounts.transport) : undefined} role="group" aria-label="Carousel controls">
           <button type="button" className="key" disabled={!powered} onClick={() => go(index - 1, true)}>
             Prev
           </button>

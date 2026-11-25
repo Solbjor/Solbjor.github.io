@@ -1,38 +1,14 @@
-import { useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
+import { RoomArchitecture, RoomMaterials } from './RoomArchitecture'
+import { at, BANKS, stationTarget, H, PAYLOAD_STATION, STATIONS, W } from './roomLayout'
+import { useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 import { profile, projects, type Project } from '../data/content'
 import { currentMission, STATUS_LABEL } from '../lib/missions'
 import { jobPlanets, type TelemetryPlanet } from '../lib/telemetry'
 import { EarthMap } from './EarthMap'
 import { OrbitalTelemetry } from './OrbitalTelemetry'
 import { Payloads } from './Payloads'
-import { CONSOLE_BAY_OFFSET, ConsoleBank, ControllerChair, ProjectionCase, RoomArchitecture } from './RoomHardware'
+import { ConsoleBank, ProjectionCase } from './RoomHardware'
 import './apollo.css'
-
-// The scene is drawn on a 1440 x 900 canvas; HTML overlays use the same coordinates.
-const W = 1440
-const H = 900
-const at = (x: number, y: number, w?: number, h?: number): CSSProperties => ({
-  left: `${(x / W) * 100}%`,
-  top: `${(y / H) * 100}%`,
-  ...(w !== undefined && { width: `${(w / W) * 100}%` }),
-  ...(h !== undefined && { height: `${(h / H) * 100}%` }),
-})
-
-const BANKS = [
-  { x: 433, y: 477, scale: 0.65, bays: [{ id: 'missions', label: 'Missions', equipment: 'recorder' }, { id: null, label: 'Guidance', equipment: 'meters' }] },
-  { x: 1007, y: 477, scale: 0.65, bays: [{ id: 'systems', label: 'Systems', equipment: 'meters' }, { id: 'training', label: 'Training', equipment: 'scopes' }] },
-  { x: 409, y: 623, scale: 0.77, bays: [{ id: 'payloads', label: 'Payloads', equipment: 'scopes' }, { id: null, label: 'Telemetry', equipment: 'recorder' }] },
-  { x: 1031, y: 623, scale: 0.77, bays: [{ id: null, label: 'Flight', equipment: 'channels' }, { id: 'comms', label: 'Comms', equipment: 'channels' }] },
-] as const
-const STATIONS = BANKS.flatMap(({ x, y, scale, bays }) =>
-  bays.map((bay, index) => ({
-    ...bay,
-    x: x + (index === 0 ? -1 : 1) * CONSOLE_BAY_OFFSET * scale,
-    y,
-    scale,
-  })),
-)
-const PAYLOAD_STATION = STATIONS.find(({ id }) => id === 'payloads')!
 
 // On phones the room is cropped to the front wall so the big screen reads at a usable size.
 const NARROW = '(max-width: 720px)'
@@ -108,6 +84,7 @@ export function RoomView({ header }: { header: ReactNode }) {
           <rect x="1440" y="0" width="4000" height="740" className="r-wall" />
           <rect x="-4000" y="736" width="9440" height="4000" className="r-console" />
           <rect x="-4000" y="726" width="9440" height="12" className="r-desk" />
+          <RoomMaterials />
           <RoomArchitecture />
           <ProjectionCase x={396} y={80} width={648} height={338} />
           <svg x="400" y="84" width="640" height="330" viewBox="0 0 960 495" className="plot-screen">
@@ -134,9 +111,6 @@ export function RoomView({ header }: { header: ReactNode }) {
           {BANKS.map((bank) => (
             <ConsoleBank bays={bank.bays} key={bank.bays[0]?.label} x={bank.x} y={bank.y} scale={bank.scale} />
           ))}
-          {STATIONS.map((station) => (
-            <ControllerChair key={station.label} x={station.x} y={station.y + 43 * station.scale} scale={station.scale} />
-          ))}
           {/* your flight console */}
           <polygon points="0,736 1440,736 1440,900 0,900" className="r-console" />
           <rect x="0" y="726" width="1440" height="12" className="r-desk" />
@@ -145,19 +119,15 @@ export function RoomView({ header }: { header: ReactNode }) {
         {/* stations: real navigation set into the consoles */}
         <nav aria-label="Stations" className="stations">
           {STATIONS.map((station) => {
-            const bounds = at(station.x - CONSOLE_BAY_OFFSET * station.scale, station.y - 83 * station.scale, 2 * CONSOLE_BAY_OFFSET * station.scale, 145 * station.scale)
-            if (station.id === null) {
-              return <span key={station.label} className="station-hit station-passive" style={bounds} aria-hidden="true">
-                <span className="station-name">{station.label}</span>
-              </span>
-            }
+            const bounds = stationTarget(station)
+            if (station.id === null) return null
             return station.id === 'payloads' ? (
               <button key={station.id} type="button" className="station-hit" style={bounds} aria-haspopup="dialog" onClick={enterPayloads}>
-                <span className="station-name station-name-interactive">{station.label}</span>
+                <span className="sr-only">{station.label}</span>
               </button>
             ) : (
               <a key={station.id} className="station-hit" style={bounds} href={`#${station.id}`}>
-                <span className="station-name">{station.label}</span>
+                <span className="sr-only">{station.label}</span>
               </a>
             )
           })}

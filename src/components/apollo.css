@@ -52,7 +52,8 @@
   background: var(--phos);
   color: var(--glass);
 }
-.station-hit:focus-visible { border-radius: 4px; }
+.station-hit:is(:hover, :focus-visible) { background: color-mix(in srgb, var(--phos) 13%, transparent); }
+.station-hit:focus-visible::after { content: ""; position: absolute; inset: 36% 24% 12%; border: 2px solid var(--phos); }
 .mobile-payload-station { display: none; }
 
 .station-dialog {
@@ -357,6 +358,21 @@ html:has(.station-dialog[open]) { overflow: hidden; }
   .telemetry-modes .key { min-height: 44px; }
 }
 
+.scene-art {
+  --gasket: #21221e;
+  --bezel-edge: #99998b;
+  --bezel-shadow: #575a52;
+  --scope-center: #456575;
+  --scope-edge: #14252b;
+  --scope-mid: #2e4a59;
+  --scope-trace: #afcdda;
+  --switch-amber: #deb66e;
+  --switch-blue: #93adba;
+  --key-bed: #55564e;
+  --meter-paper: #c9c7b2;
+  --vinyl: #696e67;
+}
+
 .instrument-materials {
   --hood: color-mix(in srgb, var(--enamel-edge) 65%, #82947e);
   --panel-hi: color-mix(in srgb, var(--enamel-hi) 50%, #d3d1bb);
@@ -371,4 +387,116 @@ html:has(.station-dialog[open]) { overflow: hidden; }
   --wall-light: color-mix(in srgb, var(--wall-body) 84%, #efe9d5);
   --wall-foot: color-mix(in srgb, var(--wall-body) 76%, #242720);
   --trim-shadow: color-mix(in srgb, var(--enamel-edge) 55%, #20251f);
+}
+
+
+
+/* Seated Payloads cabinet. SVG supplies the metalwork; HTML occupies its apertures. */
+.station-dialog {
+  width: min(1440px, 98vw);
+  border-radius: 4px;
+  background: transparent;
+}
+.station-closeup {
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: linear-gradient(#a7b39f 0, #687969 6px, #4b584c 14px, #606f60 100%);
+  box-shadow: inset 0 -5px 0 #354438;
+}
+.station-closeup .rack-hardware {
+  margin: 0;
+  padding: 13px 3% 5px;
+}
+.station-closeup-head {
+  margin: 0;
+  padding: 6px 3% 10px;
+}
+.station-closeup-head .placard { background: #d4d2bd; color: #20251f; }
+.station-closeup-head .key { min-height: 44px; }
+.payload-hardware {
+  position: relative;
+  isolation: isolate;
+  --key-face: #c5c8b7;
+  --key-ink: #20271f;
+}
+.payload-cabinet-art {
+  pointer-events: none;
+  --cabinet-light: color-mix(in srgb, #dad9c5 87%, var(--enamel-hi));
+  --cabinet-face: color-mix(in srgb, #c1c6b3 80%, var(--enamel-hi));
+  --cabinet-shadow: color-mix(in srgb, #a4ad9a 73%, var(--enamel));
+}
+.payload-hardware > .payload-cabinet-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+.payload-hardware .glass {
+  border: 0;
+  border-radius: 5% / 8%;
+  background: radial-gradient(ellipse at 40% 22%, #253738, #132122 80%);
+  color: #e2ece4;
+  box-shadow: inset 0 4px 12px #070f10;
+}
+.payload-hardware .glass::after { opacity: .16; pointer-events: none; }
+.payload-hardware .payload-desc, .payload-hardware .payload-award { color: #d5e3da; }
+.payload-hardware .payload-register { display: none; }
+.payload-hardware .payload-monitor {
+  padding: clamp(12px,1.35vw,22px);
+  min-height: 0;
+  grid-template-columns: minmax(0,1fr);
+  align-content: start;
+  gap: 6px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  scrollbar-width: thin;
+}
+.payload-hardware .payload-name { font-size: clamp(1.05rem,1.6vw,1.45rem); }
+.payload-hardware .tags { gap: .5em; }
+.payload-hardware .tags li { color: #c1d2c9; border: 0; padding: 0; }
+.payload-hardware .payload-monitor .key-lit {
+  background: transparent; color: #f3d699; padding: 2px 0;
+  text-decoration: underline; border: 0; box-shadow: none;
+}
+.payload-hardware .payload-monitor .key-lit:focus-visible { outline-offset: 0; }
+.payload-hardware .channel { background: #111c1c; color: #f6ddb2; }
+.payload-hardware .channel-keys, .payload-hardware .transport {
+  padding: 4px;
+  background: #474e45;
+  gap: 4px;
+  border: 1px solid #72796e;
+  box-shadow: inset 1px 2px 4px #20271e, 1px 1px 0 #edebdb;
+}
+.payload-hardware .channel-keys { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); }
+.payload-hardware .transport { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); }
+.payload-hardware .payload-keys .key {
+  min-width: 0; padding: 4px; border: 1px solid #51574c; border-radius: 2px;
+  background: linear-gradient(#d7d9cc,var(--key-face) 40%,#a7ae9e);
+  color: var(--key-ink);
+  box-shadow: inset 1px 1px 0 #ebeddf, inset -1px -2px 0 #80887c, 0 2px 2px #252a23;
+}
+.payload-hardware .payload-keys .key[aria-pressed=true] {
+  background: radial-gradient(ellipse,#ffdfa1,#e0b26d);
+  box-shadow: inset 0 0 4px #a4804e;
+}
+.payload-hardware .channel-keys .key { font-size: clamp(.63rem,.82vw,.8rem); letter-spacing: .02em; overflow-wrap: anywhere; }
+@media (min-width: 901px) {
+  .payload-hardware { aspect-ratio: 1200 / 490; }
+  .payload-hardware .payload-bay, .payload-hardware .payload-keys { display: contents; }
+  .payload-hardware .payload-bay > *, .payload-hardware .payload-keys > * {
+    position: absolute;
+    left: var(--mount-x); top: var(--mount-y);
+    width: var(--mount-w); height: var(--mount-h);
+  }
+  .payload-hardware .glass-payload { aspect-ratio: auto; }
+}
+@media (max-width: 900px) {
+  .station-closeup-head { gap: 6px; }
+  .payload-hardware { display: flex; flex-direction: column; gap: 12px; padding: 12px; background: #aab2a1; border-bottom: 14px solid #566859; }
+  .payload-hardware > .payload-cabinet-art { display: none; }
+  .payload-hardware .payload-bay { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .payload-hardware .payload-bay .glass { border: 8px solid #363c34; }
+  .payload-hardware .payload-monitor { max-height: 20rem; }
+  .payload-hardware .payload-keys { order: 0; background: #c2c4b2; margin: 0; padding: 10px; }
+  .payload-hardware .channel-keys { flex: 1 1 170px; }
 }
