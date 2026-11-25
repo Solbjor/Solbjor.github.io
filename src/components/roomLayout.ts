@@ -1,6 +1,8 @@
 import type { CSSProperties } from 'react'
 
 export const CONSOLE_BAY_OFFSET = 136
+export const PROJECTION_WALL_DROP = 64
+export const SIDE_PROJECTION = { left: 166, right: 1064, y: 100, width: 210, height: 232 }
 
 // The scene is drawn on a 1440 x 900 canvas; HTML overlays use the same coordinates.
 export const W = 1440
@@ -21,7 +23,7 @@ export function project(x: number, y: number, depth: number): [number, number] {
 
 // Banks share a floor datum and lateral spacing. Only the row depth changes.
 function bankPosition(side: -1 | 1, scale: number) {
-  const [x, y] = project(VANISH_X + side * 385, VANISH_Y + 405 + (scale < .6 ? -34 : 4), scale)
+  const [x, y] = project(VANISH_X + side * 385, VANISH_Y + 405 + (scale < .6 ? -21 : 4), scale)
   return { x, y, scale }
 }
 export const BANKS = [

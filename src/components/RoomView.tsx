@@ -1,5 +1,5 @@
 import { RoomArchitecture, RoomMaterials } from './RoomArchitecture'
-import { at, BANKS, stationTarget, H, STATIONS, W } from './roomLayout'
+import { at, BANKS, stationTarget, H, PROJECTION_WALL_DROP, SIDE_PROJECTION, STATIONS, W } from './roomLayout'
 import { useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 import { profile, projects, type Project } from '../data/content'
 import { currentMission, STATUS_LABEL } from '../lib/missions'
@@ -86,8 +86,8 @@ export function RoomView({ header }: { header: ReactNode }) {
           <rect x="-4000" y="726" width="9440" height="12" className="r-desk" />
           <RoomMaterials />
           <g id="flight-room-shell"><RoomArchitecture /></g>
-          <g id="flight-projection-wall">
-          <g transform={narrow ? undefined : "translate(72 8) scale(.9 .88)"}>
+          <g id="flight-projection-wall" transform={`translate(0 ${PROJECTION_WALL_DROP})`}>
+          <g transform={narrow ? 'translate(0 46) scale(1 .69)' : 'translate(72 46) scale(.9 .69)'}>
           <ProjectionCase x={396} y={80} width={648} height={338} />
           <svg x="400" y="84" width="640" height="330" viewBox="0 0 960 495" className="plot-screen">
             {mode === 'earth'
@@ -98,17 +98,20 @@ export function RoomView({ header }: { header: ReactNode }) {
 
           </g>
           <g transform={narrow ? undefined : "translate(72 0) scale(.9 1)"}>
-          <ProjectionCase x={166} y={100} width={210} height={270} />
-          <ProjectionCase x={1064} y={100} width={210} height={270} />
-          <rect x="168" y="102" width="206" height="266" fill="url(#scan)" className="r-scanlines" />
-          <rect x="1066" y="102" width="206" height="266" fill="url(#scan)" className="r-scanlines" />
+          {[SIDE_PROJECTION.left, SIDE_PROJECTION.right].map(x => (
+            <g key={x}>
+              <ProjectionCase x={x} y={SIDE_PROJECTION.y} width={SIDE_PROJECTION.width} height={SIDE_PROJECTION.height} />
+              <rect x={x + 2} y={SIDE_PROJECTION.y + 2} width={SIDE_PROJECTION.width - 4}
+                height={SIDE_PROJECTION.height - 4} fill="url(#scan)" className="r-scanlines" />
+            </g>
+          ))}
           {/* status lamps beside each bezel */}
           <g className="r-lamps">
             {[180, 214, 248].map((x, i) => (
-              <circle key={`l${x}`} cx={x} cy="386" r="5" className={i === 0 ? 'lamp-on' : 'lamp-off'} />
+              <circle key={`l${x}`} cx={x} cy={SIDE_PROJECTION.y + SIDE_PROJECTION.height + 16} r="5" className={i === 0 ? 'lamp-on' : 'lamp-off'} />
             ))}
             {[1192, 1226, 1260].map((x, i) => (
-              <circle key={`r${x}`} cx={x} cy="386" r="5" className={i === 2 ? 'lamp-alert' : 'lamp-on'} />
+              <circle key={`r${x}`} cx={x} cy={SIDE_PROJECTION.y + SIDE_PROJECTION.height + 16} r="5" className={i === 2 ? 'lamp-alert' : 'lamp-on'} />
             ))}
           </g>
 
@@ -144,10 +147,10 @@ export function RoomView({ header }: { header: ReactNode }) {
           <button type="button" className="key key-small" aria-pressed={mode === 'earth'} onClick={() => setMode('earth')}>Earth map</button>
         </div>
 
-        <div className="side-screen side-left" style={at(72+166*.9, 100, 189, 270)}>
+        <div className="side-screen side-left" style={at(72 + SIDE_PROJECTION.left * .9, SIDE_PROJECTION.y + PROJECTION_WALL_DROP, SIDE_PROJECTION.width * .9, SIDE_PROJECTION.height)}>
           {readout}
         </div>
-        <div className="side-screen side-right" style={at(72+1064*.9, 100, 189, 270)}>
+        <div className="side-screen side-right" style={at(72 + SIDE_PROJECTION.right * .9, SIDE_PROJECTION.y + PROJECTION_WALL_DROP, SIDE_PROJECTION.width * .9, SIDE_PROJECTION.height)}>
           {catalog}
         </div>
 
@@ -187,14 +190,8 @@ export function RoomView({ header }: { header: ReactNode }) {
         aria-labelledby="payload-workstation-h"
         onClose={() => setStationOpen(false)}
       >
-        {stationOpen && <SeatedRoom callsign={selected.name} mode={mode} />}
+        {stationOpen && <SeatedRoom narrow={narrow} readout={readout} catalog={catalog} />}
         <div className="station-closeup">
-          <div className="rack-hardware" aria-hidden="true">
-            <span className="rack-screw" />
-            <span className="rack-vent" />
-            <span className="rack-vent" />
-            <span className="rack-screw" />
-          </div>
           <div className="station-closeup-head">
             <h2 id="payload-workstation-h" className="placard">Payloads workstation</h2>
             <button type="button" className="key" autoFocus onClick={() => workstation.current?.close()}>

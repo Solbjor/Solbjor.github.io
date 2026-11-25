@@ -1,20 +1,24 @@
 import type { CSSProperties } from 'react'
 
-// Mounting coordinates in a single unmirrored bay. Both views use these datums.
-export const standardBayMounts = {
-  video: { x: -62, y: -61, width: 56 },
-  readout: { x: 4, y: -61, width: 56 },
-  channels: { x: 79, y: -57, width: 48 },
-  power: { x: -110, y: 9, width: 48 },
-  transport: { x: -49, y: 10, width: 76 },
+// The rack order describes installed equipment. Each camera supplies its own apertures.
+export const payloadRack = ['video', 'readout', 'channels'] as const
+export const payloadDeck = ['power', 'transport', 'vent'] as const
+export const equipmentRacks = {
+  payloads: { face: payloadRack, deck: payloadDeck },
+  scopes: { face: ['video', 'readout', 'keys'], deck: ['keys', 'switches', 'log'] },
+  meters: { face: ['video', 'meters', 'keys'], deck: ['keys', 'switches', 'log'] },
+  channels: { face: ['video', 'keys', 'meters'], deck: ['switches', 'keys', 'log'] },
+  recorder: { face: ['video', 'readout', 'recorder'], deck: ['keys', 'switches', 'log'] },
 } as const
+export type Equipment = keyof typeof equipmentRacks
+export type FaceModule = typeof equipmentRacks[Equipment]['face'][number]
+export type DeckUnit = typeof equipmentRacks[Equipment]['deck'][number]
 
-// Face-on cabinet drawing, in millimetre-like local units. The overview
-// foreshortens this entire assembly; the seated view overlays HTML at the apertures.
+// Apertures for the seated view and its independent HTML controls.
 export const cabinet = { width: 1200, height: 490 }
 export const mounts = {
-  video: { x: 44, y: 59, width: 398, height: 248 },
-  readout: { x: 504, y: 59, width: 413, height: 248 },
+  video: { x: 48, y: 55, width: 357, height: 253 },
+  readout: { x: 469, y: 55, width: 450, height: 253 },
   channels: { x: 965, y: 134, width: 196, height: 140 },
   power: { x: 69, y: 378, width: 155, height: 55 },
   transport: { x: 436, y: 378, width: 312, height: 55 },

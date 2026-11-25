@@ -416,22 +416,31 @@ main {
 
 /* side screens */
 .side-screen {
+  --side-screen-type: clamp(.75rem, min(.82cqw, 1.48svh), .875rem);
   position: absolute;
-  padding: 1cqw 1.05cqw;
+  padding: .52em .9em;
   color: var(--text);
-  overflow: hidden;
-  font-size: max(0.86cqw, 12px);
-  line-height: 1.35;
+  overflow: auto;
+  scrollbar-width: thin;
+  font-size: var(--side-screen-type);
+  line-height: 1.25;
 }
-.side-screen .status {
-  font-size: max(0.72cqw, 11px);
+.side-screen .status,
+.side-screen .mission-list-head {
+  font-size: max(.6875rem, .86em);
 }
 .side-screen .readout-role {
-  margin-top: 0.7cqw;
-  font: 750 max(1.2cqw, 15px)/1.15 var(--f-sans);
+  margin-top: .42em;
+  font: 750 1.3em/1.15 var(--f-sans);
   font-stretch: 108%;
+  overflow-wrap: anywhere;
   color: var(--phos);
 }
+.side-screen .readout-window,
+.side-screen .readout-site { font-stretch: 87.5%; }
+.side-screen .readout-window { margin-top: .42em; }
+.side-screen .readout-site { margin-top: .18em; }
+.side-screen .readout-link { margin-top: .62em; }
 .readout-org {
   margin-top: 0.25cqw;
   font-weight: 600;
@@ -467,8 +476,11 @@ main {
   text-transform: uppercase;
   color: var(--phos-dim);
 }
+.side-screen .mission-list {
+  grid-template-columns: minmax(0, 1fr);
+}
 .side-screen .mission-list-head {
-  font-size: max(0.72cqw, 11px);
+  margin-bottom: .28em;
 }
 .mission-list button {
   display: flex;
@@ -483,6 +495,18 @@ main {
   font: 500 1em/1.2 var(--f-sans);
   text-align: left;
   cursor: pointer;
+}
+.side-screen .mission-list button {
+  gap: .36em;
+  padding: .12em .3em;
+  line-height: 1.15;
+}
+@media (max-height: 780px) {
+  .scene > .side-screen { padding: .35em .6em; }
+  .scene > .side-screen .readout-role { font-size: 1.22em; }
+  .scene > .side-screen .readout-org { font-stretch: 90%; }
+  .scene > .side-screen .mission-list button { padding-block: .06em; line-height: 1.1; }
+  .scene > .side-screen .orbit-controls { margin-top: 2px; }
 }
 .mission-list button:hover {
   background: color-mix(in srgb, var(--phos) 14%, transparent);

@@ -332,7 +332,7 @@ html:has(.station-dialog[open]) { overflow: hidden; }
 .telemetry-modes {
   position: absolute;
   z-index: 2;
-  top: 3.5%;
+  top: 8.5%;
   left: 50%;
   display: flex;
   gap: 6px;
@@ -391,17 +391,23 @@ html:has(.station-dialog[open]) { overflow: hidden; }
 
 
 
-/* Seated Payloads cabinet. SVG supplies the metalwork; HTML occupies its apertures. */
+/* Shared finishes for the seated cabinet, instrument face and work surface. */
 .station-dialog {
-  width: min(1440px, 98vw);
-  border-radius: 4px;
-  background: transparent;
+  --console-case: color-mix(in srgb, #556657 79%, var(--enamel));
+  --console-edge: color-mix(in srgb, #a9b4a0 77%, var(--enamel-edge));
+  --console-worktop: color-mix(in srgb, #d5d1ba 85%, var(--enamel-hi));
+  --cabinet-light: color-mix(in srgb, #dad9c5 87%, var(--enamel-hi));
+  --cabinet-face: color-mix(in srgb, #c1c6b3 80%, var(--enamel-hi));
+  --cabinet-shadow: color-mix(in srgb, #a4ad9a 73%, var(--enamel));
+  --crt-edge: #101a1b;
+  --crt-center: color-mix(in srgb, #27383a 94%, var(--phos));
+  --crt-text: #ebf2ed;
 }
 .station-closeup {
   padding: 0;
   border: 0;
   border-radius: 3px;
-  background: linear-gradient(#a7b39f 0, #687969 6px, #4b584c 14px, #606f60 100%);
+  background: linear-gradient(var(--console-edge), var(--console-case) 8px);
   box-shadow: inset 0 -5px 0 #354438;
 }
 .station-closeup .rack-hardware {
@@ -422,9 +428,6 @@ html:has(.station-dialog[open]) { overflow: hidden; }
 }
 .payload-cabinet-art {
   pointer-events: none;
-  --cabinet-light: color-mix(in srgb, #dad9c5 87%, var(--enamel-hi));
-  --cabinet-face: color-mix(in srgb, #c1c6b3 80%, var(--enamel-hi));
-  --cabinet-shadow: color-mix(in srgb, #a4ad9a 73%, var(--enamel));
 }
 .payload-hardware > .payload-cabinet-art {
   position: absolute;
@@ -434,23 +437,40 @@ html:has(.station-dialog[open]) { overflow: hidden; }
 .payload-hardware .glass {
   border: 0;
   border-radius: 5% / 8%;
-  background: radial-gradient(ellipse at 40% 22%, #253738, #132122 80%);
-  color: #e2ece4;
-  box-shadow: inset 0 4px 12px #070f10;
+  background: radial-gradient(ellipse at 47% 42%, var(--crt-center), var(--crt-edge) 88%);
+  color: var(--crt-text);
+  isolation: isolate;
 }
-.payload-hardware .glass::after { opacity: .16; pointer-events: none; }
+/* Mild curved-glass reflections sit over both picture and text. */
+.payload-hardware .glass::after {
+  z-index: 2;
+  background:
+    radial-gradient(ellipse 75% 18% at 54% -4%, #ecf6ea2e, transparent 88%),
+    repeating-linear-gradient(to bottom, transparent 0 3px, rgb(0 0 0 / .07) 3px 4px);
+  box-shadow: inset 0 2px 14px rgb(0 0 0 / .5), inset 0 0 1px 1px #b2c6bf42;
+}
+.payload-hardware[data-powered="false"] .glass::after {
+  background: radial-gradient(ellipse 75% 18% at 54% -4%, #ecf6ea19, transparent 88%);
+}
+.payload-hardware .payload-img {
+  display: block;
+  object-fit: contain;
+}
+.payload-hardware .no-downlink-sub { color: #c2d4cb; }
 .payload-hardware .payload-desc, .payload-hardware .payload-award { color: #d5e3da; }
 .payload-hardware .payload-register { display: none; }
 .payload-hardware .payload-monitor {
-  padding: clamp(12px,1.35vw,22px);
+  padding: clamp(12px, 1.65vw, 27px);
   min-height: 0;
   grid-template-columns: minmax(0,1fr);
-  align-content: start;
-  gap: 6px;
+  align-content: safe center;
+  gap: clamp(5px, .65vh, 9px);
   overflow: auto;
   overflow-wrap: anywhere;
   scrollbar-width: thin;
+  scrollbar-color: #758b80 transparent;
 }
+.payload-hardware .payload-monitor:focus-visible { outline-offset: -4px; }
 .payload-hardware .payload-name { font-size: clamp(1.05rem,1.6vw,1.45rem); }
 .payload-hardware .tags { gap: .5em; }
 .payload-hardware .tags li { color: #c1d2c9; border: 0; padding: 0; }
@@ -479,7 +499,13 @@ html:has(.station-dialog[open]) { overflow: hidden; }
   background: radial-gradient(ellipse,#ffdfa1,#e0b26d);
   box-shadow: inset 0 0 4px #a4804e;
 }
-.payload-hardware .channel-keys .key { font-size: clamp(.63rem,.82vw,.8rem); letter-spacing: .02em; overflow-wrap: anywhere; }
+.payload-hardware .channel-keys .key {
+  font-family: var(--f-sans);
+  font-size: clamp(.65rem, .79vw, .74rem);
+  font-variation-settings: "wdth" 86;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
 @media (min-width: 901px) {
   .payload-hardware { aspect-ratio: 1200 / 490; }
   .payload-hardware .payload-bay, .payload-hardware .payload-keys { display: contents; }
@@ -492,11 +518,10 @@ html:has(.station-dialog[open]) { overflow: hidden; }
 }
 @media (max-width: 900px) {
   .station-closeup-head { gap: 6px; }
-  .payload-hardware { display: flex; flex-direction: column; gap: 12px; padding: 12px; background: #aab2a1; border-bottom: 14px solid #566859; }
+  .payload-hardware { display: flex; flex-direction: column; gap: 12px; padding: 12px; background: #aab2a1; border-bottom: 4px solid var(--console-case); }
   .payload-hardware > .payload-cabinet-art { display: none; }
   .payload-hardware .payload-bay { display: grid; grid-template-columns: 1fr; gap: 12px; }
   .payload-hardware .payload-bay .glass { border: 8px solid #363c34; }
-  .payload-hardware .payload-monitor { max-height: 20rem; }
   .payload-hardware .payload-keys { order: 0; background: #c2c4b2; margin: 0; padding: 10px; }
   .payload-hardware .channel-keys { flex: 1 1 170px; }
 }
@@ -510,6 +535,8 @@ html:has(.station-dialog[open]) { overflow: hidden; }
   height: 100dvh; max-height: none;
   margin: 0; border-radius: 0;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--enamel-edge) var(--enamel);
   background: var(--wall-body, var(--enamel));
   animation: none;
 }
@@ -519,12 +546,29 @@ html:has(.station-dialog[open]) { overflow: hidden; }
   overflow: hidden;
   pointer-events: none;
 }
+.seated-sightline .scene-art { position: absolute; height: 100%; aspect-ratio: auto; }
+.side-screen .orbit-controls {
+  display: flex;
+  gap: 5px;
+}
+.side-screen .orbit-controls button {
+  width: auto;
+  min-width: 0;
+  padding-inline: .2em;
+  font-size: .92em;
+  white-space: nowrap;
+}
+.seated-sightline .seated-readout {
+  --side-screen-type: .75rem;
+  display: block;
+  position: static;
+}
 .station-closeup { position: relative; flex: none; border-radius: 0; }
 .station-closeup .rack-hardware { display: none; }
-.station-closeup-head { padding-block: 9px 6px; }
-.writing-shelf { display: block; width: 100%; height: clamp(84px,12vh,145px); }
+.station-closeup-head { padding-block: 5px 4px; }
+.writing-shelf { display: block; width: 100%; height: clamp(78px, 11vh, 132px); }
 @media (min-width: 901px) {
-  .payload-hardware { height: clamp(345px,48vh,620px); aspect-ratio: auto; }
+  .payload-hardware { height: clamp(390px, 51vh, 620px); aspect-ratio: auto; }
 }
 @media (max-width: 900px) {
   .seated-sightline { flex: 0 0 24vh; min-height: 130px; }
@@ -532,5 +576,10 @@ html:has(.station-dialog[open]) { overflow: hidden; }
 }
 
 @media (max-width: 900px) {
-  .seated-sightline .scene-art { width: max(100%, 690px); left: 50%; transform: translateX(-50%); }
+  .seated-sightline .scene-art {
+    width: max(100%, 690px, 92vh);
+    max-width: none;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
