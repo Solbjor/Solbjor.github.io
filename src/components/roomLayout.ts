@@ -21,12 +21,12 @@ export function project(x: number, y: number, depth: number): [number, number] {
 
 // Banks share a floor datum and lateral spacing. Only the row depth changes.
 function bankPosition(side: -1 | 1, scale: number) {
-  const [x, y] = project(VANISH_X + side * 441, VANISH_Y + 405, scale)
+  const [x, y] = project(VANISH_X + side * 385, VANISH_Y + 405 + (scale < .6 ? -34 : 4), scale)
   return { x, y, scale }
 }
 export const BANKS = [
-  { ...bankPosition(-1, .512), bays: [{ id: 'missions', label: 'Missions', equipment: 'recorder' }, { id: null, label: 'Guidance', equipment: 'meters' }] },
-  { ...bankPosition(1, .512), bays: [{ id: 'systems', label: 'Systems', equipment: 'meters' }, { id: 'training', label: 'Training', equipment: 'scopes' }] },
+  { ...bankPosition(-1, .50), bays: [{ id: 'missions', label: 'Missions', equipment: 'recorder' }, { id: null, label: 'Guidance', equipment: 'meters' }] },
+  { ...bankPosition(1, .50), bays: [{ id: 'systems', label: 'Systems', equipment: 'meters' }, { id: 'training', label: 'Training', equipment: 'scopes' }] },
   { ...bankPosition(-1, .80), bays: [{ id: 'payloads', label: 'Payloads', equipment: 'payloads' }, { id: null, label: 'Telemetry', equipment: 'recorder' }] },
   { ...bankPosition(1, .80), bays: [{ id: null, label: 'Flight', equipment: 'channels' }, { id: 'comms', label: 'Comms', equipment: 'channels' }] },
 ] as const

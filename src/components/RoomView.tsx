@@ -86,6 +86,7 @@ export function RoomView({ header }: { header: ReactNode }) {
           <rect x="-4000" y="726" width="9440" height="12" className="r-desk" />
           <RoomMaterials />
           <RoomArchitecture />
+          <g transform={narrow ? undefined : "translate(72 8) scale(.9 .88)"}>
           <ProjectionCase x={396} y={80} width={648} height={338} />
           <svg x="400" y="84" width="640" height="330" viewBox="0 0 960 495" className="plot-screen">
             {mode === 'earth'
@@ -94,6 +95,8 @@ export function RoomView({ header }: { header: ReactNode }) {
           </svg>
           <rect x="400" y="84" width="640" height="330" fill="url(#scan)" className="r-scanlines" />
 
+          </g>
+          <g transform={narrow ? undefined : "translate(72 0) scale(.9 1)"}>
           <ProjectionCase x={166} y={100} width={210} height={270} />
           <ProjectionCase x={1064} y={100} width={210} height={270} />
           <rect x="168" y="102" width="206" height="266" fill="url(#scan)" className="r-scanlines" />
@@ -108,6 +111,7 @@ export function RoomView({ header }: { header: ReactNode }) {
             ))}
           </g>
 
+          </g>
           {BANKS.map((bank) => (
             <ConsoleBank bays={bank.bays} key={bank.bays[0]?.label} x={bank.x} y={bank.y} scale={bank.scale} />
           ))}
@@ -138,10 +142,10 @@ export function RoomView({ header }: { header: ReactNode }) {
           <button type="button" className="key key-small" aria-pressed={mode === 'earth'} onClick={() => setMode('earth')}>Earth map</button>
         </div>
 
-        <div className="side-screen side-left" style={at(166, 100, 210, 270)}>
+        <div className="side-screen side-left" style={at(72+166*.9, 100, 189, 270)}>
           {readout}
         </div>
-        <div className="side-screen side-right" style={at(1064, 100, 210, 270)}>
+        <div className="side-screen side-right" style={at(72+1064*.9, 100, 189, 270)}>
           {catalog}
         </div>
 

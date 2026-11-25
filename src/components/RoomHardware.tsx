@@ -32,12 +32,19 @@ export function ConsoleBank({ x, y, scale, bays }: BankProps) {
   const plane = (points: number[][]) => points.map(p => p.join(',')).join(' ')
   const faceDepth = .94
   const rear = .90
-  const edge = x < W / 2 ? 270 : -270
+  const leftBank = x < W / 2
+  const outside = leftBank ? -1 : 1
+  const aux = { label: '', equipment: (leftBank ? 'meters' : 'recorder') as Equipment }
+  const panels = [...bays.map((bay,i) => ({ ...bay, center: (i ? 1 : -1) * CONSOLE_BAY_OFFSET, mirror: i === 1 })),
+    { ...aux, center: outside * 3 * CONSOLE_BAY_OFFSET, mirror: !leftBank }]
+  const leftEdge = leftBank ? -542 : -270
+  const rightEdge = leftBank ? 270 : 542
+  const edge = leftBank ? rightEdge : leftEdge
   const faceOrigin = point(0, 0, faceDepth)
   return <g transform={`translate(${x} ${y}) scale(${scale})`} className="room-workstation instrument-materials" aria-hidden="true">
-    <ellipse cy="85" rx="278" ry="13" fill="url(#contact)" />
-    <polygon points={plane([point(-261,16,rear),point(261,16,rear),point(261,86,rear),point(-261,86,rear)])} fill="var(--steel-dark)" />
-    {[-260,-18,219].map(left => {
+    <ellipse cx={outside * 136} cy="85" rx="418" ry="13" fill="url(#contact)" />
+    <polygon points={plane([point(leftEdge+9,16,rear),point(rightEdge-9,16,rear),point(rightEdge-9,86,rear),point(leftEdge+9,86,rear)])} fill="var(--steel-dark)" />
+    {[leftEdge+10,-18,219,...(leftBank ? [-258] : [rightEdge-51])].map(left => {
       const right = left + 41
       const inside = x < W / 2 ? right : left
       return <g key={left}>
@@ -47,30 +54,30 @@ export function ConsoleBank({ x, y, scale, bays }: BankProps) {
       </g>
     })}
     <polygon points={plane([point(edge,-75,rear),point(edge,-75,faceDepth),point(edge,3,faceDepth),point(edge,15),point(edge,38),point(edge,86,rear)])} fill="var(--steel-dark)" />
-    <polygon points={plane([point(-270,-75,rear),point(270,-75,rear),point(270,-75,faceDepth),point(-270,-75,faceDepth)])} fill="var(--hood)" />
+    <polygon points={plane([point(leftEdge,-75,rear),point(rightEdge,-75,rear),point(rightEdge,-75,faceDepth),point(leftEdge,-75,faceDepth)])} fill="var(--hood)" />
     <g transform={`translate(${faceOrigin.join(' ')}) scale(${faceDepth})`}>
-      {bays.map((bay,i) => <g key={bay.label} transform={`translate(${i ? 136 : -136}) scale(${i ? -1 : 1} 1)`}>
+      {panels.map(bay => <g key={bay.center} transform={`translate(${bay.center}) scale(${bay.mirror ? -1 : 1} 1)`}>
         <rect x="-134" y="-75" width="270" height="79" fill="url(#payload-metal)" stroke="var(--hood)" strokeWidth="2" />
         <InstrumentPanel equipment={bay.equipment} />
       </g>)}
     </g>
-    <polygon points={plane([point(-270,3,faceDepth),point(270,3,faceDepth),point(270,15),point(-270,15)])} fill="var(--panel-hi)" stroke="var(--hood)" />
-    {bays.map((bay,i) => {
-      const center = (i ? 1 : -1) * CONSOLE_BAY_OFFSET
+    <polygon points={plane([point(leftEdge,3,faceDepth),point(rightEdge,3,faceDepth),point(rightEdge,15),point(leftEdge,15)])} fill="var(--panel-hi)" stroke="var(--hood)" />
+    {panels.map(bay => {
+      const center = bay.center
       const [bx,by] = point(center,3,faceDepth)
       // Affine tangent plane for the small controls on each half of the desk.
-      const transform = `matrix(${i ? -.97 : .97} 0 ${(center-bx)/30} ${(15-by)/30} ${bx} ${by})`
+      const transform = `matrix(${bay.mirror ? -.97 : .97} 0 ${(center-bx)/30} ${(15-by)/30} ${bx} ${by})`
       return <g key={bay.label} transform={transform}><DeckControls equipment={bay.equipment}/></g>
     })}
-    <rect x="-270" y="15" width="540" height="24" fill="var(--hood)" stroke="var(--steel-dark)" />
+    <rect x={leftEdge} y="15" width={rightEdge-leftEdge} height="24" fill="var(--hood)" stroke="var(--steel-dark)" />
     {bays.map((bay,i) => <g key={bay.label} transform={`translate(${(i ? 136 : -136) + (x < W / 2 ? 60 : -60)} 27)`}>
       <rect x="-61" y="-10" width="122" height="20" rx="1" fill="var(--plate)" />
       <text textAnchor="middle" y="5.7" fill="var(--plate-ink)" fontFamily="var(--f-sans)" fontWeight="750" fontSize="16" letterSpacing=".7">{bay.label.toUpperCase()}</text>
     </g>)}
-    {bays.map((bay,i) => {
+    {panels.map((bay,i) => {
       const offset = i ? -9 : 12
-      const distance = i ? 1.085 : 1.095
-      const [cx,cy] = point((i ? 136 : -136)+offset,86,distance)
+      const distance = i === 2 ? 1.06 : i ? 1.075 : 1.095
+      const [cx,cy] = point(bay.center+offset,86,distance)
       return <g key={bay.label} transform={`translate(${cx} ${cy}) scale(${distance})`}>
         <OperatorChair lean={i ? -4 : 5}/>
       </g>
