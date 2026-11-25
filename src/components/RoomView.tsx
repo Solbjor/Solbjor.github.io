@@ -1,7 +1,10 @@
-import { useState, useSyncExternalStore, type CSSProperties } from 'react'
+import { useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
 import { profile } from '../data/content'
 import { currentMission, missions, SOL, STATUS_LABEL, trajectoryPath, type Mission } from '../lib/missions'
 import { PlanetMark } from './Planet'
+import { Payloads } from './Payloads'
+import { ProjectionCase, RoomArchitecture, Workstation } from './RoomHardware'
+import './apollo.css'
 
 // The scene is drawn on a 1440 x 900 canvas; HTML overlays use the same coordinates.
 const W = 1440
@@ -14,12 +17,13 @@ const at = (x: number, y: number, w?: number, h?: number): CSSProperties => ({
 })
 
 const STATIONS = [
-  { id: 'missions', label: 'Missions', x: 470, y: 488, w: 160 },
-  { id: 'payloads', label: 'Payloads', x: 720, y: 488, w: 160 },
-  { id: 'systems', label: 'Systems', x: 970, y: 488, w: 160 },
-  { id: 'training', label: 'Training', x: 400, y: 606, w: 200 },
-  { id: 'comms', label: 'Comms', x: 1040, y: 606, w: 200, lit: true },
+  { id: 'missions', label: 'Missions', x: 390, y: 527, scale: 0.77 },
+  { id: 'systems', label: 'Systems', x: 720, y: 527, scale: 0.77 },
+  { id: 'training', label: 'Training', x: 1050, y: 527, scale: 0.77 },
+  { id: 'payloads', label: 'Payloads', x: 445, y: 656, scale: 1.05 },
+  { id: 'comms', label: 'Comms', x: 995, y: 656, scale: 1.05 },
 ]
+const PAYLOAD_STATION = STATIONS[3]!
 
 const ORBITS = missions.map((m) => Math.hypot(m.x - SOL.x, m.y - SOL.y))
 
@@ -50,6 +54,8 @@ function linkedMission(): string | null {
 export function RoomView() {
   const [selectedId, setSelectedId] = useState(() => linkedMission() ?? currentMission.id)
   const [zoomed, setZoomed] = useState(() => linkedMission() !== null)
+  const [stationOpen, setStationOpen] = useState(false)
+  const workstation = useRef<HTMLDialogElement>(null)
   const narrow = useSyncExternalStore(subscribeNarrow, isNarrow, () => false)
   const selected = missions.find((m) => m.id === selectedId) ?? currentMission
 
@@ -58,10 +64,18 @@ export function RoomView() {
     setZoomed(true)
   }
 
+  const enterPayloads = () => {
+    workstation.current?.showModal()
+    setStationOpen(true)
+  }
+
   return (
     <section id="top" className="flight" aria-labelledby="flight-name">
       <div className="scene-frame">
-      <div className="scene">
+      <div
+        className={`scene${stationOpen ? ' scene-station-open' : ''}`}
+        style={{ transformOrigin: `${PAYLOAD_STATION.x / W * 100}% ${PAYLOAD_STATION.y / H * 100}%` }}
+      >
         <svg
           viewBox={narrow ? '300 40 840 540' : `0 0 ${W} ${H}`}
           className="scene-art"
@@ -79,20 +93,8 @@ export function RoomView() {
           <rect x="1440" y="0" width="4000" height="740" className="r-wall" />
           <rect x="-4000" y="736" width="9440" height="4000" className="r-console" />
           <rect x="-4000" y="726" width="9440" height="12" className="r-desk" />
-          {/* room shell, one-point perspective */}
-          <polygon points="0,0 1440,0 1300,56 140,56" className="r-ceil" />
-          <polygon points="0,0 140,56 140,470 0,900" className="r-wall" />
-          <polygon points="1440,0 1300,56 1300,470 1440,900" className="r-wall" />
-          <polygon points="140,470 1300,470 1440,900 0,900" className="r-floor" />
-          <rect x="140" y="56" width="1160" height="414" className="r-front" />
-          <g className="r-lights">
-            {[300, 560, 880, 1140].map((x) => (
-              <rect key={x} x={x - 50} y="20" width="100" height="10" rx="2" />
-            ))}
-          </g>
-
-          {/* main screen: the trajectory */}
-          <rect x="396" y="80" width="648" height="338" rx="8" className="r-glass" />
+          <RoomArchitecture />
+          <ProjectionCase x={396} y={80} width={648} height={338} />
           <svg x="400" y="84" width="640" height="330" viewBox={`0 0 ${PLOT_W} ${PLOT_H}`} className="plot-screen">
             <clipPath id="screen-clip">
               <rect width={PLOT_W} height={PLOT_H} />
@@ -126,9 +128,8 @@ export function RoomView() {
           </svg>
           <rect x="400" y="84" width="640" height="330" fill="url(#scan)" className="r-scanlines" />
 
-          {/* side screens (contents are HTML overlays) */}
-          <rect x="166" y="100" width="210" height="270" rx="6" className="r-glass" />
-          <rect x="1064" y="100" width="210" height="270" rx="6" className="r-glass" />
+          <ProjectionCase x={166} y={100} width={210} height={270} />
+          <ProjectionCase x={1064} y={100} width={210} height={270} />
           <rect x="168" y="102" width="206" height="266" fill="url(#scan)" className="r-scanlines" />
           <rect x="1066" y="102" width="206" height="266" fill="url(#scan)" className="r-scanlines" />
           {/* status lamps beside each bezel */}
@@ -141,24 +142,8 @@ export function RoomView() {
             ))}
           </g>
 
-          {/* console tiers */}
-          <polygon points="300,478 1140,478 1172,528 268,528" className="r-desk" />
-          <polygon points="150,588 1290,588 1340,664 100,664" className="r-desk" />
-          {[318, 1062].map((x) => (
-            <g key={x}>
-              <rect x={x} y="484" width="60" height="22" rx="3" className="r-glass-sm" />
-              <circle cx={x + 14} cy="495" r="4" className="lamp-on" />
-              <circle cx={x + 30} cy="495" r="4" className="lamp-off" />
-              <circle cx={x + 46} cy="495" r="4" className="lamp-on" />
-            </g>
-          ))}
-          {[190, 640, 1140].map((x, i) => (
-            <g key={x}>
-              <rect x={x} y="598" width="110" height="34" rx="3" className="r-glass-sm" />
-              <rect x={x + 10} y="606" width={60 - i * 12} height="5" className="r-trace" />
-              <rect x={x + 10} y="616" width={42 + i * 14} height="5" className="r-trace" />
-              <circle cx={x + 95} cy="615" r="4" className={i === 2 ? 'lamp-alert' : 'lamp-on'} />
-            </g>
+          {STATIONS.map((station) => (
+            <Workstation key={station.id} x={station.x} y={station.y} scale={station.scale} />
           ))}
           {/* your flight console */}
           <polygon points="0,736 1440,736 1440,900 0,900" className="r-console" />
@@ -167,16 +152,18 @@ export function RoomView() {
 
         {/* stations: real navigation set into the consoles */}
         <nav aria-label="Stations" className="stations">
-          {STATIONS.map((s) => (
-            <a
-              key={s.id}
-              href={`#${s.id}`}
-              className={`station${s.lit ? ' station-lit' : ''}`}
-              style={at(s.x - s.w / 2, s.y, s.w)}
-            >
-              {s.label}
-            </a>
-          ))}
+          {STATIONS.map((station) => {
+            const bounds = at(station.x - 132 * station.scale, station.y - 83 * station.scale, 264 * station.scale, 145 * station.scale)
+            return station.id === 'payloads' ? (
+              <button key={station.id} type="button" className="station-hit" style={bounds} aria-haspopup="dialog" onClick={enterPayloads}>
+                <span className="station-name station-name-interactive">{station.label}</span>
+              </button>
+            ) : (
+              <a key={station.id} className="station-hit" style={bounds} href={`#${station.id}`}>
+                <span className="station-name">{station.label}</span>
+              </a>
+            )
+          })}
         </nav>
 
         {zoomed && (
@@ -207,6 +194,33 @@ export function RoomView() {
         </div>
       </div>
       </div>
+
+      <button type="button" className="key mobile-payload-station" aria-haspopup="dialog" onClick={enterPayloads}>
+        Open Payloads workstation
+      </button>
+
+      <dialog
+        ref={workstation}
+        className="station-dialog"
+        aria-labelledby="payload-workstation-h"
+        onClose={() => setStationOpen(false)}
+      >
+        <div className="station-closeup">
+          <div className="rack-hardware" aria-hidden="true">
+            <span className="rack-screw" />
+            <span className="rack-vent" />
+            <span className="rack-vent" />
+            <span className="rack-screw" />
+          </div>
+          <div className="station-closeup-head">
+            <h2 id="payload-workstation-h" className="placard">Payloads workstation</h2>
+            <button type="button" className="key" autoFocus onClick={() => workstation.current?.close()}>
+              Return to room
+            </button>
+          </div>
+          {stationOpen && <Payloads workstation />}
+        </div>
+      </dialog>
 
       {/* small screens: the side screens move below the scene */}
       <div className="scene-fallback">

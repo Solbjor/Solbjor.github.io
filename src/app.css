@@ -279,12 +279,6 @@ main {
 .r-front {
   fill: color-mix(in srgb, var(--enamel) 75%, var(--room));
 }
-.r-floor {
-  fill: color-mix(in srgb, var(--room) 80%, var(--enamel));
-}
-.r-lights rect {
-  fill: color-mix(in srgb, var(--plate) 55%, var(--room));
-}
 .r-desk {
   fill: var(--enamel-hi);
   stroke: var(--enamel-edge);
@@ -294,9 +288,6 @@ main {
   fill: var(--glass);
   stroke: color-mix(in srgb, var(--enamel-edge) 60%, #000);
   stroke-width: 4;
-}
-.r-glass-sm {
-  fill: var(--glass);
 }
 .r-console {
   fill: var(--plate);
@@ -354,34 +345,6 @@ main {
   fill: none;
   stroke: var(--signal);
   stroke-width: 2.5;
-}
-
-/* stations set into the consoles */
-.station {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  min-height: 2.6cqw;
-  background: var(--plate);
-  color: var(--plate-ink);
-  border-radius: 0.25cqw;
-  font: 700 max(1.05cqw, 11px)/1 var(--f-sans);
-  font-stretch: 125%;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-decoration: none;
-  box-shadow: 0 0.2cqw 0.5cqw -0.1cqw rgba(0, 0, 0, 0.5);
-  transition:
-    background-color 160ms cubic-bezier(0.16, 1, 0.3, 1),
-    color 160ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-.station:hover {
-  background: var(--phos);
-  color: var(--glass);
-}
-.station-lit {
-  background: var(--signal);
-  color: var(--signal-ink);
 }
 
 /* side screens */
@@ -906,9 +869,6 @@ main {
 }
 .lamp-alert {
   fill: var(--signal);
-}
-.r-trace {
-  fill: var(--phos-dim);
 }
 .plot-screen {
   overflow: hidden;
