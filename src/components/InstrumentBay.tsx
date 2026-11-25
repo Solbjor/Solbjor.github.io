@@ -18,7 +18,8 @@ function ScopeTube({ x, trace }: { x: number; trace: string }) {
     <rect x="5" y="5" width="46" height="35" rx="7" fill="url(#payload-glass)" />
     <path d="M10 14h34m-34 8h34m-34 8h34m-25-19v23m12-23v23" stroke="#a5c7d1" opacity=".18" strokeWidth=".8" />
     <path d={trace} fill="none" stroke="#afcdda" strokeWidth="1.3" />
-    <path d="M8 12q1-5 7-5h28q-14 2-35 9Z" fill="#edf6fa" opacity=".14" />
+    <path d="M8 13q0-6 6-6 15-2 31 1l-2 2q-18-2-35 5Z" fill="#e4edf2" opacity=".19" />
+    <path d="M47 25q3 11-4 12H31" fill="none" stroke="#bed5de" opacity=".24" />
   </g>
 }
 
@@ -27,6 +28,11 @@ export function InstrumentMaterials() {
     <defs className="instrument-materials">
       <linearGradient id="payload-metal" x2=".15" y2="1">
         <stop stopColor="var(--panel-hi)" /><stop offset=".82" stopColor="var(--panel-lo)" /><stop offset="1" stopColor="var(--panel-hi)" />
+      </linearGradient>
+      <linearGradient id="upholstery" x2=".12" y2="1">
+        <stop stopColor="color-mix(in srgb, var(--enamel-hi) 30%, #aaa99a)" />
+        <stop offset=".22" stopColor="color-mix(in srgb, var(--enamel-hi) 30%, #868779)" />
+        <stop offset="1" stopColor="color-mix(in srgb, var(--enamel-hi) 30%, #52564e)" />
       </linearGradient>
       <radialGradient id="payload-glass" cx=".45" cy=".4" r=".65">
         <stop stopColor="#456575" /><stop offset=".77" stopColor="#2e4a59" /><stop offset="1" stopColor="#14252b" />
@@ -50,13 +56,15 @@ export type Equipment = 'scopes' | 'meters' | 'channels' | 'recorder'
 
 export function InstrumentBay({ x, equipment }: { x: number; equipment: Equipment }) {
   return <g transform={`translate(${x} 0) scale(${x > 0 ? -1 : 1} 1)`} className="instrument-materials">
-    <ellipse cx="4" cy="84" rx="124" ry="8" fill="#121511" opacity=".33" />
+    <ellipse cx="4" cy="84" rx="124" ry="8" fill="url(#contact)" />
     <path d="M-116 45H129V68H-116Z" fill="#222720" />
     <path d="M-121 45h46v39h-46zm215 0h32v39H94Z" fill="var(--steel-dark)" stroke="var(--enamel-edge)" />
+    <rect x="-116" y="49" width="242" height="16" fill="url(#junction)" />
     <path d="M-114 54h33v23h-33zm216-1h18v25h-18Z" fill="var(--enamel)" />
     <path d="M-106-87H135v15h-249Z" fill="var(--hood)" />
     <path d="M-106-87l-8 15-8 75 9-5 11-77Z" fill="var(--steel-dark)" />
     <path d="M-113-72H135V2h-254Z" fill="url(#payload-metal)" stroke="var(--hood)" strokeWidth="3" />
+    <path d="M-106-87H135V2h-254l6-74Z" fill="url(#surface-grain)" />
     <path d="M-106-68H132M-69-66v62m138-62v62" fill="none" stroke="#484c44" opacity=".65" />
     {Array.from({ length: 7 }, (_, i) => <path key={i} d={`M-104 ${-57 + i * 4}h27`} stroke="#424940" strokeWidth="2" />)}
     <ScopeTube x={-62} trace="M10 26h6l5-9 5 12 5-7h13" />
@@ -86,12 +94,14 @@ export function InstrumentBay({ x, equipment }: { x: number; equipment: Equipmen
 
 export function OperatorChair() {
   return <g transform="translate(0 17)">
-    <ellipse cy="69" rx="40" ry="7" fill="#181a16" opacity=".4" />
+    <ellipse cy="69" rx="40" ry="7" fill="url(#contact)" />
     <path d="M0 38v24m0-2-32 8m32-8 32 8m-32-8 9 14" fill="none" stroke="#848982" strokeWidth="4" />
     {[-30,30,9].map(x => <ellipse key={x} cx={x} cy={x === 9 ? 74 : 69} rx="4" ry="3" fill="#252724"/>)}
     <path d="M-29 24h58l7 19q-35 8-72 0Z" fill="color-mix(in srgb, var(--enamel-hi) 32%, #696e67)" stroke="#3d403a" strokeWidth="2"/>
     <path d="M-35 41v-15h9m61 15v-15h-9M-20 38v10m40-10v10" fill="none" stroke="#a0a399" strokeWidth="3"/>
-    <rect x="-30" y="2" width="60" height="34" rx="5" fill="color-mix(in srgb, var(--enamel-hi) 32%, #696e67)" stroke="#373b35" strokeWidth="2"/>
-    <path d="M-26 31V7h51v24" fill="none" stroke="#adaea1" opacity=".45" />
+    <path d="M-25 44l2-20m48 20-2-20" stroke="#7f867f" strokeWidth="4" />
+    <path d="M-31 5Q0-2 31 5l-2 24q-1 4-6 5-23 5-46 0-5-1-6-5Z"
+      fill="url(#upholstery)" stroke="#444940" strokeWidth="1.4" />
+    <path d="M-27 9q27-6 54 0m-51 21q24 5 48 0" fill="none" stroke="#adaea1" opacity=".45" />
   </g>
 }
