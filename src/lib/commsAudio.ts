@@ -10,9 +10,9 @@ const CLIPS = [
   'audio/sts-go-at-throttle-up.mp3',
 ]
 
-const CLIP_VOLUME = 0.32
-const HISS_GAIN = 0.012
-const BEEP_GAIN = 0.05
+const CLIP_VOLUME = 0.08
+const HISS_GAIN = 0.003
+const BEEP_GAIN = 0.0125
 const GAP_MIN_MS = 7000
 const GAP_MAX_MS = 15000
 
@@ -21,6 +21,8 @@ export class CommsAudio {
   private hiss: AudioBufferSourceNode | null = null
   private clip: HTMLAudioElement | null = null
   private timer: number | undefined
+  private keySound: AudioBuffer | null = null
+  private keySource: AudioBufferSourceNode | null = null
   private next = 0
   private running = false
 
@@ -30,17 +32,60 @@ export class CommsAudio {
     this.ctx ??= new AudioContext()
     void this.ctx.resume()
     this.startHiss()
+    this.playKey(false)
+    document.addEventListener('click', this.onControlClick, true)
     this.timer = window.setTimeout(() => this.transmit(), 1200)
   }
 
   stop() {
     this.running = false
+    document.removeEventListener('click', this.onControlClick, true)
+    this.keySource?.stop()
+    this.keySource = null
     window.clearTimeout(this.timer)
     this.clip?.pause()
     this.clip = null
     this.hiss?.stop()
     this.hiss = null
     void this.ctx?.suspend()
+  }
+
+  // Native click unifies pointer, touch and keyboard activation. A label's
+  // forwarded radio click is the only event that matches its switch.
+  private onControlClick = (event: MouseEvent) => {
+    if (!(event.target instanceof Element)) return
+    const key = event.target.closest('button, a.key, a.station-hit, input[type="radio"]')
+    if (!key || key.matches(':disabled, [aria-disabled="true"], .audio-key')) return
+    this.playKey(key.matches('.payload-power, input[type="radio"]'))
+  }
+
+  private playKey(latching: boolean) {
+    const ctx = this.ctx!
+    if (!this.keySound) {
+      const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * .044), ctx.sampleRate)
+      const samples = buffer.getChannelData(0)
+      // A muted spring impact followed by the softer contact settling.
+      for (let i = 0; i < samples.length; i++) {
+        const t = i / ctx.sampleRate
+        const attack = Math.min(t / .001, 1)
+        const impact = Math.sin(2 * Math.PI * 610 * t) + .5 * Math.sin(2 * Math.PI * 1170 * t)
+        const settle = t > .009 ? .38 * Math.sin(2 * Math.PI * 340 * (t - .009)) * Math.exp(-210 * (t - .009)) : 0
+        samples[i] = .022 * attack * (impact * Math.exp(-240 * t) + settle)
+      }
+      this.keySound = buffer
+    }
+    // One voice keeps rapid channel changes at the same level as one press.
+    this.keySource?.stop()
+    const src = ctx.createBufferSource()
+    src.buffer = this.keySound
+    src.playbackRate.value = latching ? .75 : 1
+    src.connect(ctx.destination)
+    this.keySource = src
+    src.onended = () => {
+      src.disconnect()
+      if (this.keySource === src) this.keySource = null
+    }
+    src.start()
   }
 
   private startHiss() {

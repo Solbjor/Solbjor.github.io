@@ -16,7 +16,7 @@ function AudioKey() {
   }
 
   return (
-    <button type="button" className="key key-small audio-key" aria-pressed={on} onClick={toggle}>
+    <button type="button" className="key key-small audio-key" title="Toggle radio communications and console button sounds" aria-pressed={on} onClick={toggle}>
       <span className={`lamp ${on ? 'lamp-landed' : 'lamp-complete'}`} aria-hidden="true" />
       Comms audio {on ? 'on' : 'off'}
     </button>

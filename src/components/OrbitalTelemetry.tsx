@@ -68,7 +68,7 @@ export function OrbitalTelemetry({ selected, showRoute, paused, onSelect }: {
       </defs>
       <g className="orbits">
         <ellipse cx={SOL.x} cy={SOL.y} rx={EARTH_ORBIT.rx} ry={EARTH_ORBIT.ry} className="earth-orbit" />
-        {orbits.map(({ planet, rx, ry }) => (
+        {orbits.filter(({ planet }) => planet.mission.featured || planet.id === selected.id).map(({ planet, rx, ry }) => (
           <ellipse key={planet.id} cx={SOL.x} cy={SOL.y} rx={rx} ry={ry} className={planet.id === selected.id ? 'orbit-selected' : undefined} />
         ))}
       </g>
