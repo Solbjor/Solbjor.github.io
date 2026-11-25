@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { profile } from '../data/content'
 import { CommsAudio } from '../lib/commsAudio'
 import { WATCHES, type Watch } from '../lib/useWatch'
 
@@ -24,14 +23,6 @@ function AudioKey() {
   )
 }
 
-const SECTIONS = [
-  { id: 'missions', label: 'Missions' },
-  { id: 'payloads', label: 'Payloads' },
-  { id: 'systems', label: 'Systems' },
-  { id: 'training', label: 'Training' },
-  { id: 'comms', label: 'Comms' },
-]
-
 interface Props {
   watch: Watch
   onWatch: (w: Watch) => void
@@ -40,22 +31,10 @@ interface Props {
 export function Header({ watch, onWatch }: Props) {
   return (
     <header className="room-head">
-      <a className="plate" href="#top" aria-label={`${profile.name}, back to top`}>
+      <span className="plate">
         <span className="plate-sun" aria-hidden="true" />
         Sol <span aria-hidden="true">·</span> Home
-      </a>
-
-      <nav aria-label="Consoles" className="head-nav">
-        <ul>
-          {SECTIONS.map((s) => (
-            <li key={s.id}>
-              <a className="key" href={`#${s.id}`}>
-                {s.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      </span>
 
       <div className="head-controls">
       <AudioKey />

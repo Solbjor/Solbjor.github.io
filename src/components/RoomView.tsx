@@ -164,8 +164,8 @@ export function RoomView({ header }: { header: ReactNode }) {
         </nav>
 
         <div className="telemetry-modes" role="group" aria-label="Main telemetry screen mode">
-          <button type="button" className="key key-small" aria-pressed={mode === 'earth'} onClick={() => setMode('earth')}>Earth map</button>
           <button type="button" className="key key-small" aria-pressed={mode === 'solar'} onClick={() => setMode('solar')}>Solar system</button>
+          <button type="button" className="key key-small" aria-pressed={mode === 'earth'} onClick={() => setMode('earth')}>Earth map</button>
         </div>
 
         <div className="side-screen side-left" style={at(166, 100, 210, 270)}>

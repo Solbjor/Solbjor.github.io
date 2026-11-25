@@ -149,16 +149,17 @@ main {
 /* ---------- Header ---------- */
 .room-head {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: var(--space-5);
   padding-block: var(--space-4);
   border-bottom: var(--bezel) solid var(--enamel-edge);
 }
-.head-nav ul {
+.head-controls {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-end;
   gap: var(--space-2);
 }
 .watch-switch {
@@ -302,11 +303,13 @@ main {
   stroke: var(--phos-dim);
 }
 .sol {
-  fill: var(--phos);
+  fill: #ffb24a;
+  stroke: #a85b1f;
+  stroke-width: 1.5;
 }
 .sol-halo {
   fill: none;
-  stroke: var(--phos-dim);
+  stroke: #c67c2b;
   stroke-width: 1.5;
 }
 .telemetry-label,
@@ -344,7 +347,11 @@ main {
 }
 .earth-disc { fill: #4988b4; }
 .earth-continents { fill: #9fc590; }
-.moon-disc { fill: var(--text); }
+.moon-disc {
+  fill: #d4d9e0;
+  stroke: #606977;
+  stroke-width: 1;
+}
 .earth-name {
   fill: var(--text);
   font: 600 13px var(--f-data);
@@ -354,9 +361,9 @@ main {
 }
 .flight-legs { pointer-events: none; }
 .flight-legs path { fill: none; stroke-width: 2.5; }
-.flight-leg-outbound { stroke: var(--phos); }
+.flight-leg-outbound { stroke: var(--outbound-route); }
 .flight-leg-return { stroke: var(--signal); stroke-dasharray: 7 4; }
-.outbound-arrow { fill: var(--phos); }
+.outbound-arrow { fill: var(--outbound-route); }
 .return-arrow { fill: var(--signal); }
 .map-water { fill: color-mix(in srgb, var(--glass) 91%, var(--phos)); }
 .map-land { fill: color-mix(in srgb, var(--phos) 70%, var(--glass)); }
@@ -1046,16 +1053,6 @@ main {
   .glass-form {
     padding: var(--space-4);
   }
-  .head-nav ul {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    margin-inline: calc(var(--gutter) * -1);
-    padding-inline: var(--gutter);
-  }
-  .head-nav .key {
-    flex: none;
-  }
   .room-head {
     gap: var(--space-3);
     padding-block: var(--space-3);
@@ -1067,6 +1064,9 @@ main {
 @media (max-width: 560px) {
   .room-head {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .head-controls {
+    justify-content: flex-start;
   }
   .watch-switch {
     justify-content: space-between;

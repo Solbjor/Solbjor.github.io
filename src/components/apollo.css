@@ -328,10 +328,6 @@ html:has(.station-dialog[open]) { overflow: hidden; }
   }
 }
 
-@media (max-width: 720px) {
-  .flight-viewport .head-nav ul { justify-content: flex-start; }
-}
-
 .telemetry-modes {
   position: absolute;
   z-index: 2;
