@@ -1,9 +1,11 @@
-import { useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
-import { profile } from '../data/content'
-import { currentMission, missions, SOL, STATUS_LABEL, trajectoryPath, type Mission } from '../lib/missions'
-import { PlanetMark } from './Planet'
+import { useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
+import { profile, projects, type Project } from '../data/content'
+import { currentMission, STATUS_LABEL } from '../lib/missions'
+import { jobPlanets, type TelemetryPlanet } from '../lib/telemetry'
+import { EarthMap } from './EarthMap'
+import { OrbitalTelemetry } from './OrbitalTelemetry'
 import { Payloads } from './Payloads'
-import { ProjectionCase, RoomArchitecture, Workstation } from './RoomHardware'
+import { CONSOLE_BAY_OFFSET, ConsoleBank, ControllerChair, ProjectionCase, RoomArchitecture } from './RoomHardware'
 import './apollo.css'
 
 // The scene is drawn on a 1440 x 900 canvas; HTML overlays use the same coordinates.
@@ -16,16 +18,21 @@ const at = (x: number, y: number, w?: number, h?: number): CSSProperties => ({
   ...(h !== undefined && { height: `${(h / H) * 100}%` }),
 })
 
-const STATIONS = [
-  { id: 'missions', label: 'Missions', x: 390, y: 527, scale: 0.77 },
-  { id: 'systems', label: 'Systems', x: 720, y: 527, scale: 0.77 },
-  { id: 'training', label: 'Training', x: 1050, y: 527, scale: 0.77 },
-  { id: 'payloads', label: 'Payloads', x: 445, y: 656, scale: 1.05 },
-  { id: 'comms', label: 'Comms', x: 995, y: 656, scale: 1.05 },
+const BANKS = [
+  { x: 433, y: 477, scale: 0.65, bays: [{ id: 'missions', label: 'Missions' }, { id: null, label: 'Guidance' }] },
+  { x: 1007, y: 477, scale: 0.65, bays: [{ id: 'systems', label: 'Systems' }, { id: 'training', label: 'Training' }] },
+  { x: 409, y: 623, scale: 0.77, bays: [{ id: 'payloads', label: 'Payloads' }, { id: null, label: 'Telemetry' }] },
+  { x: 1031, y: 623, scale: 0.77, bays: [{ id: null, label: 'Flight' }, { id: 'comms', label: 'Comms' }] },
 ]
-const PAYLOAD_STATION = STATIONS[3]!
-
-const ORBITS = missions.map((m) => Math.hypot(m.x - SOL.x, m.y - SOL.y))
+const STATIONS = BANKS.flatMap(({ x, y, scale, bays }) =>
+  bays.map((bay, index) => ({
+    ...bay,
+    x: x + (index === 0 ? -1 : 1) * CONSOLE_BAY_OFFSET * scale,
+    y,
+    scale,
+  })),
+)
+const PAYLOAD_STATION = STATIONS.find(({ id }) => id === 'payloads')!
 
 // On phones the room is cropped to the front wall so the big screen reads at a usable size.
 const NARROW = '(max-width: 720px)'
@@ -36,32 +43,37 @@ function subscribeNarrow(cb: () => void) {
 }
 const isNarrow = () => window.matchMedia(NARROW).matches
 
-// Zooming the front screen onto one planet: scale around the planet, clamped to the plot.
-const PLOT_W = 960
-const PLOT_H = 495
-function zoomTransform(m: Mission, ZOOM: number, centerY = 0.5) {
-  const tx = Math.min(0, Math.max(PLOT_W - PLOT_W * ZOOM, PLOT_W / 2 - m.x * ZOOM))
-  const ty = Math.min(0, Math.max(PLOT_H - PLOT_H * ZOOM, PLOT_H * centerY - m.y * ZOOM))
-  return `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) scale(${ZOOM})`
-}
-
-// Deep link: ?mission=<id> opens the front screen zoomed on that mission.
+// Deep link: ?mission=<id> opens the solar screen with that mission route.
 function linkedMission(): string | null {
   const id = new URLSearchParams(window.location.search).get('mission')
-  return id && missions.some((m) => m.id === id) ? id : null
+  return id && jobPlanets.some((planet) => planet.id === id) ? id : null
 }
 
-export function RoomView() {
+export function RoomView({ header }: { header: ReactNode }) {
   const [selectedId, setSelectedId] = useState(() => linkedMission() ?? currentMission.id)
-  const [zoomed, setZoomed] = useState(() => linkedMission() !== null)
+  const [mode, setMode] = useState<'earth' | 'solar'>('solar')
+  const [selectedProject, setSelectedProject] = useState(0)
+  const [showRoute, setShowRoute] = useState(() => linkedMission() !== null)
   const [stationOpen, setStationOpen] = useState(false)
   const workstation = useRef<HTMLDialogElement>(null)
   const narrow = useSyncExternalStore(subscribeNarrow, isNarrow, () => false)
-  const selected = missions.find((m) => m.id === selectedId) ?? currentMission
+  const selected = jobPlanets.find((planet) => planet.id === selectedId)!
+  const [orbitsPaused, setOrbitsPaused] = useState(false)
+  const catalogProps = {
+    selectedId, onSelect: select, orbitsPaused, setOrbitsPaused,
+    clearRoute: mode === 'solar' && showRoute ? () => setShowRoute(false) : undefined,
+  }
+  const readout = mode === 'earth'
+    ? <ProjectReadout project={projects[selectedProject]!} />
+    : <Readout planet={selected} />
+  const catalog = mode === 'earth'
+    ? <ProjectCatalog selected={selectedProject} onSelect={setSelectedProject} />
+    : <PlanetCatalog {...catalogProps} />
 
-  const select = (id: string) => {
+  function select(id: string) {
     setSelectedId(id)
-    setZoomed(true)
+    setMode('solar')
+    setShowRoute(true)
   }
 
   const enterPayloads = () => {
@@ -71,6 +83,8 @@ export function RoomView() {
 
   return (
     <section id="top" className="flight" aria-labelledby="flight-name">
+      <div className="flight-viewport">
+      {header}
       <div className="scene-frame">
       <div
         className={`scene${stationOpen ? ' scene-station-open' : ''}`}
@@ -78,9 +92,10 @@ export function RoomView() {
       >
         <svg
           viewBox={narrow ? '300 40 840 540' : `0 0 ${W} ${H}`}
+          preserveAspectRatio={narrow ? 'xMidYMid slice' : 'none'}
           className="scene-art"
           role="img"
-          aria-label="Mission control room seen from the back row. The front-wall screen plots Andrew's career trajectory, landed at his current mission."
+          aria-label="Mission control room seen from the back row. The front-wall screen shows either a Mercator Earth map or a solar system with Andrew's job planets."
         >
           <defs>
             <pattern id="scan" width="4" height="3" patternUnits="userSpaceOnUse">
@@ -95,36 +110,10 @@ export function RoomView() {
           <rect x="-4000" y="726" width="9440" height="12" className="r-desk" />
           <RoomArchitecture />
           <ProjectionCase x={396} y={80} width={648} height={338} />
-          <svg x="400" y="84" width="640" height="330" viewBox={`0 0 ${PLOT_W} ${PLOT_H}`} className="plot-screen">
-            <clipPath id="screen-clip">
-              <rect width={PLOT_W} height={PLOT_H} />
-            </clipPath>
-            <g clipPath="url(#screen-clip)">
-            <g className={`plot-zoom${zoomed ? ' is-zoomed' : ''}`} style={{ transform: zoomed ? zoomTransform(selected, narrow ? 4.2 : 2.4, narrow ? 0.46 : 0.5) : 'none' }}>
-            <g className="orbits">
-              {ORBITS.map((r, i) => (
-                <circle key={i} cx={SOL.x} cy={SOL.y} r={r} />
-              ))}
-            </g>
-            <circle cx={SOL.x} cy={SOL.y} r={56} className="sol" />
-            <text x={58} y={SOL.y + 5} className="plot-label sol-label">SOL</text>
-            <path d={trajectoryPath(missions)} className="trajectory" pathLength={1} />
-            {missions.map((m, i) => (
-              // Pointer shortcut only: the mission list on the side screen is the keyboard/AT control.
-              <g key={m.id} className="plot-hit" onClick={() => select(m.id)}>
-                <PlanetMark m={m} selected={m.id === selected.id} />
-                <text
-                  x={m.status === 'landed' ? m.x + m.r + 24 : m.x}
-                  y={m.status === 'landed' ? m.y + m.r + 58 : i % 2 === 1 || missions[i + 1]?.status === 'landed' ? m.y - m.r - 22 : m.y + m.r + 20}
-                  textAnchor={m.status === 'landed' ? 'end' : 'middle'}
-                  className={`plot-label${m.status === 'landed' ? ' plot-label-now' : ''}${m.id === selected.id ? ' plot-label-selected' : ''}`}
-                >
-                  {m.status === 'landed' ? `NOW · ${m.callsign.toUpperCase()}` : `${m.callsign.split(' ')[0]!.toUpperCase()} '${m.start.slice(-2)}`}
-                </text>
-              </g>
-            ))}
-            </g>
-            </g>
+          <svg x="400" y="84" width="640" height="330" viewBox="0 0 960 495" className="plot-screen">
+            {mode === 'earth'
+              ? <EarthMap selectedProject={selectedProject} onSelect={setSelectedProject} />
+              : <OrbitalTelemetry selected={selected} showRoute={showRoute} paused={orbitsPaused} onSelect={select} />}
           </svg>
           <rect x="400" y="84" width="640" height="330" fill="url(#scan)" className="r-scanlines" />
 
@@ -142,8 +131,11 @@ export function RoomView() {
             ))}
           </g>
 
+          {BANKS.map((bank) => (
+            <ConsoleBank key={bank.bays[0]?.label} x={bank.x} y={bank.y} scale={bank.scale} />
+          ))}
           {STATIONS.map((station) => (
-            <Workstation key={station.id} x={station.x} y={station.y} scale={station.scale} />
+            <ControllerChair key={station.label} x={station.x} y={station.y + 43 * station.scale} scale={station.scale} />
           ))}
           {/* your flight console */}
           <polygon points="0,736 1440,736 1440,900 0,900" className="r-console" />
@@ -153,7 +145,12 @@ export function RoomView() {
         {/* stations: real navigation set into the consoles */}
         <nav aria-label="Stations" className="stations">
           {STATIONS.map((station) => {
-            const bounds = at(station.x - 132 * station.scale, station.y - 83 * station.scale, 264 * station.scale, 145 * station.scale)
+            const bounds = at(station.x - CONSOLE_BAY_OFFSET * station.scale, station.y - 83 * station.scale, 2 * CONSOLE_BAY_OFFSET * station.scale, 145 * station.scale)
+            if (station.id === null) {
+              return <span key={station.label} className="station-hit station-passive" style={bounds} aria-hidden="true">
+                <span className="station-name">{station.label}</span>
+              </span>
+            }
             return station.id === 'payloads' ? (
               <button key={station.id} type="button" className="station-hit" style={bounds} aria-haspopup="dialog" onClick={enterPayloads}>
                 <span className="station-name station-name-interactive">{station.label}</span>
@@ -166,18 +163,16 @@ export function RoomView() {
           })}
         </nav>
 
-        {zoomed && (
-          <button type="button" className="zoom-out" style={at(880, 372, 150)} onClick={() => setZoomed(false)}>
-            <span className="zoom-out-long">Full trajectory</span>
-            <span className="zoom-out-short">Full view</span>
-          </button>
-        )}
+        <div className="telemetry-modes" role="group" aria-label="Main telemetry screen mode">
+          <button type="button" className="key key-small" aria-pressed={mode === 'earth'} onClick={() => setMode('earth')}>Earth map</button>
+          <button type="button" className="key key-small" aria-pressed={mode === 'solar'} onClick={() => setMode('solar')}>Solar system</button>
+        </div>
 
         <div className="side-screen side-left" style={at(166, 100, 210, 270)}>
-          <Readout m={selected} />
+          {readout}
         </div>
         <div className="side-screen side-right" style={at(1064, 100, 210, 270)}>
-          <MissionList selectedId={selected.id} onSelect={select} />
+          {catalog}
         </div>
 
         <div className="ident" style={at(0, 746, W)}>
@@ -193,11 +188,22 @@ export function RoomView() {
           </a>
         </div>
       </div>
+        <div className="room-startup" aria-hidden="true">
+          <div className="startup-bezel">
+            <div className="startup-crt">
+              <span>FLIGHT CONTROL</span>
+              <span>PROJECTOR CHECK</span>
+              <span>TELEMETRY ONLINE</span>
+            </div>
+            <i className="startup-lamp" />
+          </div>
+        </div>
       </div>
 
       <button type="button" className="key mobile-payload-station" aria-haspopup="dialog" onClick={enterPayloads}>
         Open Payloads workstation
       </button>
+      </div>
 
       <dialog
         ref={workstation}
@@ -225,22 +231,48 @@ export function RoomView() {
       {/* small screens: the side screens move below the scene */}
       <div className="scene-fallback">
         <div className="glass glass-readout">
-          <Readout m={selected} />
+          {readout}
         </div>
         <div className="glass glass-readout">
-          <MissionList selectedId={selected.id} onSelect={select} />
-          {zoomed && (
-            <button type="button" className="key key-small fallback-zoom-out" onClick={() => setZoomed(false)}>
-              Full trajectory
-            </button>
-          )}
+          {catalog}
         </div>
       </div>
     </section>
   )
 }
 
-function Readout({ m }: { m: Mission }) {
+function ProjectReadout({ project }: { project: Project }) {
+  return (
+    <div className="readout" aria-live="polite">
+      <p className="status">Project</p>
+      <p className="readout-role">{project.name}</p>
+      <p className="project-map-summary">{project.description}</p>
+      <a className="readout-link" href={project.link ?? '#payloads'}>
+        {project.link ? 'Project details' : 'Payloads gallery'}
+      </a>
+    </div>
+  )
+}
+
+function ProjectCatalog({ selected, onSelect }: { selected: number; onSelect: (index: number) => void }) {
+  return (
+    <div className="mission-list">
+      <p className="mission-list-head">Projects</p>
+      <div role="group" aria-label="Select a project">
+        {projects.map((project, index) => (
+          <button key={project.name} type="button" aria-pressed={index === selected} onClick={() => onSelect(index)}>
+            {project.mapMarker && <span className="ml-year" aria-hidden="true">{index + 1}</span>}
+            <span className="ml-name">{project.name}</span>
+          </button>
+        ))}
+      </div>
+      <p className="project-map-note">Illustrative marker locations</p>
+    </div>
+  )
+}
+
+function Readout({ planet }: { planet: TelemetryPlanet }) {
+  const m = planet.mission
   return (
     <div className="readout" aria-live="polite">
       <p className={`status status-${m.status}`}>
@@ -260,22 +292,29 @@ function Readout({ m }: { m: Mission }) {
   )
 }
 
-function MissionList({ selectedId, onSelect }: { selectedId: string; onSelect: (id: string) => void }) {
+function PlanetCatalog({ selectedId, onSelect, orbitsPaused, setOrbitsPaused, clearRoute }: {
+  selectedId: string
+  onSelect: (id: string) => void
+  orbitsPaused: boolean
+  setOrbitsPaused: (paused: boolean) => void
+  clearRoute?: () => void
+}) {
   return (
-    <div className="mission-list" role="group" aria-label="Select a mission">
-      <p className="mission-list-head">Missions flown</p>
-      {[...missions].reverse().map((m) => (
-        <button
-          key={m.id}
-          type="button"
-          aria-pressed={m.id === selectedId}
-          onClick={() => onSelect(m.id)}
-        >
-          <span className={`lamp lamp-${m.status}`} aria-hidden="true" />
-          <span className="ml-name">{m.callsign}</span>
-          <span className="ml-year">'{m.start.slice(-2)}</span>
-        </button>
-      ))}
+    <div className="mission-list">
+      <p className="mission-list-head">Job planets</p>
+      <div role="group" aria-label="Job planets">
+        {[...jobPlanets].reverse().map((planet) => (
+          <button key={planet.id} type="button" aria-pressed={planet.id === selectedId} onClick={() => onSelect(planet.id)}>
+            <span className={`lamp lamp-${planet.mission.status}`} aria-hidden="true" />
+            <span className="ml-name">{planet.name}</span>
+            <span className="ml-year">'{planet.mission.start.slice(-2)}</span>
+          </button>
+        ))}
+      </div>
+      <div className="orbit-controls" role="group" aria-label="Orbit controls">
+        <button type="button" aria-pressed={orbitsPaused} onClick={() => setOrbitsPaused(!orbitsPaused)}>Pause orbits</button>
+        {clearRoute && <button type="button" onClick={clearRoute}>Clear route</button>}
+      </div>
     </div>
   )
 }

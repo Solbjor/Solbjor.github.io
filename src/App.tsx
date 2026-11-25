@@ -18,9 +18,8 @@ export default function App() {
         Skip to content
       </a>
       <div className="room">
-        <Header watch={watch} onWatch={setWatch} />
         <main id="main" tabIndex={-1}>
-          <RoomView />
+          <RoomView header={<Header watch={watch} onWatch={setWatch} />} />
           <MissionLog />
           <Payloads />
           <div className="bank">

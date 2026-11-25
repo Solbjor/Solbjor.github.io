@@ -293,40 +293,100 @@ main {
   fill: var(--plate);
 }
 
-.orbits circle {
+.orbits ellipse {
   fill: none;
   stroke: var(--orbit);
-  stroke-width: 1;
+  stroke-width: 1.5;
+}
+.orbits .orbit-selected {
+  stroke: var(--phos-dim);
 }
 .sol {
   fill: var(--phos);
 }
-.trajectory {
+.sol-halo {
   fill: none;
-  stroke: var(--phos);
-  stroke-width: 1.8;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
+  stroke: var(--phos-dim);
+  stroke-width: 1.5;
 }
-.plot-label {
-  font: 500 16px var(--f-data);
-  letter-spacing: 0.04em;
+.telemetry-label,
+.telemetry-key {
+  fill: var(--phos);
+  font: 600 19px var(--f-data);
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: var(--glass);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+}
+.telemetry-key {
   fill: var(--phos-dim);
-}
-.sol-label {
-  fill: var(--glass);
-  font-weight: 700;
-}
-.plot-label-now {
-  font-size: 20px;
-  font-weight: 700;
-  fill: var(--signal);
+  font-size: 13px;
 }
 .plot-hit {
   cursor: pointer;
 }
-.plot-hit:hover .planet > circle {
-  filter: brightness(1.25);
+.plot-hit:hover .planet-disc {
+  filter: brightness(1.4);
+}
+.side-right {
+  overflow-y: auto;
+}
+.orbit-controls {
+  border-top: 1px solid var(--orbit);
+  margin-top: 4px;
+}
+.orbits .earth-orbit,
+.moon-orbit {
+  fill: none;
+  stroke: var(--phos-dim);
+  stroke-width: 1.4;
+}
+.earth-disc { fill: #4988b4; }
+.earth-continents { fill: #9fc590; }
+.moon-disc { fill: var(--text); }
+.earth-name {
+  fill: var(--text);
+  font: 600 13px var(--f-data);
+  paint-order: stroke;
+  stroke: var(--glass);
+  stroke-width: 5px;
+}
+.flight-legs { pointer-events: none; }
+.flight-legs path { fill: none; stroke-width: 2.5; }
+.flight-leg-outbound { stroke: var(--phos); }
+.flight-leg-return { stroke: var(--signal); stroke-dasharray: 7 4; }
+.outbound-arrow { fill: var(--phos); }
+.return-arrow { fill: var(--signal); }
+.map-water { fill: color-mix(in srgb, var(--glass) 91%, var(--phos)); }
+.map-land { fill: color-mix(in srgb, var(--phos) 70%, var(--glass)); }
+.map-grid { stroke: color-mix(in srgb, var(--glass) 70%, var(--phos)); }
+.map-grid .map-equator { stroke-dasharray: 4 3; }
+.map-border { fill: none; stroke: var(--phos-dim); }
+.map-clock {
+  fill: var(--phos);
+  font-size: 20px;
+}
+.map-marker { cursor: pointer; }
+.map-marker-dot {
+  fill: var(--glass);
+  stroke: var(--phos);
+  stroke-width: 2;
+}
+.map-marker text {
+  fill: var(--phos);
+  font: 700 11px var(--f-data);
+  pointer-events: none;
+}
+.map-marker:is(:hover, .map-marker-selected) .map-marker-dot {
+  fill: var(--signal);
+  stroke: var(--signal-ink);
+}
+.map-marker:is(:hover, .map-marker-selected) text { fill: var(--signal-ink); }
+.project-map-summary { margin-top: var(--space-2); }
+.project-map-note {
+  margin-top: var(--space-2);
+  color: var(--muted);
 }
 .ink-line {
   fill: none;
@@ -873,50 +933,8 @@ main {
 .plot-screen {
   overflow: hidden;
 }
-.is-zoomed .plot-label:not(.plot-label-selected) {
-  display: none;
-}
-.is-zoomed .plot-label-selected {
-  font-size: 9px;
-}
-.plot-zoom {
-  transform-origin: 0 0;
-}
-.zoom-out {
-  position: absolute;
-  min-height: 2.2cqw;
-  padding: 0.4cqw 0.8cqw;
-  background: var(--glass);
-  color: var(--phos);
-  border: 1px solid var(--phos-dim);
-  border-radius: 3px;
-  font: 650 max(0.78cqw, 11px)/1 var(--f-sans);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.zoom-out:hover {
-  background: var(--phos);
-  color: var(--glass);
-}
-.fallback-zoom-out {
-  margin-top: var(--space-3);
-}
-.zoom-out-short {
-  display: none;
-}
-
-/* ---------- Motion: the screens warm up, the trajectory plots in, the beacon blinks, planets zoom ---------- */
+/* ---------- Screen warm-up and beacon ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .trajectory {
-    animation: plot 1.8s cubic-bezier(0.16, 1, 0.3, 1) 560ms both;
-  }
-  @keyframes plot {
-    from {
-      stroke-dashoffset: 1;
-    }
-  }
-  /* CRT warm-up, once, before the trajectory plots */
   .r-glass,
   .side-screen,
   .plot-screen {
@@ -933,9 +951,6 @@ main {
     60% {
       opacity: 0.7;
     }
-  }
-  .plot-zoom {
-    transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .beacon {
     animation: beacon 1.6s steps(2, jump-none) infinite;
@@ -959,8 +974,7 @@ main {
   }
 }
 @media (max-width: 1180px) {
-  .side-screen,
-  .zoom-out {
+  .side-screen {
     display: none;
   }
   .scene-fallback {
@@ -1010,35 +1024,10 @@ main {
   .stations {
     display: none;
   }
-  .plot-label:not(.plot-label-now):not(.sol-label) {
-    display: none;
+  .telemetry-label {
+    font-size: 27px;
   }
-  .plot-label-now {
-    font-size: 34px;
-  }
-  /* zoomed on a phone: keep the selected planet named, at a readable size */
-  .plot-screen .is-zoomed .plot-label.plot-label-selected {
-    display: inline;
-    font-size: 10px;
-  }
-  .scene .zoom-out {
-    display: block;
-    left: auto !important;
-    right: 13cqw;
-    top: 33cqw !important;
-    width: auto !important;
-    min-height: 36px;
-    padding-inline: 12px;
-  }
-  .fallback-zoom-out {
-    display: none;
-  }
-  .zoom-out-long {
-    display: none;
-  }
-  .zoom-out-short {
-    display: inline;
-  }
+  .earth-name, .telemetry-key { font-size: 22px; }
   .scene-fallback {
     grid-template-columns: minmax(0, 1fr);
   }

@@ -60,30 +60,20 @@ export function ProjectionCase({ x, y, width, height }: { x: number; y: number; 
   )
 }
 
-export function Workstation({ x, y, scale, monitorCount = 2 }: { x: number; y: number; scale: number; monitorCount?: number }) {
-  const skew = (x - VANISH_X) * 0.085 / scale
+// Bay centers share this offset with the room's station links and chairs.
+export const CONSOLE_BAY_OFFSET = 136
+
+function ConsoleBay({ x }: { x: number }) {
   return (
-    <g transform={`translate(${x} ${y}) scale(${scale})`} className="room-workstation" aria-hidden="true">
-      <polygon points={`-132,53 132,53 ${142 + skew},77 ${-142 + skew},77`} className="station-shadow" />
-      <path d="M-119 0H119V62H-119Z" className="housing-base" />
-      <path d={`M-110-83H110L${116 + skew},-73H${-116 + skew}Z`} className="housing-top" />
-      <path d={`M110-83L${116 + skew},-73L126,5V59L114,62V4Z`} className="housing-side" />
-      <path d={`M-110-83L${-116 + skew},-73L-126,5V59L-114,62V4Z`} className="housing-side" />
-      <path d={`M${-116 + skew}-73H${116 + skew}L114 3H-114Z`} className="housing-face" />
-      {Array.from({ length: monitorCount }, (_, i) => {
-        const monitorX = (i - (monitorCount - 1) / 2) * 88
-        return (
-          <g key={i} transform={`translate(${monitorX + skew * 0.4} -39)`}>
-            <rect x="-39" y="-29" width="78" height="57" rx="3" className="crt-bezel" />
-            <rect x="-32" y="-23" width="64" height="44" rx="8" className="crt-tube" />
-            <path d="M-25-11H15M-25-5H5M-25 9H-9L-2 1L5 7H24" className="crt-trace" />
-            <circle cx="32" cy="24" r="2" className="lamp-on" />
-          </g>
-        )
-      })}
-      <path d="M-114 3H114L132 31H-132Z" className="housing-deck" />
-      <path d="M-132 31H132V49H-132Z" className="housing-lip" />
-      <path d="M-114 52H114M-69 51V62M69 51V62" className="hardware-seam" />
+    <g transform={`translate(${x} 0)`}>
+      {[-44, 44].map((monitorX) => (
+        <g key={monitorX} transform={`translate(${monitorX} -39)`}>
+          <rect x="-39" y="-29" width="78" height="57" rx="3" className="crt-bezel" />
+          <rect x="-32" y="-23" width="64" height="44" rx="8" className="crt-tube" />
+          <path d="M-25-11H15M-25-5H5M-25 9H-9L-2 1L5 7H24" className="crt-trace" />
+          <circle cx="32" cy="24" r="2" className="lamp-on" />
+        </g>
+      ))}
       {[-107, 79].map((start) => (
         <g key={start}>
           {Array.from({ length: 5 }, (_, i) => (
@@ -93,7 +83,38 @@ export function Workstation({ x, y, scale, monitorCount = 2 }: { x: number; y: n
       ))}
       <path d="M-113 12l2-7m219 7l2-7" className="toggle-stem" />
       <path d="M-108 55h26m-26 3h26m56-3h26m-26 3h26m52-3h26m-26 3h26" className="vent-slots" />
-      {[-121, 121].map((pin) => <circle key={pin} cx={pin} cy="40" r="2.2" className="hardware-screw" />)}
+    </g>
+  )
+}
+
+export function ConsoleBank({ x, y, scale }: { x: number; y: number; scale: number }) {
+  return (
+    <g transform={`translate(${x} ${y}) scale(${scale})`} className="room-workstation" aria-hidden="true">
+      <path d="M-268 55H268L282 77H-282Z" className="station-shadow" />
+      <path d="M-253 22H253V62H-253Z" className="housing-base" />
+      <path d="M-241-83H241L250-73H-250Z" className="housing-top" />
+      <path d="M-250-73H250L258 3H-258Z" className="housing-face" />
+      <path d="M-258 3H258L268 31H-268Z" className="housing-deck" />
+      <path d="M-268 31H268V49H-268Z" className="housing-lip" />
+      <path d="M0-73V62M-250 52H250M-205 52V62M205 52V62" className="hardware-seam" />
+      <ConsoleBay x={-CONSOLE_BAY_OFFSET} />
+      <ConsoleBay x={CONSOLE_BAY_OFFSET} />
+      {[-257, -10, 10, 257].map((pin) => (
+        <circle key={pin} cx={pin} cy="40" r="2.2" className="hardware-screw" />
+      ))}
+    </g>
+  )
+}
+
+export function ControllerChair({ x, y, scale }: { x: number; y: number; scale: number }) {
+  return (
+    <g transform={`translate(${x} ${y}) scale(${scale})`} aria-hidden="true">
+      <ellipse cy="67" rx="43" ry="9" className="station-shadow" />
+      <path d="M0 38V61M0 60l-34 7m34-7 34 7m-34-7 11 13" className="chair-frame" />
+      <path d="M-31 41Q0 33 31 41L35 50Q0 58-35 50Z" className="chair-seat" />
+      <path d="M-31 33h-9v10m71-10h9v10" className="chair-frame" />
+      <path d="M-31 5Q0-3 31 5L29 34Q0 44-29 34Z" className="chair-back" />
+      <path d="M-25 10Q0 4 25 10M-29 34Q0 40 29 34" className="chair-stitch" />
     </g>
   )
 }

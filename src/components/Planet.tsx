@@ -1,24 +1,31 @@
 import type { Mission } from '../lib/missions'
 
-/** Planet body with what Andrew left on it: a lander (current), or a flag plus base modules. */
-export function PlanetMark({ m, selected }: { m: Mission; selected: boolean }) {
-  const top = m.y - m.r
-  const modules = m.status === 'landed' ? 0 : Math.min(m.bullets?.length ?? 1, 3)
-  const fill = `hsl(${m.hue} 32% 46%)`
-  const shade = `hsl(${m.hue} 38% 28%)`
+type PlanetPosition = { x: number; y: number; r: number; hue: number }
+
+export function PlanetMark({ position, mission, selected, sun }: {
+  position: PlanetPosition
+  mission: Mission
+  selected: boolean
+  sun: { x: number; y: number }
+}) {
+  const { x, y, r, hue } = position
+  const landed = mission.status === 'landed'
+  const modules = Math.min(mission.bullets?.length ?? 1, 3)
+  const turn = Math.atan2(y - sun.y, x - sun.x) * 180 / Math.PI
+  const markerScale = landed ? r / 24 : r / 16
 
   return (
-    <g className={`planet planet-${m.status}${selected ? ' is-selected' : ''}`}>
-      <circle cx={m.x} cy={m.y} r={m.r} fill={fill} />
-      {/* terminator shading: the half facing away from Sol */}
+    <g className="planet" transform={`translate(${x} ${y})`}>
+      <circle r={Math.max(r + 3, 14)} fill="transparent" />
+      <circle r={r} className="planet-disc" fill={`hsl(${hue} 50% 55%)`} />
       <path
-        d={`M ${m.x} ${m.y - m.r} A ${m.r} ${m.r} 0 0 1 ${m.x} ${m.y + m.r} A ${m.r * 0.55} ${m.r} 0 0 0 ${m.x} ${m.y - m.r} Z`}
-        fill={shade}
+        d={`M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${r * 0.55} ${r} 0 0 0 0 ${-r} Z`}
+        transform={`rotate(${turn})`}
+        fill={`hsl(${hue} 45% 29%)`}
         opacity="0.85"
       />
-
-      {m.status === 'landed' ? (
-        <g className="lander" transform={`translate(${m.x - 4} ${top})`}>
+      {landed ? (
+        <g className="lander" transform={`translate(-2 ${-r}) scale(${markerScale})`}>
           <path d="M -9 -4 L -13 2 M 9 -4 L 13 2" className="ink-line" />
           <path d="M -8 -4 L 8 -4 L 5 -14 L -5 -14 Z" className="ink-fill" />
           <rect x="-3" y="-19" width="6" height="5" className="ink-fill" />
@@ -27,7 +34,7 @@ export function PlanetMark({ m, selected }: { m: Mission; selected: boolean }) {
           <circle cx="0" cy="-22" r="2.4" className="beacon" />
         </g>
       ) : (
-        <g className="outpost" transform={`translate(${m.x} ${top})`}>
+        <g className="outpost" transform={`translate(0 ${-r}) scale(${markerScale})`}>
           <line x1="-3" y1="1" x2="-3" y2="-14" className="ink-line" />
           <rect x="-3" y="-14" width="8" height="5" className="flag" />
           {Array.from({ length: modules }, (_, i) => (
@@ -35,13 +42,7 @@ export function PlanetMark({ m, selected }: { m: Mission; selected: boolean }) {
           ))}
         </g>
       )}
-
-      {selected && (
-        <path
-          className="reticle"
-          d={reticle(m.x, m.y, m.r + (m.status === 'landed' ? 30 : 12))}
-        />
-      )}
+      {selected && <path className="reticle" d={reticle(0, 0, r + (landed ? 15 : 8))} />}
     </g>
   )
 }

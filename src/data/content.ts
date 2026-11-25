@@ -28,6 +28,8 @@ export interface Project {
   image?: string // path under public/, e.g. "projects/medipal.png"
   tags?: string[]
   award?: string
+  /** Illustrative position on the portfolio map, not a project location. */
+  mapMarker?: { latitude: number; longitude: number }
 }
 
 export interface School {
@@ -163,6 +165,7 @@ export const experience: Role[] = [
 export const projects: Project[] = [
   {
     name: 'CaneYouSeeMe',
+    mapMarker: { latitude: 36.97, longitude: -122.03 },
     description: 'Smart-sensing mobility cane that alerts visually impaired users to obstacles in their path.',
     award: '1st place Health Hack · Cruz Hacks 2026',
     link: 'https://devpost.com/software/caneyousee',
@@ -171,6 +174,7 @@ export const projects: Project[] = [
   },
   {
     name: 'MediPal',
+    mapMarker: { latitude: -13.5, longitude: -54 },
     description: 'Medical records and patient management app built to improve healthcare access in rural communities.',
     link: 'https://github.com/Exception-Handlers/MediPal',
     image: 'projects/medipal.png',
@@ -178,12 +182,14 @@ export const projects: Project[] = [
   },
   {
     name: 'SparSafe app',
+    mapMarker: { latitude: 50, longitude: 18 },
     description:
       'Companion mobile app for SparSafe’s smart boxing headgear, delivering head-impact data from a sparring session in real time.',
     tags: ['Mobile', 'Real-time data', 'Hardware'],
   },
   {
     name: 'LiNKFiiT',
+    mapMarker: { latitude: 24, longitude: 103 },
     description: 'Coding lead for a fitness and nutrition app startup.',
     link: 'https://linkfit.net/',
     tags: ['Startup', 'Mobile'],

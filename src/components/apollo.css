@@ -165,7 +165,7 @@ html:has(.station-dialog[open]) { overflow: hidden; }
 
 @media (prefers-reduced-motion: no-preference) {
   .scene { transition: transform 580ms cubic-bezier(.2,.75,.25,1); }
-  .scene-station-open { transform: translate(18%, -23%) scale(3.45); }
+  .scene-station-open { transform: translate(29%, -18%) scale(3.65); }
   .station-dialog[open] { animation: enter-console 580ms cubic-bezier(.2,.75,.25,1) both; }
   .station-dialog[open]::backdrop { animation: enter-backdrop 580ms both; }
   @keyframes enter-console {
@@ -185,6 +185,178 @@ html:has(.station-dialog[open]) { overflow: hidden; }
   .payload-hardware .glass-payload { aspect-ratio: 16 / 10; }
   .scene-station-open { transform: none; }
 }
-@media (min-width: 1181px) and (min-height: 750px) {
-  .scene { width: min(100%, calc((100svh - 160px) * 1.6)); }
+
+/* The opening room uses the viewport. The reading sections keep their original measure. */
+.room {
+  max-width: none;
+  padding-inline: 0;
+}
+.room > main {
+  padding-block-start: 0;
+}
+.room > main > :not(.flight),
+.room-foot,
+.scene-fallback {
+  width: min(calc(100% - 2 * var(--gutter)), calc(1440px - 2 * var(--gutter)));
+  margin-inline: auto;
+}
+
+.flight-viewport {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 100svh;
+}
+.flight-viewport .room-head {
+  padding-inline: var(--gutter);
+  background: var(--room);
+}
+.scene-frame {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  background: var(--room);
+}
+.flight-viewport .scene {
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+}
+.station-hit {
+  padding: 0;
+  align-items: start;
+}
+.station-name {
+  position: absolute;
+  top: 76%;
+}
+.station-passive {
+  cursor: default;
+  pointer-events: none;
+}
+.chair-frame, .chair-stitch {
+  fill: none;
+  stroke: var(--enamel-edge);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.chair-seat, .chair-back {
+  fill: color-mix(in srgb, var(--glass) 64%, var(--enamel));
+  stroke: var(--enamel-edge);
+  stroke-width: 2;
+}
+.chair-stitch { stroke-width: 1.3; }
+
+.room-startup { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .room-startup {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: grid;
+    place-items: center;
+    background: #0b0d0a;
+    pointer-events: none;
+    animation: startup-release 2.1s both;
+  }
+  .startup-bezel {
+    position: relative;
+    width: min(72%, 460px);
+    padding: clamp(10px, 2vw, 24px);
+    border-radius: 9px;
+    border: 2px solid #666953;
+    background: #32362b;
+    box-shadow: inset 0 3px 0 #4b503e, 0 8px 0 #171911;
+  }
+  .startup-crt {
+    display: grid;
+    align-content: center;
+    gap: .65em;
+    min-height: clamp(116px, 22vh, 190px);
+    padding: 12%;
+    overflow: hidden;
+    border: 5px solid #1b1e15;
+    border-radius: 14px;
+    background: repeating-linear-gradient(0deg, #12180d 0 1px, transparent 1px 4px), radial-gradient(ellipse, #232b17, #12160d 77%);
+    color: #f9bf71;
+    font: 600 clamp(.66rem, 1.6vw, 1rem)/1.45 var(--f-data);
+    animation: startup-tube 380ms ease-out both;
+  }
+  .startup-crt span { animation: startup-line 1ms 390ms both; }
+  .startup-crt span:nth-child(2) { animation-delay: 740ms; }
+  .startup-crt span:nth-child(3) { animation-delay: 1110ms; }
+  .startup-lamp {
+    position: absolute;
+    right: 8px;
+    bottom: 5px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #f9bf71;
+  }
+  @keyframes startup-release {
+    0%, 72% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+  }
+  @keyframes startup-tube {
+    0% { transform: scaleY(.02); opacity: 0; }
+    50% { transform: scaleY(.035); opacity: 1; }
+    100% { transform: scaleY(1); opacity: 1; }
+  }
+  @keyframes startup-line { from { opacity: 0; } to { opacity: 1; } }
+}
+
+@media (min-width: 901px) {
+  .flight-viewport .scene {
+    aspect-ratio: auto;
+    min-height: 480px;
+  }
+  .flight-viewport .ident h1 { font-size: clamp(2.3rem, min(4.4vw, 6.8vh), 5rem); }
+  .flight-viewport .flight-title { font-size: clamp(.85rem, min(1.3vw, 2.4vh), 1.4rem); }
+}
+
+@media (max-width: 900px) {
+  .flight-viewport { grid-template-rows: auto minmax(0, 1fr) auto; }
+  .flight-viewport .scene { grid-template-rows: minmax(min-content, 1fr) auto; }
+  .flight-viewport .scene-art { align-self: center; }
+  .stations { display: none; }
+  .scene-station-open { transform: none; }
+  .mobile-payload-station {
+    display: inline-flex;
+    justify-self: start;
+    margin: var(--space-3) var(--gutter);
+  }
+}
+
+@media (max-width: 720px) {
+  .flight-viewport .head-nav ul { justify-content: flex-start; }
+}
+
+.telemetry-modes {
+  position: absolute;
+  z-index: 2;
+  top: 3.5%;
+  left: 50%;
+  display: flex;
+  gap: 6px;
+  transform: translateX(-50%);
+  padding: 3px;
+  border: 1px solid var(--enamel-edge);
+  border-radius: 4px;
+  background: var(--enamel);
+}
+.telemetry-modes .key {
+  min-height: 30px;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .flight-viewport .scene { grid-template-rows: minmax(min-content, 1fr) auto auto; }
+  .telemetry-modes {
+    position: static;
+    justify-self: center;
+    transform: none;
+    margin: 0 0 var(--space-2);
+  }
+  .telemetry-modes .key { min-height: 44px; }
 }
