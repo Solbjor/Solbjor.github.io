@@ -1,3 +1,5 @@
+import { InstrumentBay, InstrumentMaterials, OperatorChair, type Equipment } from './InstrumentBay'
+
 // All room geometry uses the same vanishing point and 1440 × 900 canvas.
 const VANISH_X = 720
 const VANISH_Y = 285
@@ -11,13 +13,51 @@ function quad(x1: number, x2: number, y: number, back: number, front: number) {
     .map((point) => point.join(',')).join(' ')
 }
 
+// Map a panel corner onto the left return wall; mirror the assembly for the right.
+function wallPoint(depth: number, height: number) {
+  const top = depth * 139
+  const bottom = 736 - depth * 299
+  return `${140 * depth},${top + height * (bottom - top)}`
+}
+
+function WallPanels({ right }: { right?: boolean }) {
+  const divisions = [0, .38, .66, .86, 1]
+  return <g transform={right ? 'translate(1440) scale(-1 1)' : undefined}>
+    {divisions.slice(1).map((end, i) => {
+      const start = divisions[i]!
+      return [[.012, .68], [.692, .964]].map(([top, bottom]) => (
+        <polygon key={`${i}-${top}`} fill={top! > .68 ? 'url(#wall-dado)' : 'url(#wall-laminate)'}
+          points={[wallPoint(start + .009, top!), wallPoint(end - .007, top!),
+            wallPoint(end - .007, bottom!), wallPoint(start + .009, bottom!)].join(' ')} />
+      ))
+    })}
+    <polygon points={[wallPoint(0,.675), wallPoint(1,.675), wallPoint(1,.694), wallPoint(0,.694)].join(' ')} fill="var(--trim-shadow)" />
+    <path d={`M${wallPoint(0,.677)} L${wallPoint(1,.677)}`} stroke="var(--wall-light)" strokeWidth="1.5" />
+    <path d="M0 710L140 429V437L0 736Z" fill="var(--trim-shadow)" />
+  </g>
+}
+
 export function RoomArchitecture() {
   const depths = [0.51, 0.58, 0.68, 0.82, 1, 1.24]
   return (
     <g aria-hidden="true">
+      <InstrumentMaterials />
       <defs>
-        <pattern id="carpet" width="7" height="5" patternUnits="userSpaceOnUse">
-          <path d="M0 2h2m2 2h2M5 0h1" className="carpet-thread" />
+        <clipPath id="acoustic-field"><path d="M0 0H1440L1300 139H140Z" /></clipPath>
+        <linearGradient id="wall-laminate" x2=".16" y2="1">
+          <stop stopColor="var(--wall-light)" /><stop offset=".12" stopColor="var(--wall-body)" />
+          <stop offset=".92" stopColor="var(--wall-body)" /><stop offset="1" stopColor="var(--wall-foot)" />
+        </linearGradient>
+        <linearGradient id="wall-dado" x2="0" y2="1">
+          <stop stopColor="var(--wall-foot)" /><stop offset=".12" stopColor="var(--dado)" />
+          <stop offset=".9" stopColor="var(--dado)" /><stop offset="1" stopColor="var(--wall-foot)" />
+        </linearGradient>
+        <filter id="carpet-fibre" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency=".42 .77" numOctaves="2" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <pattern id="carpet" width="96" height="96" patternUnits="userSpaceOnUse">
+          <rect width="96" height="96" filter="url(#carpet-fibre)" opacity=".14" />
         </pattern>
         <linearGradient id="floor-shade" x2="0" y2="1">
           <stop className="floor-back" />
@@ -26,26 +66,33 @@ export function RoomArchitecture() {
       </defs>
       <path d="M0 0H1440L1300 139H140Z" className="acoustic-ceiling" />
       <path d="M0 0L140 139V437L0 736ZM1440 0L1300 139V437L1440 736Z" className="r-wall" />
-      <path d="M140 139H1300V437H140Z" className="r-front" />
+      <WallPanels /><WallPanels right />
+      <rect x="140" y="139" width="1160" height="298" fill="var(--trim-shadow)" />
+      {Array.from({ length: 12 }, (_, i) => <rect key={i} x={141 + i * 96.5} y="140"
+        width="95" height="291" fill="url(#wall-laminate)" />)}
+      <rect x="150" y="89" width="1140" height="306" rx="2" fill="var(--wall-foot)" />
       <path d="M140 437H1300L1440 736H0Z" fill="url(#floor-shade)" />
       <path d="M140 437H1300L1440 736H0Z" fill="url(#carpet)" />
       <polygon points={quad(635, 805, 583, 0.51, 1.52)} className="carpet-aisle" />
-      {depths.slice(0, -1).map((back, i) => (
-        <g key={back}>
-          <polygon points={quad(-410, 1850, 0, back, depths[i + 1]!)} className="tile-seam" />
-          {[-30, 485, 955, 1470].map((x) => (
-            <g key={x}>
-              <polygon points={quad(x - 82, x + 82, 0, back + 0.008, back + 0.049)} className="fixture" />
-              <polygon points={quad(x - 72, x + 72, 0, back + 0.015, back + 0.044)} className="fluorescent" />
+      <g clipPath="url(#acoustic-field)">
+        {depths.slice(0, -1).map((back, row) => {
+          const front = depths[row + 1]!
+          return Array.from({ length: 22 }, (_, col) => {
+            const x = -1128 + col * 168
+            const lit = col % 4 === 0 && row > 0
+            return <g key={`${row}-${col}`}>
+              <polygon points={quad(x + 2, x + 167, 0, back + .003, front)}
+                fill={(row + col) % 3 === 0 ? 'var(--tile-light)' : 'var(--wall-body)'} />
+              {lit && <g>
+                <polygon points={quad(x + 12, x + 157, 0, back + .012, front - .009)} fill="var(--trim-shadow)" />
+                {[.26, .53].map(offset => <polygon key={offset} className="fluorescent"
+                  points={quad(x + 20, x + 149, 0, back + (front-back)*offset, back + (front-back)*(offset+.17))} />)}
+              </g>}
             </g>
-          ))}
-        </g>
-      ))}
-      {[0, 240, 480, 720, 960, 1200, 1440].map((x) => (
-        <line key={x} x1={x} y1="0" x2={project(x, 0, 0.51)[0]} y2="139" className="tile-seam" />
-      ))}
-      <path d="M0 115L140 215H1300L1440 115M0 311L140 312H1300L1440 311M0 603L140 428H1300L1440 603M64 64V599M1376 64V599" className="wall-seams" />
-      <path d="M140 432H1300L1440 710M140 432L0 710" className="baseboard" />
+          })
+        })}
+      </g>
+      <path d="M140 433H1300" stroke="var(--trim-shadow)" strokeWidth="7" />
     </g>
   )
 }
@@ -55,6 +102,11 @@ export function ProjectionCase({ x, y, width, height }: { x: number; y: number; 
     <g aria-hidden="true">
       <rect x={x - 9} y={y - 7} width={width + 24} height={height + 24} rx="4" className="projection-shadow" />
       <rect x={x - 8} y={y - 8} width={width + 16} height={height + 16} rx="4" className="projection-frame" />
+      <path d={`M${x-6} ${y+height+5}V${y-6}h${width+12}`} fill="none" stroke="var(--wall-light)" strokeWidth="2" />
+      <rect x={x-2} y={y-2} width={width+4} height={height+4} fill="var(--trim-shadow)" />
+      {[-4, width+4].map(dx => <g key={dx} fill="var(--trim-shadow)">
+        <circle cx={x+dx} cy={y-4} r="1.4" /><circle cx={x+dx} cy={y+height+4} r="1.4" />
+      </g>)}
       <rect x={x} y={y} width={width} height={height} rx="4" className="r-glass" />
     </g>
   )
@@ -63,31 +115,9 @@ export function ProjectionCase({ x, y, width, height }: { x: number; y: number; 
 // Bay centers share this offset with the room's station links and chairs.
 export const CONSOLE_BAY_OFFSET = 136
 
-function ConsoleBay({ x }: { x: number }) {
-  return (
-    <g transform={`translate(${x} 0)`}>
-      {[-44, 44].map((monitorX) => (
-        <g key={monitorX} transform={`translate(${monitorX} -39)`}>
-          <rect x="-39" y="-29" width="78" height="57" rx="3" className="crt-bezel" />
-          <rect x="-32" y="-23" width="64" height="44" rx="8" className="crt-tube" />
-          <path d="M-25-11H15M-25-5H5M-25 9H-9L-2 1L5 7H24" className="crt-trace" />
-          <circle cx="32" cy="24" r="2" className="lamp-on" />
-        </g>
-      ))}
-      {[-107, 79].map((start) => (
-        <g key={start}>
-          {Array.from({ length: 5 }, (_, i) => (
-            <rect key={i} x={start + i * 6} y="14" width="4" height="7" rx="1" className={i % 3 === 0 ? 'lamp-on' : 'hardware-key'} />
-          ))}
-        </g>
-      ))}
-      <path d="M-113 12l2-7m219 7l2-7" className="toggle-stem" />
-      <path d="M-108 55h26m-26 3h26m56-3h26m-26 3h26m52-3h26m-26 3h26" className="vent-slots" />
-    </g>
-  )
-}
-
-export function ConsoleBank({ x, y, scale }: { x: number; y: number; scale: number }) {
+export function ConsoleBank({ x, y, scale, bays }: {
+  x: number; y: number; scale: number; bays: readonly { equipment: Equipment }[]
+}) {
   return (
     <g transform={`translate(${x} ${y}) scale(${scale})`} className="room-workstation" aria-hidden="true">
       <path d="M-268 55H268L282 77H-282Z" className="station-shadow" />
@@ -97,8 +127,8 @@ export function ConsoleBank({ x, y, scale }: { x: number; y: number; scale: numb
       <path d="M-258 3H258L268 31H-268Z" className="housing-deck" />
       <path d="M-268 31H268V49H-268Z" className="housing-lip" />
       <path d="M0-73V62M-250 52H250M-205 52V62M205 52V62" className="hardware-seam" />
-      <ConsoleBay x={-CONSOLE_BAY_OFFSET} />
-      <ConsoleBay x={CONSOLE_BAY_OFFSET} />
+      {bays.map((bay, index) => <InstrumentBay key={index} equipment={bay.equipment}
+        x={index === 0 ? -CONSOLE_BAY_OFFSET : CONSOLE_BAY_OFFSET} />)}
       {[-257, -10, 10, 257].map((pin) => (
         <circle key={pin} cx={pin} cy="40" r="2.2" className="hardware-screw" />
       ))}
@@ -107,14 +137,5 @@ export function ConsoleBank({ x, y, scale }: { x: number; y: number; scale: numb
 }
 
 export function ControllerChair({ x, y, scale }: { x: number; y: number; scale: number }) {
-  return (
-    <g transform={`translate(${x} ${y}) scale(${scale})`} aria-hidden="true">
-      <ellipse cy="67" rx="43" ry="9" className="station-shadow" />
-      <path d="M0 38V61M0 60l-34 7m34-7 34 7m-34-7 11 13" className="chair-frame" />
-      <path d="M-31 41Q0 33 31 41L35 50Q0 58-35 50Z" className="chair-seat" />
-      <path d="M-31 33h-9v10m71-10h9v10" className="chair-frame" />
-      <path d="M-31 5Q0-3 31 5L29 34Q0 44-29 34Z" className="chair-back" />
-      <path d="M-25 10Q0 4 25 10M-29 34Q0 40 29 34" className="chair-stitch" />
-    </g>
-  )
+  return <g transform={`translate(${x} ${y}) scale(${scale})`} aria-hidden="true"><OperatorChair /></g>
 }

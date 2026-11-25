@@ -104,7 +104,7 @@ html:has(.station-dialog[open]) { overflow: hidden; }
   border-radius: 2px;
   background: repeating-linear-gradient(90deg, var(--room) 0 5px, transparent 5px 8px);
 }
-.payload-hardware .payload-bay {
+.payload-hardware .instrument-materials {
   gap: clamp(12px, 2vw, 24px);
   align-items: stretch;
   padding: clamp(8px, 2vw, 20px);
@@ -181,7 +181,7 @@ html:has(.station-dialog[open]) { overflow: hidden; }
   .mobile-payload-station { display: inline-flex; justify-self: start; }
   .payload-hardware { display: flex; flex-direction: column; gap: 12px; }
   .payload-hardware .payload-keys { order: -1; margin-top: 0; }
-  .payload-hardware .payload-bay { grid-template-columns: minmax(0, 1fr); }
+  .payload-hardware .instrument-materials { grid-template-columns: minmax(0, 1fr); }
   .payload-hardware .glass-payload { aspect-ratio: 16 / 10; }
   .scene-station-open { transform: none; }
 }
@@ -355,4 +355,20 @@ html:has(.station-dialog[open]) { overflow: hidden; }
     margin: 0 0 var(--space-2);
   }
   .telemetry-modes .key { min-height: 44px; }
+}
+
+.instrument-materials {
+  --hood: color-mix(in srgb, var(--enamel-edge) 65%, #82947e);
+  --panel-hi: color-mix(in srgb, var(--enamel-hi) 50%, #d3d1bb);
+  --panel-lo: color-mix(in srgb, var(--enamel) 58%, #b4b29f);
+  --keycap: color-mix(in srgb, var(--enamel-edge) 35%, #dfdecf);
+}
+
+.scene-art {
+  --wall-body: color-mix(in srgb, var(--enamel-hi) 79%, #c2b9a1);
+  --dado: color-mix(in srgb, var(--wall-body) 65%, #706251);
+  --tile-light: color-mix(in srgb, var(--wall-body) 94%, #efe9d5);
+  --wall-light: color-mix(in srgb, var(--wall-body) 84%, #efe9d5);
+  --wall-foot: color-mix(in srgb, var(--wall-body) 76%, #242720);
+  --trim-shadow: color-mix(in srgb, var(--enamel-edge) 55%, #20251f);
 }

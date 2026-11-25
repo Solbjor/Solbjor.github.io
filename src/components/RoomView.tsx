@@ -19,11 +19,11 @@ const at = (x: number, y: number, w?: number, h?: number): CSSProperties => ({
 })
 
 const BANKS = [
-  { x: 433, y: 477, scale: 0.65, bays: [{ id: 'missions', label: 'Missions' }, { id: null, label: 'Guidance' }] },
-  { x: 1007, y: 477, scale: 0.65, bays: [{ id: 'systems', label: 'Systems' }, { id: 'training', label: 'Training' }] },
-  { x: 409, y: 623, scale: 0.77, bays: [{ id: 'payloads', label: 'Payloads' }, { id: null, label: 'Telemetry' }] },
-  { x: 1031, y: 623, scale: 0.77, bays: [{ id: null, label: 'Flight' }, { id: 'comms', label: 'Comms' }] },
-]
+  { x: 433, y: 477, scale: 0.65, bays: [{ id: 'missions', label: 'Missions', equipment: 'recorder' }, { id: null, label: 'Guidance', equipment: 'meters' }] },
+  { x: 1007, y: 477, scale: 0.65, bays: [{ id: 'systems', label: 'Systems', equipment: 'meters' }, { id: 'training', label: 'Training', equipment: 'scopes' }] },
+  { x: 409, y: 623, scale: 0.77, bays: [{ id: 'payloads', label: 'Payloads', equipment: 'scopes' }, { id: null, label: 'Telemetry', equipment: 'recorder' }] },
+  { x: 1031, y: 623, scale: 0.77, bays: [{ id: null, label: 'Flight', equipment: 'channels' }, { id: 'comms', label: 'Comms', equipment: 'channels' }] },
+] as const
 const STATIONS = BANKS.flatMap(({ x, y, scale, bays }) =>
   bays.map((bay, index) => ({
     ...bay,
@@ -132,7 +132,7 @@ export function RoomView({ header }: { header: ReactNode }) {
           </g>
 
           {BANKS.map((bank) => (
-            <ConsoleBank key={bank.bays[0]?.label} x={bank.x} y={bank.y} scale={bank.scale} />
+            <ConsoleBank bays={bank.bays} key={bank.bays[0]?.label} x={bank.x} y={bank.y} scale={bank.scale} />
           ))}
           {STATIONS.map((station) => (
             <ControllerChair key={station.label} x={station.x} y={station.y + 43 * station.scale} scale={station.scale} />
