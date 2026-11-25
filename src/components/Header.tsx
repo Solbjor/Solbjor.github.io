@@ -1,5 +1,28 @@
+import { useEffect, useRef, useState } from 'react'
 import { profile } from '../data/content'
+import { CommsAudio } from '../lib/commsAudio'
 import { WATCHES, type Watch } from '../lib/useWatch'
+
+function AudioKey() {
+  const [on, setOn] = useState(false)
+  const engine = useRef<CommsAudio | null>(null)
+
+  useEffect(() => () => engine.current?.stop(), [])
+
+  const toggle = () => {
+    engine.current ??= new CommsAudio()
+    if (on) engine.current.stop()
+    else engine.current.start()
+    setOn(!on)
+  }
+
+  return (
+    <button type="button" className="key key-small audio-key" aria-pressed={on} onClick={toggle}>
+      <span className={`lamp ${on ? 'lamp-landed' : 'lamp-complete'}`} aria-hidden="true" />
+      Comms audio {on ? 'on' : 'off'}
+    </button>
+  )
+}
 
 const SECTIONS = [
   { id: 'missions', label: 'Missions' },
@@ -34,6 +57,8 @@ export function Header({ watch, onWatch }: Props) {
         </ul>
       </nav>
 
+      <div className="head-controls">
+      <AudioKey />
       <fieldset className="watch-switch">
         <legend>Room lighting</legend>
         {WATCHES.map((w) => (
@@ -50,6 +75,7 @@ export function Header({ watch, onWatch }: Props) {
           </label>
         ))}
       </fieldset>
+      </div>
     </header>
   )
 }

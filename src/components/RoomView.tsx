@@ -60,6 +60,7 @@ export function RoomView() {
 
   return (
     <section id="top" className="flight" aria-labelledby="flight-name">
+      <div className="scene-frame">
       <div className="scene">
         <svg
           viewBox={narrow ? '300 40 840 540' : `0 0 ${W} ${H}`}
@@ -72,6 +73,12 @@ export function RoomView() {
               <rect width="4" height="1" y="2" className="r-scan" />
             </pattern>
           </defs>
+          {/* the room continues past the drawing so it fills any window */}
+          <rect x="-4000" y="-4000" width="9440" height="4000" className="r-ceil" />
+          <rect x="-4000" y="0" width="4000" height="740" className="r-wall" />
+          <rect x="1440" y="0" width="4000" height="740" className="r-wall" />
+          <rect x="-4000" y="736" width="9440" height="4000" className="r-console" />
+          <rect x="-4000" y="726" width="9440" height="12" className="r-desk" />
           {/* room shell, one-point perspective */}
           <polygon points="0,0 1440,0 1300,56 140,56" className="r-ceil" />
           <polygon points="0,0 140,56 140,470 0,900" className="r-wall" />
@@ -198,6 +205,7 @@ export function RoomView() {
             Open comms
           </a>
         </div>
+      </div>
       </div>
 
       {/* small screens: the side screens move below the scene */}
