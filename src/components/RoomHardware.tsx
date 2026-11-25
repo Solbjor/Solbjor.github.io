@@ -19,10 +19,11 @@ export function ProjectionCase({ x, y, width, height }: { x: number; y: number; 
 
 type BankProps = {
   x: number; y: number; scale: number
+  showPlates?: boolean
   bays: readonly { label: string; equipment: Equipment }[]
 }
 
-export function ConsoleBank({ x, y, scale, bays }: BankProps) {
+export function ConsoleBank({ x, y, scale, bays, showPlates = true }: BankProps) {
   // Local coordinates are on the aisle-facing edge. Move each rear corner
   // toward the room horizon before joining faces; both banks use one camera.
   function point(u: number, v: number, depth = 1): [number, number] {
@@ -70,7 +71,7 @@ export function ConsoleBank({ x, y, scale, bays }: BankProps) {
       return <g key={bay.label} transform={transform}><DeckControls equipment={bay.equipment}/></g>
     })}
     <rect x={leftEdge} y="15" width={rightEdge-leftEdge} height="24" fill="var(--hood)" stroke="var(--steel-dark)" />
-    {bays.map((bay,i) => <g key={bay.label} transform={`translate(${(i ? 136 : -136) + (x < W / 2 ? 60 : -60)} 27)`}>
+    {showPlates && bays.map((bay,i) => <g key={bay.label} transform={`translate(${(i ? 136 : -136) + (x < W / 2 ? 60 : -60)} 27)`}>
       <rect x="-61" y="-10" width="122" height="20" rx="1" fill="var(--plate)" />
       <text textAnchor="middle" y="5.7" fill="var(--plate-ink)" fontFamily="var(--f-sans)" fontWeight="750" fontSize="16" letterSpacing=".7">{bay.label.toUpperCase()}</text>
     </g>)}

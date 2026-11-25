@@ -1,5 +1,5 @@
 import { RoomArchitecture, RoomMaterials } from './RoomArchitecture'
-import { at, BANKS, stationTarget, H, PAYLOAD_STATION, STATIONS, W } from './roomLayout'
+import { at, BANKS, stationTarget, H, STATIONS, W } from './roomLayout'
 import { useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 import { profile, projects, type Project } from '../data/content'
 import { currentMission, STATUS_LABEL } from '../lib/missions'
@@ -8,6 +8,7 @@ import { EarthMap } from './EarthMap'
 import { OrbitalTelemetry } from './OrbitalTelemetry'
 import { Payloads } from './Payloads'
 import { ConsoleBank, ProjectionCase } from './RoomHardware'
+import { SeatedRoom, WritingShelf } from './SeatedRoom'
 import './apollo.css'
 
 // On phones the room is cropped to the front wall so the big screen reads at a usable size.
@@ -63,8 +64,7 @@ export function RoomView({ header }: { header: ReactNode }) {
       {header}
       <div className="scene-frame">
       <div
-        className={`scene${stationOpen ? ' scene-station-open' : ''}`}
-        style={{ transformOrigin: `${PAYLOAD_STATION.x / W * 100}% ${PAYLOAD_STATION.y / H * 100}%` }}
+        className="scene"
       >
         <svg
           viewBox={narrow ? '300 40 840 540' : `0 0 ${W} ${H}`}
@@ -85,7 +85,8 @@ export function RoomView({ header }: { header: ReactNode }) {
           <rect x="-4000" y="736" width="9440" height="4000" className="r-console" />
           <rect x="-4000" y="726" width="9440" height="12" className="r-desk" />
           <RoomMaterials />
-          <RoomArchitecture />
+          <g id="flight-room-shell"><RoomArchitecture /></g>
+          <g id="flight-projection-wall">
           <g transform={narrow ? undefined : "translate(72 8) scale(.9 .88)"}>
           <ProjectionCase x={396} y={80} width={648} height={338} />
           <svg x="400" y="84" width="640" height="330" viewBox="0 0 960 495" className="plot-screen">
@@ -111,6 +112,7 @@ export function RoomView({ header }: { header: ReactNode }) {
             ))}
           </g>
 
+          </g>
           </g>
           {BANKS.map((bank) => (
             <ConsoleBank bays={bank.bays} key={bank.bays[0]?.label} x={bank.x} y={bank.y} scale={bank.scale} />
@@ -185,6 +187,7 @@ export function RoomView({ header }: { header: ReactNode }) {
         aria-labelledby="payload-workstation-h"
         onClose={() => setStationOpen(false)}
       >
+        {stationOpen && <SeatedRoom callsign={selected.name} mode={mode} />}
         <div className="station-closeup">
           <div className="rack-hardware" aria-hidden="true">
             <span className="rack-screw" />
@@ -199,6 +202,7 @@ export function RoomView({ header }: { header: ReactNode }) {
             </button>
           </div>
           {stationOpen && <Payloads workstation />}
+          <WritingShelf />
         </div>
       </dialog>
 

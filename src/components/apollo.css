@@ -500,3 +500,37 @@ html:has(.station-dialog[open]) { overflow: hidden; }
   .payload-hardware .payload-keys { order: 0; background: #c2c4b2; margin: 0; padding: 10px; }
   .payload-hardware .channel-keys { flex: 1 1 170px; }
 }
+
+/* A dedicated seat fills the viewport. The dialog supplies keyboard focus
+   management; the distant room and the working surface share its composition. */
+.station-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  width: 100%; max-width: none;
+  height: 100dvh; max-height: none;
+  margin: 0; border-radius: 0;
+  overflow-y: auto;
+  background: var(--wall-body, var(--enamel));
+  animation: none;
+}
+.seated-sightline {
+  position: relative;
+  flex: 1 0 23vh;
+  overflow: hidden;
+  pointer-events: none;
+}
+.station-closeup { position: relative; flex: none; border-radius: 0; }
+.station-closeup .rack-hardware { display: none; }
+.station-closeup-head { padding-block: 9px 6px; }
+.writing-shelf { display: block; width: 100%; height: clamp(84px,12vh,145px); }
+@media (min-width: 901px) {
+  .payload-hardware { height: clamp(345px,48vh,620px); aspect-ratio: auto; }
+}
+@media (max-width: 900px) {
+  .seated-sightline { flex: 0 0 24vh; min-height: 130px; }
+  .writing-shelf { height: 76px; }
+}
+
+@media (max-width: 900px) {
+  .seated-sightline .scene-art { width: max(100%, 690px); left: 50%; transform: translateX(-50%); }
+}
