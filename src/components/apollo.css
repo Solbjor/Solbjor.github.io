@@ -4,10 +4,15 @@
 .tile-seam { fill: none; stroke: var(--enamel-edge); stroke-width: 1.5; }
 .fixture { fill: var(--enamel-edge); }
 .fluorescent { fill: color-mix(in srgb, var(--phos) 13%, #eee8d8); }
-.floor-back { stop-color: var(--enamel-edge); }
-.floor-near { stop-color: color-mix(in srgb, var(--enamel) 62%, var(--room)); }
-.carpet-thread { stroke: var(--plate); opacity: .15; }
-.carpet-aisle { fill: var(--room); opacity: .28; }
+/* One carpet pigment under all three room lighting conditions. */
+.scene-art {
+  --carpet-base: #cdbda2;
+  --carpet-shadow: #5a5349;
+}
+.floor-back { stop-color: color-mix(in srgb, var(--carpet-base), var(--carpet-shadow) var(--carpet-shade-back)); }
+.floor-near { stop-color: color-mix(in srgb, var(--carpet-base), var(--carpet-shadow) var(--carpet-shade-near)); }
+.carpet-checks { fill: var(--carpet-shadow); opacity: calc(.09 * var(--material-strength, 1)); }
+.carpet-aisle { fill: var(--carpet-shadow); opacity: .18; }
 .wall-seams, .baseboard { fill: none; stroke: var(--enamel-edge); stroke-width: 2; }
 .baseboard { stroke-width: 7; }
 .projection-shadow, .station-shadow { fill: #000; opacity: .28; }
@@ -568,7 +573,14 @@ html:has(.station-dialog[open]) { overflow: hidden; }
 .station-closeup-head { padding-block: 5px 4px; }
 .writing-shelf { display: block; width: 100%; height: clamp(78px, 11vh, 132px); }
 @media (min-width: 901px) {
-  .payload-hardware { height: clamp(390px, 51vh, 620px); aspect-ratio: auto; }
+  .station-closeup { overflow: clip; }
+  .payload-hardware {
+    width: 88%;
+    margin-inline: auto;
+    height: clamp(390px, 51vh, 620px);
+    aspect-ratio: auto;
+  }
+  .payload-hardware > .payload-cabinet-art { overflow: visible; }
 }
 @media (max-width: 900px) {
   .seated-sightline { flex: 0 0 24vh; min-height: 130px; }
@@ -582,4 +594,68 @@ html:has(.station-dialog[open]) { overflow: hidden; }
     left: 50%;
     transform: translateX(-50%);
   }
+}
+
+/* Neutral raster tiles tint to the enamel, fabric and lighting already in the SVG. */
+.flight {
+  --enamel-texture-opacity: .54;
+  --panel-texture-opacity: .37;
+  --deck-texture-opacity: .15;
+  --acoustic-texture-opacity: .44;
+  --ceiling-texture-opacity: .38;
+  --carpet-texture-opacity: .28;
+  --upholstery-texture-opacity: .48;
+  --material-blend: soft-light;
+}
+.flight[data-textures="off"] { --material-strength: 0; }
+.material-overlay {
+  pointer-events: none;
+  mix-blend-mode: var(--surface-blend, var(--material-blend));
+  opacity: calc(var(--material-strength, 1) * var(--material-opacity));
+}
+.material-enamel {
+  --material-opacity: var(--enamel-texture-opacity);
+  --surface-blend: var(--enamel-texture-blend);
+}
+.material-enamel.finish-panel { --material-opacity: var(--panel-texture-opacity); }
+.material-enamel.finish-deck { --material-opacity: var(--deck-texture-opacity); }
+.material-acoustic {
+  --material-opacity: var(--acoustic-texture-opacity);
+  --surface-blend: var(--acoustic-texture-blend);
+}
+.material-ceiling {
+  --material-opacity: var(--ceiling-texture-opacity);
+  --surface-blend: var(--ceiling-texture-blend);
+}
+.material-carpet {
+  --material-opacity: var(--carpet-texture-opacity);
+  --surface-blend: var(--carpet-texture-blend);
+}
+.material-upholstery {
+  --material-opacity: var(--upholstery-texture-opacity);
+  --surface-blend: var(--upholstery-texture-blend);
+}
+
+.light-spill { stop-color: color-mix(in srgb, var(--phos) 12%, var(--tile-light)); }
+.fixture-halo { opacity: .10; }
+.enamel-edge-light {
+  fill: none;
+  stroke: var(--panel-hi);
+  stroke-width: 1.2;
+  opacity: .45;
+}
+
+.station-closeup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.texture-key { min-inline-size: 8.7rem; }
+
+@media (max-width: 560px) {
+  .station-closeup-head { align-items: flex-start; }
+  .station-closeup-actions { gap: 4px; }
+  .station-closeup-actions .key { padding-inline: 8px; min-inline-size: auto; }
 }

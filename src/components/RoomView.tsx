@@ -1,3 +1,4 @@
+import { TextureKey } from './Header'
 import { RoomArchitecture, RoomMaterials } from './RoomArchitecture'
 import { at, BANKS, stationTarget, H, PROJECTION_WALL_DROP, SIDE_PROJECTION, STATIONS, W } from './roomLayout'
 import { useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
@@ -26,7 +27,11 @@ function linkedMission(): string | null {
   return id && jobPlanets.some((planet) => planet.id === id) ? id : null
 }
 
-export function RoomView({ header }: { header: ReactNode }) {
+export function RoomView({ header, textures, bootCycle }: {
+  header: ReactNode
+  textures: { enabled: boolean; onToggle: () => void }
+  bootCycle: number
+}) {
   const [selectedId, setSelectedId] = useState(() => linkedMission() ?? currentMission.id)
   const [mode, setMode] = useState<'earth' | 'solar'>('solar')
   const [selectedProject, setSelectedProject] = useState(0)
@@ -59,7 +64,7 @@ export function RoomView({ header }: { header: ReactNode }) {
   }
 
   return (
-    <section id="top" className="flight" aria-labelledby="flight-name">
+    <section id="top" className="flight" data-textures={textures.enabled ? "on" : "off"} aria-labelledby="flight-name">
       <div className="flight-viewport">
       {header}
       <div className="scene-frame">
@@ -167,7 +172,7 @@ export function RoomView({ header }: { header: ReactNode }) {
           </a>
         </div>
       </div>
-        <div className="room-startup" aria-hidden="true">
+        <div key={bootCycle} className="room-startup" aria-hidden="true">
           <div className="startup-bezel">
             <div className="startup-crt">
               <span>FLIGHT CONTROL</span>
@@ -194,9 +199,12 @@ export function RoomView({ header }: { header: ReactNode }) {
         <div className="station-closeup">
           <div className="station-closeup-head">
             <h2 id="payload-workstation-h" className="placard">Payloads workstation</h2>
-            <button type="button" className="key" autoFocus onClick={() => workstation.current?.close()}>
-              Return to room
-            </button>
+            <div className="station-closeup-actions">
+              <TextureKey {...textures} />
+              <button type="button" className="key" autoFocus onClick={() => workstation.current?.close()}>
+                Return to room
+              </button>
+            </div>
           </div>
           {stationOpen && <Payloads workstation />}
           <WritingShelf />

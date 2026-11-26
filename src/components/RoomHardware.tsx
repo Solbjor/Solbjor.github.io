@@ -1,3 +1,4 @@
+import { MaterialSurface } from './RoomFinishes'
 import { DeckControls, InstrumentPanel, OperatorChair } from './InstrumentBay'
 
 import type { Equipment } from './equipmentLayout'
@@ -10,6 +11,7 @@ export function ProjectionCase({ x, y, width, height }: { x: number; y: number; 
       <rect x={x - 8} y={y - 8} width={width + 16} height={height + 16} rx="4" className="projection-frame" />
       <path d={`M${x-6} ${y+height+5}V${y-6}h${width+12}`} fill="none" stroke="var(--wall-light)" strokeWidth="2" />
       <rect x={x-2} y={y-2} width={width+4} height={height+4} fill="var(--trim-shadow)" />
+      <path d={`M${x-6} ${y-6}h${width+12}v6h-${width+12}Z`} fill="url(#screen-recess)" />
       {[-4, width+4].map(dx => <g key={dx} fill="var(--trim-shadow)">
         <circle cx={x+dx} cy={y-4} r="1.4" /><circle cx={x+dx} cy={y+height+4} r="1.4" />
       </g>)}
@@ -50,20 +52,33 @@ export function ConsoleBank({ x, y, scale, bays, showPlates = true }: BankProps)
       const right = left + 41
       const inside = x < W / 2 ? right : left
       return <g key={left}>
+        <ellipse cx={left + 21} cy="86" rx="38" ry="7" fill="url(#contact)" />
         <polygon points={plane([point(inside,18,rear),point(inside,18),point(inside,86),point(inside,86,rear)])} fill="var(--steel-dark)" />
-        <rect data-surface="pedestal" x={left} y="17" width="41" height="69" fill="var(--hood)" />
-        <rect x={left+3} y="52" width="35" height="29" fill="var(--steel)" />
+        <MaterialSurface material="enamel">
+          <rect data-surface="pedestal" x={left} y="17" width="41" height="69" fill="var(--hood)" />
+        </MaterialSurface>
+        <MaterialSurface material="enamel">
+          <rect x={left+3} y="52" width="35" height="29" fill="var(--steel)" />
+        </MaterialSurface>
       </g>
     })}
-    <polygon points={plane([point(edge,-75,rear),point(edge,-75,faceDepth),point(edge,3,faceDepth),point(edge,15),point(edge,38),point(edge,86,rear)])} fill="var(--steel-dark)" />
-    <polygon data-surface="hood" points={plane([point(leftEdge,-75,rear),point(rightEdge,-75,rear),point(rightEdge,-75,faceDepth),point(leftEdge,-75,faceDepth)])} fill="var(--hood)" />
+    <MaterialSurface material="enamel">
+      <polygon points={plane([point(edge,-75,rear),point(edge,-75,faceDepth),point(edge,3,faceDepth),point(edge,15),point(edge,38),point(edge,86,rear)])} fill="var(--steel-dark)" />
+    </MaterialSurface>
+    <MaterialSurface material="enamel">
+      <polygon data-surface="hood" points={plane([point(leftEdge,-75,rear),point(rightEdge,-75,rear),point(rightEdge,-75,faceDepth),point(leftEdge,-75,faceDepth)])} fill="var(--hood)" />
+    </MaterialSurface>
     <g transform={`translate(${faceOrigin.join(' ')}) scale(${faceDepth})`}>
       {panels.map(bay => <g key={bay.center} transform={`translate(${bay.center}) scale(${bay.mirror ? -1 : 1} 1)`}>
-        <rect x="-134" y="-75" width="270" height="79" fill="url(#payload-metal)" stroke="var(--hood)" strokeWidth="2" />
+        <MaterialSurface material="enamel">
+          <rect x="-134" y="-75" width="270" height="79" fill="url(#payload-metal)" stroke="var(--hood)" strokeWidth="2" />
+        </MaterialSurface>
         <InstrumentPanel equipment={bay.equipment} />
       </g>)}
     </g>
-    <polygon data-surface="deck" points={plane([point(leftEdge,3,faceDepth),point(rightEdge,3,faceDepth),point(rightEdge,15),point(leftEdge,15)])} fill="var(--panel-hi)" stroke="var(--hood)" />
+    <MaterialSurface material="enamel" finish="deck">
+      <polygon data-surface="deck" points={plane([point(leftEdge,3,faceDepth),point(rightEdge,3,faceDepth),point(rightEdge,15),point(leftEdge,15)])} fill="var(--panel-hi)" stroke="var(--hood)" />
+    </MaterialSurface>
     {panels.map(bay => {
       const center = bay.center
       const [bx,by] = point(center,3,faceDepth)
@@ -71,7 +86,10 @@ export function ConsoleBank({ x, y, scale, bays, showPlates = true }: BankProps)
       const transform = `matrix(${bay.mirror ? -.97 : .97} 0 ${(center-bx)/30} ${(15-by)/30} ${bx} ${by})`
       return <g key={bay.label} transform={transform}><DeckControls equipment={bay.equipment}/></g>
     })}
-    <rect x={leftEdge} y="15" width={rightEdge-leftEdge} height="24" fill="var(--hood)" stroke="var(--steel-dark)" />
+    <MaterialSurface material="enamel">
+      <rect x={leftEdge} y="15" width={rightEdge-leftEdge} height="24" fill="var(--hood)" stroke="var(--steel-dark)" />
+    </MaterialSurface>
+    <path d={`M${leftEdge + 2} 15H${rightEdge - 2}`} className="enamel-edge-light" />
     {showPlates && bays.map((bay,i) => <g key={bay.label} transform={`translate(${(i ? 1 : -1) * CONSOLE_BAY_OFFSET} 27)`}>
       <rect x="-61" y="-10" width="122" height="20" rx="1" fill="var(--plate)" />
       <text textAnchor="middle" y="5.7" fill="var(--plate-ink)" fontFamily="var(--f-sans)" fontWeight="750" fontSize="16" letterSpacing=".7">{bay.label.toUpperCase()}</text>

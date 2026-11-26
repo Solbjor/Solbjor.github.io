@@ -1,40 +1,24 @@
+import { CarpetMaterial, MaterialPatterns, MaterialSurface } from './RoomFinishes'
 import { InstrumentMaterials } from './InstrumentBay'
-import { project, quad, wallPoint } from './roomLayout'
+import { quad, wallPoint } from './roomLayout'
 
 const ceiling = 'M0 0H1440V104L1300 139H140L0 104Z'
 const floor = 'M140 437H1300L1440 474V736H0V474Z'
-
-// Scatter yarn on the floor plane. Apparent width grows with depth scale;
-// the projected length along the aisle grows with its square.
-function carpetPile() {
-  let seed = 7151
-  const random = () => {
-    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0
-    return seed / 4294967296
-  }
-  const paths = ['', '']
-  for (let i = 0; i < 24000; i++) {
-    const scale = 1 / (1 - random() * .664)
-    const [x, y] = project(random() * 1440, 437, scale)
-    if (x < 0 || x > 1440) continue
-    paths[i % 2] += `M${x.toFixed(1)} ${y.toFixed(1)}l${(.38 * scale).toFixed(1)} ${(.11 * scale * scale).toFixed(1)}`
-  }
-  return paths
-}
-const yarn = carpetPile()
 
 function WallPanels({ right }: { right?: boolean }) {
   const divisions = [0, .38, .66, .86, 1]
   return <g transform={right ? 'translate(1440) scale(-1 1)' : undefined}>
     {divisions.slice(1).map((end, i) => {
       const start = divisions[i]!
-      return [[.012, .68], [.692, .964]].map(([top, bottom]) => (
-        <polygon key={`${i}-${top}`} fill={top! > .68 ? 'url(#wall-dado)' : 'url(#wall-laminate)'}
-          points={[wallPoint(start + .009, top!), wallPoint(end - .007, top!),
-            wallPoint(end - .007, bottom!), wallPoint(start + .009, bottom!)].join(' ')} />
-      ))
+      const panel = (top: number, bottom: number, fill: string) => (
+        <polygon fill={fill} points={[wallPoint(start + .009, top), wallPoint(end - .007, top),
+          wallPoint(end - .007, bottom), wallPoint(start + .009, bottom)].join(' ')} />
+      )
+      return <g key={end}>
+        <MaterialSurface material="acoustic">{panel(.012, .68, 'url(#wall-laminate)')}</MaterialSurface>
+        {panel(.692, .964, 'url(#wall-dado)')}
+      </g>
     })}
-    <polygon points={[wallPoint(0,0), wallPoint(1,0), wallPoint(1,.67), wallPoint(0,.67)].join(' ')} fill="url(#surface-grain)" />
     <polygon points={[wallPoint(0,0), wallPoint(1,0), wallPoint(1,.09), wallPoint(0,.09)].join(' ')} opacity=".45" fill="url(#junction)" />
     <polygon points={[wallPoint(0,.675), wallPoint(1,.675), wallPoint(1,.694), wallPoint(0,.694)].join(' ')} fill="var(--trim-shadow)" />
     <path d={`M${wallPoint(0,.677)} L${wallPoint(1,.677)}`} stroke="var(--wall-light)" strokeWidth="1.5" />
@@ -46,7 +30,9 @@ export function RoomMaterials() {
   return (
     <>
       <InstrumentMaterials />
+      <MaterialPatterns />
       <defs>
+        <clipPath id="floor-spill-field"><path d={floor} /></clipPath>
         <clipPath id="acoustic-field"><path d={ceiling} /></clipPath>
         <linearGradient id="wall-laminate" x2="0" y2="1">
           <stop stopColor="var(--wall-light)" /><stop offset=".12" stopColor="var(--wall-body)" />
@@ -56,16 +42,17 @@ export function RoomMaterials() {
           <stop stopColor="var(--wall-foot)" /><stop offset=".12" stopColor="var(--dado)" />
           <stop offset=".9" stopColor="var(--dado)" /><stop offset="1" stopColor="var(--wall-foot)" />
         </linearGradient>
-        <filter id="material-grain" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="2" stitchTiles="stitch" />
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <pattern id="surface-grain" width="117" height="83" patternUnits="userSpaceOnUse">
-          <rect width="117" height="83" filter="url(#material-grain)" opacity=".19" />
-        </pattern>
-        <clipPath id="floor-plane"><path d={floor} /></clipPath>
         <linearGradient id="junction" x2="0" y2="1">
           <stop stopColor="#121610" stopOpacity=".32" /><stop offset="1" stopOpacity="0" />
+        </linearGradient>
+        <radialGradient id="fixture-spill">
+          <stop className="light-spill" stopOpacity=".34" />
+          <stop offset=".54" className="light-spill" stopOpacity=".15" />
+          <stop offset="1" className="light-spill" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="screen-recess" x2="0" y2="1">
+          <stop stopColor="var(--trim-shadow)" stopOpacity=".78" />
+          <stop offset="1" stopColor="var(--trim-shadow)" stopOpacity="0" />
         </linearGradient>
         <filter id="diffusion" x="-25%" y="-75%" width="150%" height="250%"><feGaussianBlur stdDeviation="3" /></filter>
         <radialGradient id="contact"><stop stopColor="#10120e" stopOpacity=".64" />
@@ -95,10 +82,15 @@ function RoomWalls() {
       <path d="M0 104L140 139V437L0 474ZM1440 104L1300 139V437L1440 474Z" className="r-wall" />
       <WallPanels /><WallPanels right />
       <rect x="140" y="139" width="1160" height="298" fill="var(--trim-shadow)" />
-      {Array.from({ length: 12 }, (_, i) => <rect key={i} x={141 + i * 96.5} y="140"
-        width="95" height="291" fill="url(#wall-laminate)" />)}
-      <rect x="140" y="139" width="1160" height="292" fill="url(#surface-grain)" />
-      <rect x="150" y="89" width="1140" height="306" rx="2" fill="var(--wall-foot)" />
+      {Array.from({ length: 12 }, (_, i) => (
+        <MaterialSurface key={i} material="acoustic">
+          <rect x={141 + i * 96.5} y="140" width="95" height="291" fill="url(#wall-laminate)" />
+        </MaterialSurface>
+      ))}
+      <MaterialSurface material="acoustic">
+        <rect x="150" y="89" width="1140" height="306" rx="2" fill="var(--wall-foot)" />
+      </MaterialSurface>
+      <rect x="140" y="139" width="1160" height="24" fill="url(#junction)" />
       <path d="M140 433H1300" stroke="var(--trim-shadow)" strokeWidth="7" />
   </>
 }
@@ -107,10 +99,11 @@ function RoomFloor() {
   return <>
       <path d={floor} fill="url(#floor-shade)" />
 
+      <CarpetMaterial path={floor} />
       <polygon points={quad(635, 805, 583, 0.51, 1.52)} className="carpet-aisle" />
-      <g clipPath="url(#floor-plane)" fill="none" strokeWidth=".74" strokeLinecap="round">
-        <path d={yarn[0]} stroke="#eee7d3" opacity=".085" />
-        <path d={yarn[1]} stroke="#1f211b" opacity=".105" />
+      <g clipPath="url(#floor-spill-field)" opacity=".34">
+        <ellipse cx="344" cy="515" rx="348" ry="92" fill="url(#fixture-spill)" />
+        <ellipse cx="1096" cy="515" rx="348" ry="92" fill="url(#fixture-spill)" />
       </g>
   </>
 }
@@ -127,8 +120,10 @@ function RoomCeiling() {
   return <g clipPath="url(#acoustic-field)">
     <path d={ceiling} className="acoustic-ceiling" />
     {ceilingTiles.map(({ x, back, front, lighter }) => (
-      <polygon key={`${x}-${back}`} points={quad(x + 2, x + 167, 0, back + .003, front)}
-        fill={lighter ? 'var(--tile-light)' : 'var(--wall-body)'} />
+      <MaterialSurface key={`${x}-${back}`} material="ceiling">
+        <polygon points={quad(x + 2, x + 167, 0, back + .003, front)}
+          fill={lighter ? 'var(--tile-light)' : 'var(--wall-body)'} />
+      </MaterialSurface>
     ))}
   </g>
 }
@@ -139,6 +134,8 @@ function EnvironmentLighting() {
     <g clipPath="url(#acoustic-field)">
       {ceilingTiles.filter(tile => tile.lit).map(({ x, back, front }) => (
         <g key={`${x}-${back}`}>
+          <polygon points={quad(x - 11, x + 178, 0, back - .024, front + .025)}
+            className="fluorescent fixture-halo" filter="url(#diffusion)" />
           <polygon points={quad(x + 12, x + 157, 0, back + .012, front - .009)} fill="var(--trim-shadow)" />
           <polygon points={quad(x + 15, x + 154, 0, back + .015, front - .01)}
             className="fluorescent" opacity=".22" filter="url(#diffusion)" />

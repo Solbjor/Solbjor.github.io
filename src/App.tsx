@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Comms } from './components/Comms'
 import { RoomView } from './components/RoomView'
 import { Header } from './components/Header'
@@ -11,6 +12,9 @@ const YEAR = new Date().getFullYear()
 
 export default function App() {
   const { watch, setWatch } = useWatch()
+  const [textureEnabled, setTextureEnabled] = useState(true)
+  const [bootCycle, setBootCycle] = useState(0)
+  const textures = { enabled: textureEnabled, onToggle: () => setTextureEnabled(enabled => !enabled) }
 
   return (
     <>
@@ -19,7 +23,12 @@ export default function App() {
       </a>
       <div className="room">
         <main id="main" tabIndex={-1}>
-          <RoomView header={<Header watch={watch} onWatch={setWatch} />} />
+          <RoomView
+            textures={textures}
+            bootCycle={bootCycle}
+            header={<Header watch={watch} onWatch={setWatch} textures={textures}
+              onAudioBoot={() => setBootCycle(cycle => cycle + 1)} />}
+          />
           <MissionLog />
           <Payloads />
           <div className="bank">

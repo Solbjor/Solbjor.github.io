@@ -19,6 +19,8 @@
   --signal: #ff4d3a;
   --signal-ink: #1a0a07;
   --outbound-route: #63d2ed;
+  --carpet-shade-back: 36%;
+  --carpet-shade-near: 27%;
   --text: #ede5d6;
   --muted: #b3a894;
   --orbit: rgba(255, 178, 74, 0.16);
@@ -40,6 +42,8 @@
   --signal-ink: #1a0807;
   --text: #e4ebf1;
   --muted: #a1afbc;
+  --carpet-shade-back: 38%;
+  --carpet-shade-near: 30%;
   --orbit: rgba(127, 224, 255, 0.16);
   --scan: rgba(0, 0, 0, 0.3);
   color-scheme: dark;
@@ -58,6 +62,8 @@
   --signal: #b8261a;
   --signal-ink: #fff6ef;
   --outbound-route: #006c84;
+  --carpet-shade-back: 14%;
+  --carpet-shade-near: 5%;
   --text: #1f1b16;
   --muted: #554d40;
   --orbit: rgba(31, 27, 22, 0.16);

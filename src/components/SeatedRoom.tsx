@@ -1,3 +1,4 @@
+import { CarpetMaterial, MaterialSurface } from './RoomFinishes'
 import type { ReactNode } from 'react'
 import { BANKS, PAYLOAD_STATION, PROJECTION_WALL_DROP, SIDE_PROJECTION, W } from './roomLayout'
 import { ConsoleBank } from './RoomHardware'
@@ -12,15 +13,20 @@ function seatTransform(depth: number, foreground = false) {
   return `translate(562 ${foreground ? 317 : 260}) scale(${zoom}) translate(${-W/2-eyeX*depth} ${-285-350*depth})`
 }
 
+const sideFloor = 'M-240 537L0 474v262h-240ZM1440 474l240 63v199h-240Z'
+
 export function SeatedRoom({ narrow, readout, catalog }: { narrow: boolean; readout: ReactNode; catalog: ReactNode }) {
   return <div className="seated-sightline" aria-hidden="true" inert>
     <svg className="scene-art" viewBox="0 0 1440 375" preserveAspectRatio="none" focusable="false">
       <rect width="1440" height="460" fill="var(--wall-body)" />
       <g transform={seatTransform(.34)}>
         <path d="M-240 0H0v104l-240-61ZM1440 0h240v43l-240 61Z" fill="var(--wall-body)" />
-        <path d="M-240 43L0 104V474l-240 63ZM1440 104l240-61v494l-240-63Z" fill="url(#wall-laminate)" />
+        <MaterialSurface material="acoustic">
+          <path d="M-240 43L0 104V474l-240 63ZM1440 104l240-61v494l-240-63Z" fill="url(#wall-laminate)" />
+        </MaterialSurface>
         <path d="M-240 385L0 352m1440 0 240 33" stroke="var(--trim-shadow)" strokeWidth="4" />
-        <path d="M-240 537L0 474v262h-240ZM1440 474l240 63v199h-240Z" fill="url(#floor-shade)" />
+        <path d={sideFloor} fill="url(#floor-shade)" />
+        <CarpetMaterial path={sideFloor} />
         <use href="#flight-room-shell" />
         <use href="#flight-projection-wall" />
         <g transform={narrow ? undefined : 'translate(72 0) scale(.9 1)'}>
@@ -47,7 +53,9 @@ export function WritingShelf() {
       <linearGradient id="shelf-enamel" x2=".12" y2="1"><stop stopColor="var(--cabinet-shadow)"/><stop offset=".16" stopColor="var(--console-worktop)"/><stop offset="1" stopColor="var(--cabinet-light)"/></linearGradient>
       <linearGradient id="mug-glaze"><stop stopColor="#a4a390"/><stop offset=".22" stopColor="#e1deca"/><stop offset=".55" stopColor="#eee8d5"/><stop offset="1" stopColor="#a6a593"/></linearGradient>
     </defs>
-    <path d="M0 0H1200V114H0Z" fill="url(#shelf-enamel)" />
+    <MaterialSurface material="enamel" finish="deck">
+      <path d="M0 0H1200V114H0Z" fill="url(#shelf-enamel)" />
+    </MaterialSurface>
     <path d="M0 111h1200v19H0Z" fill="var(--console-case)"/>
     <path d="M0 113h1200" stroke="var(--console-edge)" strokeWidth="3"/>
     <g transform="matrix(1 -.045 -.32 .60 191 19)">

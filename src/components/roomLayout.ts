@@ -14,8 +14,8 @@ export const at = (x: number, y: number, w?: number, h?: number): CSSProperties 
   ...(h !== undefined && { height: `${(h / H) * 100}%` }),
 })
 
-const VANISH_X = 720
-const VANISH_Y = 285
+export const VANISH_X = 720
+export const VANISH_Y = 285
 
 export function project(x: number, y: number, depth: number): [number, number] {
   return [VANISH_X + (x - VANISH_X) * depth, VANISH_Y + (y - VANISH_Y) * depth]

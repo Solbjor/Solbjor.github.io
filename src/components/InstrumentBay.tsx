@@ -1,3 +1,4 @@
+import { MaterialSurface } from './RoomFinishes'
 import { equipmentRacks, type Equipment, type FaceModule, type DeckUnit } from './equipmentLayout'
 
 /** The overview artwork shares the bank's desk edge and station hit target. */
@@ -17,6 +18,7 @@ function CrtBezel() {
   return <>
     <rect x="-2" y="-2" width="60" height="49" rx="9" fill="var(--bezel-edge)" />
     <rect data-surface="gasket" width="56" height="45" rx="9" fill="var(--gasket)" stroke="var(--bezel-shadow)" strokeWidth="3" />
+    <path d="M2 13V10a8 8 0 0 1 8-8h36a8 8 0 0 1 8 8" stroke="var(--bezel-edge)" opacity=".53" fill="none" />
   </>
 }
 
@@ -87,7 +89,9 @@ export function InstrumentPanel({ equipment }: { equipment: Equipment }) {
   return <g>
     <Vent x={-124} y={-60} width={25} rows={9}/>
     {equipmentRacks[equipment].face.map((kind, i) => <g key={i} transform={`translate(${-86 + i * 74} -60)`}>
-      <rect data-surface="faceplate" x="-7" y="-10" width="72" height="68" rx="1.5" fill="url(#payload-metal)" stroke="var(--bezel-shadow)"/>
+      <MaterialSurface material="enamel" finish="panel">
+        <rect data-surface="faceplate" x="-7" y="-10" width="72" height="68" rx="1.5" fill="url(#payload-metal)" stroke="var(--bezel-shadow)"/>
+      </MaterialSurface>
       <path d="M-5 55V-8h68" fill="none" stroke="var(--panel-hi)"/>
       {[-3,61].map(x => <circle key={x} cx={x} cy="-6" r="1.6" fill="var(--key-bed)"/>)}
       <RackInstrument kind={kind}/>
@@ -126,10 +130,14 @@ export function OperatorChair({ lean }: { lean: number }) {
     <path d="M0-34v22m0-2L-32-2m32-12 29 12m-29-12 5 15" fill="none" stroke="#838880" strokeWidth="4" />
     {[-32,29,5].map(x => <ellipse key={x} cx={x} cy={x===5 ? 2 : -1} rx="4" ry="3" fill="#272a25" />)}
     <g transform={`skewX(${lean})`}>
-      <path d="M-29-61h58l8 21q-36 8-74 0Z" fill="url(#upholstery)" stroke="#454a40" strokeWidth="2"/>
+      <MaterialSurface material="upholstery">
+        <path d="M-29-61h58l8 21q-36 8-74 0Z" fill="url(#upholstery)" stroke="#454a40" strokeWidth="2"/>
+      </MaterialSurface>
       <path d="M-34-36v-22l6-9m61 31v-22l-6-9M-22-35v-31m44 31v-31" fill="none" stroke="#8a9086" strokeWidth="3.5"/>
       <path d="M-36-60l6-10m65 10-6-10" stroke="#62675c" strokeWidth="6" strokeLinecap="round"/>
-      <path data-surface="upholstery" d="M-31-85Q0-92 31-85l-2 33q-29 9-58 0Z" fill="url(#upholstery)" stroke="#464b42" strokeWidth="2" />
+      <MaterialSurface material="upholstery">
+        <path data-surface="upholstery" d="M-31-85Q0-92 31-85l-2 33q-29 9-58 0Z" fill="url(#upholstery)" stroke="#464b42" strokeWidth="2" />
+      </MaterialSurface>
       <path d="M-27-82q25-5 54 0m-52 27q23 5 49 0" fill="none" stroke="#b4b5a6" opacity=".45"/>
     </g>
   </g>

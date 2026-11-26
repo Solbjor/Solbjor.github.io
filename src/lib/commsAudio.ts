@@ -1,6 +1,8 @@
 // Ambient mission-control comms: NASA public-domain clips wrapped in
 // Quindar tones, over a faint radio hiss. Opt-in only; never autoplays.
 
+import { makeBootSound } from './consoleSounds'
+
 const CLIPS = [
   'audio/apollo11-countdown.mp3',
   'audio/sts-houston-discovery.mp3',
@@ -11,6 +13,10 @@ const CLIPS = [
 ]
 
 const CLIP_VOLUME = 0.08
+const KEY_VOLUME = 0.32
+// The supplied recording has a short lead-in and a quiet tail.
+const KEY_START = 0.19
+const KEY_END = 0.34
 const HISS_GAIN = 0.003
 const BEEP_GAIN = 0.0125
 const GAP_MIN_MS = 7000
@@ -21,27 +27,41 @@ export class CommsAudio {
   private hiss: AudioBufferSourceNode | null = null
   private clip: HTMLAudioElement | null = null
   private timer: number | undefined
-  private keySound: AudioBuffer | null = null
+  private keyBuffer?: Promise<AudioBuffer | null>
   private keySource: AudioBufferSourceNode | null = null
+  private bootSource: AudioBufferSourceNode | null = null
   private next = 0
+  private generation = 0
   private running = false
 
-  start() {
+  start(boot: boolean) {
     if (this.running) return
     this.running = true
     this.ctx ??= new AudioContext()
     void this.ctx.resume()
+    void this.loadKey()
     this.startHiss()
-    this.playKey(false)
+    if (boot) {
+      const src = this.play(makeBootSound(this.ctx))
+      this.bootSource = src
+      src.addEventListener('ended', () => {
+        if (this.bootSource === src) this.bootSource = null
+      }, { once: true })
+    } else {
+      void this.playKey()
+    }
     document.addEventListener('click', this.onControlClick, true)
-    this.timer = window.setTimeout(() => this.transmit(), 1200)
+    this.timer = window.setTimeout(() => this.transmit(), boot ? 2350 : 1200)
   }
 
   stop() {
     this.running = false
+    this.generation++
     document.removeEventListener('click', this.onControlClick, true)
     this.keySource?.stop()
     this.keySource = null
+    this.bootSource?.stop()
+    this.bootSource = null
     window.clearTimeout(this.timer)
     this.clip?.pause()
     this.clip = null
@@ -56,36 +76,54 @@ export class CommsAudio {
     if (!(event.target instanceof Element)) return
     const key = event.target.closest('button, a.key, a.station-hit, input[type="radio"]')
     if (!key || key.matches(':disabled, [aria-disabled="true"], .audio-key')) return
-    this.playKey(key.matches('.payload-power, input[type="radio"]'))
+    void this.playKey()
   }
 
-  private playKey(latching: boolean) {
+  private loadKey() {
     const ctx = this.ctx!
-    if (!this.keySound) {
-      const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * .044), ctx.sampleRate)
-      const samples = buffer.getChannelData(0)
-      // A muted spring impact followed by the softer contact settling.
-      for (let i = 0; i < samples.length; i++) {
-        const t = i / ctx.sampleRate
-        const attack = Math.min(t / .001, 1)
-        const impact = Math.sin(2 * Math.PI * 610 * t) + .5 * Math.sin(2 * Math.PI * 1170 * t)
-        const settle = t > .009 ? .38 * Math.sin(2 * Math.PI * 340 * (t - .009)) * Math.exp(-210 * (t - .009)) : 0
-        samples[i] = .022 * attack * (impact * Math.exp(-240 * t) + settle)
-      }
-      this.keySound = buffer
-    }
+    this.keyBuffer ??= fetch(`${import.meta.env.BASE_URL}audio/console-button.mp3`)
+      .then(async response => {
+        if (!response.ok) throw new Error(`Button sound: HTTP ${response.status}`)
+        const recording = await ctx.decodeAudioData(await response.arrayBuffer())
+        const start = Math.round(KEY_START * recording.sampleRate)
+        const end = Math.min(recording.length, Math.round(KEY_END * recording.sampleRate))
+        const sample = ctx.createBuffer(recording.numberOfChannels, end - start, recording.sampleRate)
+        for (let channel = 0; channel < sample.numberOfChannels; channel++) {
+          const source = recording.getChannelData(channel)
+          const target = sample.getChannelData(channel)
+          for (let i = 0; i < target.length; i++) target[i] = source[start + i]! * KEY_VOLUME
+        }
+        return sample
+      })
+      .catch(() => {
+        this.keyBuffer = undefined
+        return null
+      })
+    return this.keyBuffer
+  }
+
+  private async playKey() {
+    const generation = this.generation
+    const sample = await this.loadKey()
+    if (!sample || !this.running || generation !== this.generation) return
+
     // One voice keeps rapid channel changes at the same level as one press.
     this.keySource?.stop()
-    const src = ctx.createBufferSource()
-    src.buffer = this.keySound
-    src.playbackRate.value = latching ? .75 : 1
-    src.connect(ctx.destination)
+    const src = this.play(sample)
     this.keySource = src
-    src.onended = () => {
-      src.disconnect()
+    src.addEventListener('ended', () => {
       if (this.keySource === src) this.keySource = null
-    }
+    }, { once: true })
+  }
+
+  private play(buffer: AudioBuffer) {
+    const ctx = this.ctx!
+    const src = ctx.createBufferSource()
+    src.buffer = buffer
+    src.connect(ctx.destination)
+    src.addEventListener('ended', () => src.disconnect(), { once: true })
     src.start()
+    return src
   }
 
   private startHiss() {
@@ -127,16 +165,19 @@ export class CommsAudio {
 
   private async transmit() {
     if (!this.running) return
+    const generation = this.generation
     const src = CLIPS[this.next % CLIPS.length]!
     this.next++
     await this.beep(2525)
-    if (!this.running) return
+    if (generation !== this.generation) return
     const clip = new Audio(src)
     clip.volume = CLIP_VOLUME
     this.clip = clip
     const done = async () => {
-      if (!this.running || this.clip !== clip) return
+      if (this.clip !== clip) return
+      this.clip = null
       await this.beep(2475)
+      if (generation !== this.generation) return
       const gap = GAP_MIN_MS + Math.random() * (GAP_MAX_MS - GAP_MIN_MS)
       this.timer = window.setTimeout(() => this.transmit(), gap)
     }
