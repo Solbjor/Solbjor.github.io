@@ -28,6 +28,8 @@ function AdjacentModules({ finish }: { finish: string }) {
     <rect x="-105" y="57" width="111" height="69" rx="4" fill="var(--console-case)" stroke="var(--cabinet-light)" />
     <rect x="-98" y="64" width="97" height="55" rx="3" fill="var(--cabinet-light)" />
     <path d="M-89 102q39-42 80 0m-40 11 23-29" fill="none" stroke="var(--console-case)" strokeWidth="2" />
+    <path d="m-78 93 3 5m13-12 2 6m12-9v6m15-4-2 6m15 2-3 5"
+      fill="none" stroke="var(--cabinet-shadow)" strokeWidth="1.5" />
     {Array.from({ length: 8 }, (_, i) => (
       <path key={i} d={`M-73 ${157 + i * 10}h68`} stroke="var(--cabinet-shadow)" strokeWidth="5" />
     ))}
@@ -37,6 +39,12 @@ function AdjacentModules({ finish }: { finish: string }) {
       stroke="var(--cabinet-shadow)" opacity=".55" />
     <path d="M1211 123h16l8-18 12 36 13-21h18l10-14 12 23h32" fill="none" stroke="var(--console-case)" strokeWidth="2" />
     <path d="M1208 205h132m-132 10h132m-132 10h132" stroke="var(--cabinet-shadow)" strokeWidth="4" />
+    {[1219, 1260].map(x => <g key={x} transform={`translate(${x} 271)`}>
+      <path d="M-15 2a15 15 0 0 1 30 0" fill="none" stroke="var(--cabinet-light)" strokeWidth="2" />
+      <circle cy="2" r="11" fill="var(--console-case)" />
+      <circle r="9" fill="var(--cabinet-shadow)" />
+      <path d="m1-2 4-5" stroke="var(--cabinet-light)" strokeWidth="2" />
+    </g>)}
   </>
 }
 
@@ -99,7 +107,7 @@ export function PayloadCabinet() {
     <MaterialSurface material="enamel" finish="deck">
       <path data-surface="deck" d="M-190 332H1390V460H-190Z" fill={paint('deck')} stroke="#666f61" strokeWidth="2"/>
     </MaterialSurface>
-    <path d="M16 334 2 459m1182-125 14 125" stroke="var(--cabinet-shadow)" strokeWidth="1.7" />
+    <path d="M20 332 2 461M1179 332 1198 461" stroke="var(--cabinet-shadow)" strokeWidth="1.7" />
     <path d="M-190 335H1390" stroke="var(--console-case)" opacity=".24" strokeWidth="3" />
     <MaterialSurface material="enamel" finish="panel">
       <path d="M-118 354H-17l-7 78h-101ZM1220 354h122l8 78h-122Z" fill={paint('plate')} stroke="var(--cabinet-shadow)" />
@@ -116,5 +124,6 @@ export function PayloadCabinet() {
     <path d="M-190 461H1390v5H-190Z" fill="var(--console-edge)" />
     <path d="M-190 466H1390v14H-190Z" fill="var(--console-case)" />
     <path d="M-190 480H1390v10H-190Z" fill="var(--console-worktop)" />
+    <path d="M2 461v29m1196-29v29" stroke="var(--cabinet-shadow)" strokeWidth="1.7" />
   </svg>
 }

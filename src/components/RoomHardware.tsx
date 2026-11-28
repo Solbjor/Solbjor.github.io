@@ -1,5 +1,5 @@
 import { MaterialSurface } from './RoomFinishes'
-import { DeckControls, InstrumentPanel, OperatorChair } from './InstrumentBay'
+import { AisleModule, DeckControls, InstrumentPanel, OperatorChair } from './InstrumentBay'
 
 import type { Equipment } from './equipmentLayout'
 import { CONSOLE_BAY_OFFSET, project, W } from './roomLayout'
@@ -41,14 +41,14 @@ export function ConsoleBank({ x, y, scale, bays, showPlates = true }: BankProps)
   const aux = { label: '', equipment: (leftBank ? 'meters' : 'recorder') as Equipment }
   const panels = [...bays.map((bay,i) => ({ ...bay, center: (i ? 1 : -1) * CONSOLE_BAY_OFFSET, mirror: i === 1 })),
     { ...aux, center: outside * 3 * CONSOLE_BAY_OFFSET, mirror: !leftBank }]
-  const leftEdge = leftBank ? -542 : -270
-  const rightEdge = leftBank ? 270 : 542
+  const leftEdge = leftBank ? -542 : -304
+  const rightEdge = leftBank ? 304 : 542
   const edge = leftBank ? rightEdge : leftEdge
   const faceOrigin = point(0, 0, faceDepth)
   return <g transform={`translate(${x} ${y}) scale(${scale})`} className="room-workstation instrument-materials" aria-hidden="true">
-    <ellipse cx={outside * 136} cy="85" rx="418" ry="13" fill="url(#contact)" />
+    <ellipse cx={(leftEdge + rightEdge) / 2} cy="85" rx={(rightEdge - leftEdge) / 2 + 12} ry="13" fill="url(#contact)" />
     <polygon points={plane([point(leftEdge+9,16,rear),point(rightEdge-9,16,rear),point(rightEdge-9,86,rear),point(leftEdge+9,86,rear)])} fill="var(--steel-dark)" />
-    {[leftEdge + 4, leftEdge + 252, leftEdge + 524, rightEdge - 45].map(left => {
+    {[leftEdge + 4, leftBank ? -290 : -18, leftBank ? -18 : 254, rightEdge - 45].map(left => {
       const right = left + 41
       const inside = x < W / 2 ? right : left
       return <g key={left}>
@@ -69,6 +69,7 @@ export function ConsoleBank({ x, y, scale, bays, showPlates = true }: BankProps)
       <polygon data-surface="hood" points={plane([point(leftEdge,-75,rear),point(rightEdge,-75,rear),point(rightEdge,-75,faceDepth),point(leftEdge,-75,faceDepth)])} fill="var(--hood)" />
     </MaterialSurface>
     <g transform={`translate(${faceOrigin.join(' ')}) scale(${faceDepth})`}>
+      <AisleModule x={leftBank ? 272 : leftEdge} />
       {panels.map(bay => <g key={bay.center} transform={`translate(${bay.center}) scale(${bay.mirror ? -1 : 1} 1)`}>
         <MaterialSurface material="enamel">
           <rect x="-134" y="-75" width="270" height="79" fill="url(#payload-metal)" stroke="var(--hood)" strokeWidth="2" />

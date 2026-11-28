@@ -100,7 +100,7 @@ function RoomFloor() {
       <path d={floor} fill="url(#floor-shade)" />
 
       <CarpetMaterial path={floor} />
-      <polygon points={quad(635, 805, 583, 0.51, 1.52)} className="carpet-aisle" />
+      <polygon points={quad(650, 790, 583, 0.51, 1.52)} className="carpet-aisle" />
       <g clipPath="url(#floor-spill-field)" opacity=".34">
         <ellipse cx="344" cy="515" rx="348" ry="92" fill="url(#fixture-spill)" />
         <ellipse cx="1096" cy="515" rx="348" ry="92" fill="url(#fixture-spill)" />

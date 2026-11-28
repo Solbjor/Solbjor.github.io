@@ -58,6 +58,12 @@ export function WritingShelf() {
     </MaterialSurface>
     <path d="M0 111h1200v19H0Z" fill="var(--console-case)"/>
     <path d="M0 113h1200" stroke="var(--console-edge)" strokeWidth="3"/>
+    {/* The centered cabinet occupies 88% of the shelf width on desktop. */}
+    <style>{'@media (max-width: 900px) { .writing-shelf-joints { display: none } }'}</style>
+    <g className="writing-shelf-joints" transform="translate(72 0) scale(.88 1)" fill="none">
+      <path d="M2 0-15 112v18M1198 0l17 112v18" stroke="var(--cabinet-shadow)" strokeWidth="2" />
+      <path d="M4 0-13 112M1200 0l17 112" stroke="var(--cabinet-light)" opacity=".65" />
+    </g>
     <g transform="matrix(1 -.045 -.32 .60 191 19)">
       <rect x="3" y="6" width="244" height="137" fill="#817f70" opacity=".45"/>
       <rect y="4" width="244" height="136" fill="#c9c6b6" stroke="#95917d"/>

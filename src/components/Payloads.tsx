@@ -75,7 +75,16 @@ export function Payloads({ workstation = false }: { workstation?: boolean }) {
       <div className="payload-bay">
         <div className="glass glass-payload" style={workstation ? seatedPosition(mounts.video) : undefined} role="group" aria-roledescription="slide" aria-label={powered ? `${index + 1} of ${count}: ${p.name}` : 'Video monitor off'}>
           {!powered ? null : p.image ? (
-            <img key={p.name} src={p.image} alt={`${p.name} project image`} className="payload-img" />
+            <img
+              key={p.name}
+              src={p.image}
+              srcSet={p.imageSrcSet}
+              sizes={workstation ? '(max-width: 900px) 100vw, 34vw' : '(max-width: 900px) 100vw, min(54vw, 700px)'}
+              loading={workstation ? 'eager' : 'lazy'}
+              decoding="async"
+              alt={`${p.name} project image`}
+              className="payload-img"
+            />
           ) : (
             <div key={p.name} className="no-downlink">
               <div className="test-bars" aria-hidden="true" />
@@ -141,14 +150,14 @@ export function Payloads({ workstation = false }: { workstation?: boolean }) {
           ))}
         </div>
         <div className="transport" style={workstation ? seatedPosition(mounts.transport) : undefined} role="group" aria-label="Carousel controls">
-          <button type="button" className="key" disabled={!powered} onClick={() => go(index - 1, true)}>
-            Prev
+          <button type="button" className="key" disabled={!powered} aria-keyshortcuts="ArrowLeft" onClick={() => go(index - 1, true)}>
+            <kbd aria-hidden="true">←</kbd> Prev
           </button>
           <button type="button" className="key" disabled={!powered} aria-pressed={held} onClick={() => setHeld((h) => !h)}>
             Hold
           </button>
-          <button type="button" className="key" disabled={!powered} onClick={() => go(index + 1, true)}>
-            Next
+          <button type="button" className="key" disabled={!powered} aria-keyshortcuts="ArrowRight" onClick={() => go(index + 1, true)}>
+            Next <kbd aria-hidden="true">→</kbd>
           </button>
         </div>
       </div>

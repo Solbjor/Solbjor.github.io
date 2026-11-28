@@ -7,7 +7,8 @@ function ButtonMatrix({ x, y, columns, rows }: { x: number; y: number; columns: 
     <rect x="-2" y="-2" width={columns * 8 + 2} height={rows * 7 + 2} fill="var(--key-bed)" />
     {Array.from({ length: columns * rows }, (_, i) => (
       <g key={i} transform={`translate(${i % columns * 8} ${Math.floor(i / columns) * 7})`}>
-        <rect width="6.6" height="5.6" rx=".6" fill={i === 3 || i === 10 ? 'var(--switch-amber)' : i === 5 ? 'var(--switch-blue)' : 'var(--keycap)'} />
+        <rect y="1" width="6.6" height="5.6" rx=".6" fill="var(--bezel-shadow)" />
+        <rect width="6.6" height="5.2" rx=".6" fill={i === 3 || i === 10 ? 'var(--switch-amber)' : i === 5 ? 'var(--switch-blue)' : 'var(--keycap)'} />
         <path d="M1 1h4" stroke="#fff" opacity=".38" />
       </g>
     ))}
@@ -83,6 +84,16 @@ function RackInstrument({ kind }: { kind: FaceModule }) {
       <Vent x={5} y={37} width={46} rows={1}/>
     </g>
   }
+}
+
+export function AisleModule({ x }: { x: number }) {
+  return <g transform={`translate(${x} -75)`}>
+    <MaterialSurface material="enamel" finish="panel">
+      <rect width="32" height="79" fill="url(#payload-metal)" stroke="var(--hood)" />
+    </MaterialSurface>
+    <Vent x={6} y={10} width={20} rows={4}/>
+    <ButtonMatrix x={5} y={35} columns={3} rows={4}/>
+  </g>
 }
 
 export function InstrumentPanel({ equipment }: { equipment: Equipment }) {

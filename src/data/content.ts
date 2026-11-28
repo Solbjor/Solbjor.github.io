@@ -26,6 +26,7 @@ export interface Project {
   description: string
   link?: string
   image?: string // path under public/, e.g. "projects/medipal.png"
+  imageSrcSet?: string
   tags?: string[]
   award?: string
   /** Illustrative position on the portfolio map, not a project location. */
@@ -170,6 +171,7 @@ export const projects: Project[] = [
     award: '1st place Health Hack · Cruz Hacks 2026',
     link: 'https://devpost.com/software/caneyousee',
     image: 'projects/caneyouseeme.png',
+    imageSrcSet: 'projects/caneyouseeme-480.webp 480w, projects/caneyouseeme-960.webp 960w, projects/caneyouseeme.png 2268w',
     tags: ['Hardware', 'Accessibility', 'Hackathon'],
   },
   {
